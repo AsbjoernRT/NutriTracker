@@ -1,9 +1,15 @@
 const express = require('express')
 const app = express()
+const path = require('path'); // require the path module
 const port = process.env.PORT || 3000
 
+// Serve static files from the 'public' directory
+app.use(express.static('assets'))
+
+
+// Optional: Specific route to serve the homepage.html when accessing the root URL
 app.get('/', (req, res) => {
-  res.send('Dette er gruppe 30s NutriTracker Projekt.')
+  res.sendFile(path.join(__dirname, 'views', 'homepage.html'));
 })
 
 app.listen(port, () => {
