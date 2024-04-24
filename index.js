@@ -1,1 +1,1 @@
-let lit = "let's go";
+let lit = "Fuck CSE";
