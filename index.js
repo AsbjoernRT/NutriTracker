@@ -6,11 +6,26 @@ const port = process.env.PORT || 3000
 // Serve static files from the 'public' directory
 app.use(express.static('assets'))
 
+app.use(express.static('helpers'));
 
 // Optional: Specific route to serve the homepage.html when accessing the root URL
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'homepage.html'));
 })
+
+app.get('/mealTracker.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'mealTracker.html'));
+});
+
+// Serve a specific HTML file on a specific route
+app.get('/header.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'header.html'));
+});
+
+// Serve the JavaScript file on a specific route
+app.get('/load-header', (req, res) => {
+  res.sendFile(path.join(__dirname, 'helpers', 'loadHeader.js'));
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

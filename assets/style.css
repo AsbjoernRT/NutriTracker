@@ -4,28 +4,49 @@ body {
     font-family: 'Nunito', sans-serif;
     margin: 0;
     padding: 0;
-    background: url("layered-waves-haikei.svg") no-repeat center center; /* Updated path to image file */
+    background: url("layered-waves-haikei.svg") no-repeat center center;
+    /* Updated path to image file */
     /* background-size: cover; */
 }
 
 header {
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box; /* Ensures padding does not add to the width */
-}
-
-header {
-    width: 100%;
-    padding-top: 20px; /* 20px padding from the top */
-    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    /* Aligns children (logo-container and profile-container) on opposite ends */
+    align-items: center;
+    /* Centers children vertically */
+    padding: 10px 20px;
+    /* Add padding for breathing room */
 }
 
 .logo-container {
     display: flex;
-    align-items: center; /* Centers items vertically */
-    padding-left: 40px; /* Padding from the left side */
-
+    align-items: center;
 }
+
+.profile-container {
+    display: flex;
+    align-items: center;
+}
+
+.profile-pic {
+    width: 50px;
+    /* Set profile picture size */
+    height: 50px;
+    /* Maintain aspect ratio */
+    border-radius: 50%;
+    /* Make the image round */
+    margin-right: 10px;
+    /* Space between picture and username */
+}
+
+.profile-name {
+    font-family: 'Nunito', sans-serif;
+    color: #424242;
+    font-weight: bold;
+}
+
+
 .logo {
     height: 20px;
     /* Adjust as needed */
@@ -39,12 +60,35 @@ header {
     font-size: 1.5rem;
     font-weight: bold;
     color: #91c789;
-    margin-right: 10px; /* Space between text and logo */
+    margin-right: 10px;
+    /* Space between text and logo */
 }
 
-.logo {
-    height: 50px; /* Set as needed */
-    width: auto; /* Maintains aspect ratio */
+nav ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin-left: 10vw;
+
+}
+
+nav li {
+    display: inline;
+    margin-right: 40px;
+}
+
+nav a {
+    text-decoration: none;
+    padding: 0 20px;
+    font-size: 1rem;
+    /* Paragraph 1 size */
+    font-weight: 400;
+    /* Regular font weight */
+    color: #424242;
+    /* Dark grey color from palette */
 }
 
 
