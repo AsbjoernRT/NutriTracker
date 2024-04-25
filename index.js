@@ -27,7 +27,7 @@ app.get('/load-header', (req, res) => {
   res.sendFile(path.join(__dirname, 'helpers', 'loadHeader.js'));
 });
 
-app.get('/load-login', (req, res) => {
+app.get('/user.validator.js', (req, res) => {
   res.sendFile(path.join(__dirname, 'helpers', 'user.validator.js'));
 });
 
