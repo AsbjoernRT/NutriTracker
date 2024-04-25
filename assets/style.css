@@ -4,9 +4,9 @@ body {
     font-family: 'Nunito', sans-serif;
     margin: 0;
     padding: 0;
-    background: url("layered-waves-haikei.svg") no-repeat center center;
+    background: url("layered-waves-haikei.svg"); 
     /* Updated path to image file */
-    /* background-size: cover; */
+    background-size: cover;
 }
 
 header {
@@ -27,9 +27,9 @@ header {
 }
 
 .profile-pic {
-    width: 50px;
+    width: 20px;
     /* Set profile picture size */
-    height: 50px;
+    height: 20px;
     /* Maintain aspect ratio */
     border-radius: 50%;
     /* Make the image round */

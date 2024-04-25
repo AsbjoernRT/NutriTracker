@@ -13,8 +13,26 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'homepage.html'));
 })
 
+//Pages included:
+
 app.get('/mealTracker.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'mealTracker.html'));
+});
+
+app.get('/mealCreator.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'mealCreator.html'));
+});
+
+app.get('/activityTracker.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'activityTracker.html'));
+});
+
+app.get('/dashboard.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
+});
+
+app.get('/nutriReport.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'nutriReport.html'));
 });
 
 // Serve a specific HTML file on a specific route
