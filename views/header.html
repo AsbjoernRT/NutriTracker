@@ -16,8 +16,14 @@
         </nav>
     </div>
     <!-- Profile Section -->
-    <div class="profile-container">
+    <div class="profile-container" onclick="toggleSidebar()">
         <img src="/profilePic.png" alt="Profile Picture" class="profile-pic">
-        <span class="profile-name">Profile</span>
+        <span class="profile-name">Username</span>
+    </div>
+    <!-- Sliding Sidebar for Profile Details -->
+    <div id="profileSidebar" class="profile-sidebar">
+        <img src="/profilePic.png" alt="Profile Picture" class="sidebar-profile-pic">
+        <span class="sidebar-username">Username</span>
+        <a href="/settings.html">Settings</a>
     </div>
 </header>

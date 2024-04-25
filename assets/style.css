@@ -43,6 +43,50 @@ header {
     font-weight: bold;
 }
 
+/* Sidebar styling */
+.profile-sidebar {
+    height: 100%; /* Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Fixed Position */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    right: 0; /* Start from the right side */
+    background-color: white; /* Changed background color to white */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.5s; /* Transition effect */
+    padding-top: 60px; /* Some padding */
+    color: black; /* Ensure text elements are black */
+}
+
+.profile-sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 25px;
+    color: black; /* Text color set to black */
+    display: block;
+    transition: 0.3s;
+}
+
+.profile-sidebar a:hover {
+    color: #555; /* A darker shade of grey for hover */
+}
+
+.sidebar-profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 10px auto;
+    display: block;
+}
+
+.sidebar-username {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+
+/* Logo Styling */
 
 .logo {
     height: 20px;
