@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
     <link rel="stylesheet" href="/style.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLogin();
+        });
+        </script>
 
 </head>
 
@@ -24,11 +29,13 @@
             <button onclick="window.location.href='/dashboard.html';" class="nav-button button-blue">Dashboard</button>
             <button onclick="window.location.href='/nutritracker.html';"
                 class="nav-button button-green">NutriTracker</button>
-            <button onclick="window.location.href='/mealTracker.html';" class="nav-button button-blue">MealTracker</button>
+            <button onclick="window.location.href='/mealTracker.html';"
+                class="nav-button button-blue">MealTracker</button>
             <button onclick="window.location.href='/nutrireport.html';"
                 class="nav-button button-green">NutriReport</button>
         </div>
     </div>
+    <script src="/user.validator.js"></script>
 </body>
 
 </html>

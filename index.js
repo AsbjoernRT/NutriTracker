@@ -27,6 +27,14 @@ app.get('/load-header', (req, res) => {
   res.sendFile(path.join(__dirname, 'helpers', 'loadHeader.js'));
 });
 
+app.get('/load-login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'helpers', 'user.validator.js'));
+});
+
+app.get('/login.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'login.html'));
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
