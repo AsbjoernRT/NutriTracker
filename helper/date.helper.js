@@ -1,6 +1,24 @@
-function updateDate(){
+document.addEventListener("DOMContentLoaded", function () {
+    getDate()
+
+    var dateElement = document.getElementById("dateDisplay");
+    console.log(dateElement);
+    // If the element exists, call 'showDate()'
+    if (dateElement) {
+        showDate(getDate());
+    }
+});
+
+function getDate(){
     const currentDate = new Date();
-    
+
+    console.log(currentDate);
+
+    return currentDate;
+};
+
+function showDate(currentDate) {
+
     // Define an array of month names
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -16,12 +34,14 @@ function updateDate(){
     const dateDisplay = document.getElementById('dateDisplay');
     dateDisplay.textContent = `Todays Date: ${formattedDate}`;
 
+    // showDate(currentDate);
+
     return currentDate; // return the currentDate object
-}
+};
 
 
 // Function to check if the given date is today's date
-function isToday(date) {
+function dateMatch(date) {
 const today = new Date();
 console.log("Date: ", today);
 

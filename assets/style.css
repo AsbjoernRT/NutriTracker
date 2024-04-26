@@ -9,6 +9,8 @@ body {
     background-size: cover;
 }
 
+/* header styling */
+
 header {
     display: flex;
     justify-content: space-between;
@@ -17,6 +19,14 @@ header {
     /* Centers children vertically */
     padding: 10px 20px;
     /* Add padding for breathing room */
+}
+
+/* Footer styling */
+
+footer {
+    padding-bottom: 50px;
+    display: flex;
+    justify-content: center;
 }
 
 .logo-container {

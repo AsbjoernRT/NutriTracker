@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const headerContainer = document.getElementById('headerContainer');
     fetch('/header.html')
         .then(response => response.text())

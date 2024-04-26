@@ -19,7 +19,9 @@
 
     <div class="navigation-container">
         <h1 class="navigation-header">Welcome back to NutriTracker</h1>
+        <div id="dateDisplay"></div>
         <h3 class="navigation-header">Navigate to</h3>
+
         <div class="center-navigation">
             <button onclick="window.location.href='/dashboard.html';" class="nav-button button-blue">Dashboard</button>
             <button onclick="window.location.href='/mealCreator.html';"
@@ -32,6 +34,9 @@
                 class="nav-button button-green">ActivityTracker</button>
         </div>
     </div>
+    <div id="footerContainer"></div> <!-- Container for the footer -->
+    <script src="/date.helper.js"></script>
+    <script src="/footer.helper.js"></script>
     <script src="/user.js"></script>
 </body>
 
