@@ -35,6 +35,10 @@ app.get('/nutriReport.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'nutriReport.html'));
 });
 
+app.get('/opretBruger.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'opretBruger.html'));
+});
+
 // Serve a specific HTML file on a specific route
 app.get('/header.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'header.html'));
