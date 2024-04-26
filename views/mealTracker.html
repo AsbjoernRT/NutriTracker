@@ -13,7 +13,35 @@
 
 <body>
     <div id="headerContainer"></div> <!-- Container for the header -->
-
+    <main>
+        <section id="head">
+            <h2>Meal Tracker</h2>
+            <!-- Form for creating a meal -->
+            <div class="button-container">
+                <!-- Submit button -->
+                <button id="add-liquid-button" type="button" class="button-plus button-blue"
+                    aria-label="Add new liquid">+</button>
+                <button id="add-meal-button" type="button" class="button-plus button-green"
+                    aria-label="Add new meal">+</button>
+            </div>
+        </section>
+        <!-- Table to display tracked meals -->
+        <section>
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col" class="meal">Meal Name</th>
+                        <th scope="col">Meal & Source</th>
+                        <th scope="col">Weight & Energy</th>
+                        <th scope="col">Added on</th>
+                        <th scope="col">% of daily cons</th>
+                    </tr>
+                </thead>
+                <tbody id="meal-item">
+                </tbody>
+            </table>
+        </section>
+    </main>
 
     <div id="footerContainer"></div> <!-- Container for the footer -->
     <!-- JavaScript to load header -->

@@ -13,7 +13,41 @@
 
 <body>
     <div id="headerContainer"></div> <!-- Container for the header -->
-
+    <main>
+        <section id="head">
+            <header>
+                <h2>Meal Creator</h2>
+            </header>
+            <!-- Form for creating a meal -->
+            <div class="button-container">
+                <!-- Buttons for adding meals or recipes -->
+                <button id="add-liquid-button" type="button" class="button-plus button-blue" aria-label="Add new liquid">+</button>
+                <button id="add-recipe-button" type="button" class="button-plus button-green" aria-label="Add new recipe">+</button>
+            </div>
+        </section>
+        
+        <!-- List of meals -->
+        <section aria-labelledby="mealsHeader">
+            <!-- <header>
+                <h3 id="mealsHeader">Meal List</h3>
+            </header> -->
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col" class="meal">Meal Name</th>
+                        <th scope="col">Total Kcal per 100g</th>
+                        <th scope="col">Added on</th>
+                        <th scope="col"># Ingredients</th>
+                        <th scope="col">Times Eaten</th>
+                    </tr>
+                </thead>
+                <tbody id="mealList">
+                    <!-- Dynamic meal entries -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+    
 
     <div id="footerContainer"></div> <!-- Container for the footer -->
     <!-- JavaScript to load header -->

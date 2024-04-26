@@ -216,3 +216,102 @@ nav a {
     background-color: #407ba7;
     /* Darker blue on hover/focus */
 }
+
+
+#head {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 30px;
+}
+
+/* Main HTML content: Tables */
+main {
+    width: 100%;
+    /* or 100% if you want it full width */
+    margin: 2em auto;
+    /* Top and bottom margin */
+    padding: 20px;
+    /* Padding inside the main container */
+    background: #ffffff;
+    /* Background color */
+    border-radius: 10px;
+    /* Optional: rounds the corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Optional: adds shadow for depth */
+    max-width: 1140px;
+    /* Maximum width of the main container, adjust as necessary */
+    margin-top: 5%;
+}
+
+.button-container {
+    position: relative;
+    top: 0;
+    right: 0;
+    padding: 10px;
+}
+
+.button-plus {
+    font-size: 24px;
+    /* Adjust size as needed */
+    font-weight: bold;
+    color: white;
+    /* Plus sign color */
+    width: 50px;
+    /* Square dimensions */
+    height: 50px;
+    line-height: 50px;
+    /* Center the plus sign vertically */
+    margin-left: 10px;
+    /* Space between buttons */
+    border-radius: 50%;
+    /* Makes the button round */
+    border: none;
+    /* Removes border */
+    cursor: pointer;
+    /* Changes cursor to pointer on hover */
+}
+
+.button-blue {
+    background-color: #569bd5
+}
+
+.button-green {
+    background-color: #91c789
+}
+.meal {
+    padding-right: 150px;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    overflow-x: auto;
+    border-spacing: 0 10px;
+    background-color: transparent;
+    border-radius: 0.75em;
+}
+
+thead th {
+    padding: 15px;
+    text-align: center;
+    color: #757575;
+}
+
+/* Apply this to all elements to prevent padding and border from affecting width */
+* {
+    box-sizing: border-box;
+}
+
+/* Dashboard CSS */
+
+#dashboard {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+#dashboard > div {
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+}
