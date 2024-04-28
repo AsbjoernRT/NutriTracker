@@ -1,74 +1,44 @@
-const express = require('express')
-const app = express()
-const path = require('path'); // require the path module
-const port = process.env.PORT || 3000
+const express = require('express');
+const path = require('path');
 
-// Serve static files from the 'public' directory
-app.use(express.static('assets'))
+// Import route modules
+const viewsRoutes = require('./routes/views.routes');
+// const helperRoutes = require('./routes/helper.routes');
+// const functionsRoutes = require('./routes/functions.routes');
 
-app.use(express.static('helper'));
+const app = express();
+const port = process.env.PORT || 3000;
 
-// Optional: Specific route to serve the homepage.html when accessing the root URL
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'homepage.html'));
-})
+// Configure Express to serve static files from the 'assets' directory
+app.use(express.static(path.join(__dirname, 'assets')));
 
-//Pages included:
+// Serve files from the 'functions' directory with the correct MIME type
+app.use('/functions', express.static(path.join(__dirname, 'functions')));
+// Serve static files from the 'helper' directory
+app.use('/helper', express.static(path.join(__dirname, 'helper')));
 
-app.get('/mealTracker.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'mealTracker.html'));
-});
-
-app.get('/mealCreator.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'mealCreator.html'));
-});
-
-app.get('/activityTracker.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'activityTracker.html'));
-});
-
-app.get('/dashboard.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
-});
-
-app.get('/nutriReport.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'nutriReport.html'));
-});
-
-app.get('/opretBruger.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'opretBruger.html'));
-});
-
-// Serve a specific HTML file on a specific route
-app.get('/header.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'header.html'));
-});
-
-app.get('/footer.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'footer.html'));
-});
-
-// Serve the JavaScript file on a specific route
-app.get('/date.helper.js', (req, res) => {
-  res.sendFile(path.join(__dirname, 'helper', 'date.helper.js'));
-});
-
-app.get('/load-header', (req, res) => {
-  res.sendFile(path.join(__dirname, 'helper', 'header.helper.js'));
-});
-
-app.get('/footer.js', (req, res) => {
-  res.sendFile(path.join(__dirname, 'helper', 'footer.helper.js'));
-});
-
-app.get('/user.js', (req, res) => {
-  res.sendFile(path.join(__dirname, 'helper', 'user.js'));
-});
-
-app.get('/login.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'login.html'));
-});
+// Use route modules
+app.use('/', viewsRoutes);
+// app.use('/', helperRoutes);
+// app.use('/', functionsRoutes);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`);
+});
+
+
+// const crypto = require('crypto');
+// const secretKey = crypto.randomBytes(32).toString('hex');
+// // Session middleware setup
+// app.use(session({
+//   secret: secretKey,
+//   resave: false,
+//   saveUninitialized: false
+// }));
+
+// // Middleware function to make user data accessible in views
+// app.use(function(req, res, next) {
+//   res.locals.user = req.session.user; // Assuming user data is stored in session
+//   res.locals.currentPage = req.path;
+//   next();
+// });
