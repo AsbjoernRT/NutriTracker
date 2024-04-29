@@ -5,9 +5,18 @@
     <meta charset="UTF-8">
     <title>Register User</title>
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
-    <link rel="stylesheet" href="opretBruger.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="headerContainer"></div> <!-- Container for the header -->
+    <script>
+        fetch('/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('headerContainer').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading the header:', error));
+    </script>
     <div class="registration-form">
         <h1>Register User</h1>
         <form id="userForm">

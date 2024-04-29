@@ -32,5 +32,3 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
-exports.module = registerUser
