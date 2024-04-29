@@ -348,3 +348,112 @@ thead th {
     display: inline-block;
     width: 48%; 
 }
+
+/* register User Styling */
+.registration-form  {
+    background: white;
+    /* Hvid baggrund */
+    padding: 32px;
+    /* Indre afstand */
+    border-radius: 8px;
+    /* Afrundede hjørner */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Skygge for at skabe dybde */
+    width: calc(50% - 80px);
+    /* Bredden er 50% minus 80px */
+    max-width: 500px;
+    /* Maksimum bredde */
+    margin: auto;
+    /* Centrerer formen horisontalt */
+    /* align-items: center; */
+}
+
+/* Styling af form-grupper, som indeholder labels og inputs */
+.form-group {
+    margin-bottom: 15px;
+    /* Afstand mellem form-grupper */
+}
+
+/* Styling af labels */
+label {
+    display: block;
+    /* Gør label til et blokelement */
+    margin-bottom: 5px;
+    /* Afstand til inputfelt */
+    font-size: 20px;
+    /* Skriftstørrelse */
+    font-weight: 700;
+    /* Fed tekst */
+    color: #424242;
+    /* Farve for bedre kontrast */
+}
+
+/* Styling af input-felter */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+    width: 100%;
+    /* Fylder hele bredden af sin container */
+    padding: 6px;
+    /* Indre afstand */
+    margin-top: 5px;
+    /* Afstand til toppen */
+    border: 1px solid #DEDFD8;
+    /* Kanten af feltet */
+    border-radius: 6px;
+    /* Afrundede hjørner på feltet */
+    font-size: 12px;
+    /* Skriftstørrelse */
+    box-sizing: border-box;
+    /* Sørger for at padding og border er inkluderet i bredden */
+}
+
+/* Styling af submit-knappen */
+.btn-submit {
+    width: 100%;
+    /* Fylder hele bredden af sin container */
+    padding: 15px;
+    /* Indre afstand */
+    background-color: #91c789;
+    /* Baggrundsfarve */
+    border: 2px solid #91c789;
+    /* Kanten af knappen */
+    color: white;
+    /* Tekstfarve */
+    border-radius: 4px;
+    /* Afrundede hjørner på knappen */
+    cursor: pointer;
+    /* Cursor ændres til en hånd når man hover */
+    font-size: 16px;
+    /* Skriftstørrelse */
+    font-weight: 700;
+    /* Fed tekst */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    /* Overgangseffekt */
+    margin-top: 20px;
+    /* Afstand til toppen */
+}
+
+/* Styling af knappen når musen er over */
+.btn-submit:hover {
+    background-color: transparent;
+    /* Gør baggrunden transparent */
+    color: #91c789;
+    /* Tekstfarve */
+    border-color: #91c789;
+    /* Kanten af knappen */
+}
+
+/* Styling af select-feltet */
+select {
+    width: 100%;
+    /* Fylder hele bredden af sin container */
+    padding: 6px;
+    /* Indre afstand */
+    margin-top: 5px;
+    /* Afstand til toppen*/
+    border-radius: 6px;
+    /* Afrundede hjørner på feltet */
+}
