@@ -18,8 +18,9 @@ header {
     /* Aligns children (logo-container and profile-container) on opposite ends */
     align-items: center;
     /* Centers children vertically */
-    padding: 10px 20px;
+    padding: 64px 20px;
     /* Add padding for breathing room */
+
 }
 
 /* Footer styling */
@@ -108,7 +109,8 @@ footer {
 }
 
 .sidebar-username {
-    width: 100%; /* Ensure all children take full width */
+    width: 100%;
+    /* Ensure all children take full width */
     text-align: center;
     margin-bottom: 20px;
 }
@@ -181,7 +183,7 @@ nav a {
     font-weight: 700;
     /* Bold weight for prominence */
     margin-bottom: 20px;
-    /* Spacing between header and buttons */
+    /* Spacing between header and btns */
 }
 
 .center-navigation {
@@ -193,9 +195,9 @@ nav a {
     /* margin: 50px; */
 }
 
-.nav-button {
+.nav-btn {
     font-size: 18px;
-    /* Match button text size */
+    /* Match btn text size */
     background-color: #76a06f;
     font-weight: bold;
     color: white;
@@ -210,10 +212,10 @@ nav a {
     /* Smooth transition for hover effect */
 }
 
-.nav-button.button-blue:hover,
-.nav-button.button-blue:focus,
-.nav-button.button-green:hover,
-.nav-button.button-green:focus {
+.nav-btn.btn-blue:hover,
+.nav-btn.btn-blue:focus,
+.nav-btn.btn-green:hover,
+.nav-btn.btn-green:focus {
     background-color: #407ba7;
     /* Darker blue on hover/focus */
 }
@@ -244,14 +246,14 @@ main {
     margin-top: 5%;
 }
 
-.button-container {
+.btn-container {
     position: relative;
     top: 0;
     right: 0;
     padding: 10px;
 }
 
-.button-plus {
+.btn-plus {
     font-size: 24px;
     /* Adjust size as needed */
     font-weight: bold;
@@ -263,22 +265,23 @@ main {
     line-height: 50px;
     /* Center the plus sign vertically */
     margin-left: 10px;
-    /* Space between buttons */
+    /* Space between btns */
     border-radius: 50%;
-    /* Makes the button round */
+    /* Makes the btn round */
     border: none;
     /* Removes border */
     cursor: pointer;
     /* Changes cursor to pointer on hover */
 }
 
-.button-blue {
+.btn-blue {
     background-color: #569bd5
 }
 
-.button-green {
+.btn-green {
     background-color: #91c789
 }
+
 .meal {
     padding-right: 150px;
 }
@@ -311,7 +314,7 @@ thead th {
     gap: 20px;
 }
 
-#dashboard > div {
+#dashboard>div {
     background: #f4f4f4;
     padding: 20px;
     border-radius: 8px;

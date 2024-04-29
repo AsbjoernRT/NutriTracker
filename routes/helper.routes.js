@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 
+// import express from 'express';
+
 // Existing routes for other helper files...
 
 // Route for serving the sidebar helper
