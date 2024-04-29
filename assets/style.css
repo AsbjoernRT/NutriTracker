@@ -316,3 +316,32 @@ thead th {
     padding: 20px;
     border-radius: 8px;
 }
+
+#btn-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#calories-section {
+    margin-top: 50px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+#calories-info {
+    font-size: 18px;
+}
+
+#result {
+    text-align: center; /* Center the text horizontally */
+    margin-top: 20px; /* Add some top margin for spacing */
+}
+
+#hours,
+#minutes {
+    display: inline-block;
+    width: 48%; 
+}
