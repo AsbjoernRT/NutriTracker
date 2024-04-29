@@ -49,5 +49,10 @@ router.get('/footer.html', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'footer.html'));
 });
 
+router.get('/settings.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'settings.html'));
+});
+
+
 // Export the router
 module.exports = router;

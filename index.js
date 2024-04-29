@@ -2,7 +2,9 @@ const express = require('express');
 const path = require('path');
 
 // Import route modules
-const viewsRoutes = require('./routes/views.routes');
+const viewsRoutes = require('./routes/views.routes.js');
+const helperRoutes = require('./routes/helper.routes.js');
+const functionsRoutes = require('./routes/functions.routes.js');
 // const helperRoutes = require('./routes/helper.routes');
 // const functionsRoutes = require('./routes/functions.routes');
 
@@ -15,12 +17,15 @@ app.use(express.static(path.join(__dirname, 'assets')));
 // Serve files from the 'functions' directory with the correct MIME type
 app.use('/functions', express.static(path.join(__dirname, 'functions')));
 // Serve static files from the 'helper' directory
-app.use('/helper', express.static(path.join(__dirname, 'helper')));
+
+app.use(express.static(path.join(__dirname, 'helper')));
+
 
 // Use route modules
 app.use('/', viewsRoutes);
-// app.use('/', helperRoutes);
-// app.use('/', functionsRoutes);
+app.use('/helper', helperRoutes);
+app.use('/functions', functionsRoutes);
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
