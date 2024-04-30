@@ -473,10 +473,3 @@ select {
 .close-button:hover {
     color: #000000;
 }
-
-#box-for-back-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-}
