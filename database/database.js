@@ -11,7 +11,6 @@ export default class Database {
     console.log(`Database: config: ${JSON.stringify(config)}`);
   }
 
-  
 
   async connect() {
     try {
