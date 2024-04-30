@@ -1,5 +1,5 @@
 // models/User.js
-import sql from 'mssql';
+// import sql from 'mssql';
 
 
 class User {
