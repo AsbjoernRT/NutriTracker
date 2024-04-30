@@ -16,14 +16,13 @@
     <div id="headerContainer"></div> <!-- Container for the header -->
     <div class="registration-form">
         <h1>Aktivitets Tracker</h1>
-        <form class="userForm">
+        <form id="userForm">
             <div class="form-group">
                 <label for="activity-search">Søg aktivitet:</label>
                 <input type="text" class="activity-search" oninput="filterActivities()" placeholder="Indtast aktivitet">
             </div>
             <div class="form-group">
-                <select size="1" name="activity" class="select" onfocus="openSelector()" onblur="closeSelector()"
-                    onchange="selectActivity()">
+                <select size="1" name="activity" class="select"">
                     <option value="215">Almindelig gang (215 kcal/time)</option>
                     <option value="414">Gang ned af trapper (414 kcal/time)</option>
                     <option value="1079">Gang op af trapper (1079 kcal/time)</option>
@@ -81,12 +80,12 @@
         <div id="calories-info"></div>
     </section>
 
-    <div id="btn-button"><button onclick="window.location.href='./'" class="nav-button button-green">Back to Home
+    <div id="btn-button"><button onclick="window.location.href='./'" class="nav-btn btn-blue">Back to Home
         </button></div>
 
 
-    <script  src="/Functions/Activity.js"></script>
-    <script  src="/helper/basicMetabolisme.js"></script>
+        <script type="module" src="Activity.js"></script>
+    <script  src="/basicMetabolisme.js"></script>
     <script>
         fetch('partials/header.html')
             .then(response => response.text())
