@@ -5,6 +5,7 @@ import viewsRoutes from './routes/views.routes.js';
 import helperRoutes from './routes/helper.routes.js';
 import functionsRoutes from './routes/functions.routes.js';
 
+
 // const helperRoutes = require('./routes/helper.routes');
 // const functionsRoutes = require('./routes/functions.routes');
 
@@ -16,6 +17,9 @@ const port = process.env.PORT || 3000;
 app.use(express.static('assets'));
 app.use(express.static('views'));
 app.use(express.static('helper'));
+app.use(express.static('functions'));
+
+// Use route modules
 
 
 
