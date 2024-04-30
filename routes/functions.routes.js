@@ -1,6 +1,8 @@
-const express = require('express');
+import express from 'express';
+import path from 'path';
+
 const router = express.Router();
-const path = require('path');
+
 
 // // Create a router instance
 // const router = express.Router();
@@ -12,4 +14,4 @@ router.get('/register.functions.js', (req, res) => {
 
 
 // Export the router
-module.exports = router;
+export default router;

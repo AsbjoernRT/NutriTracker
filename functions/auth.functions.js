@@ -1,6 +1,6 @@
 // services/authService.js
-const bcrypt = require('bcryptjs');
-const User = require('../models/user');
+import bcrypt from 'bcryptjs';
+import User from '../models/user';
 
 async function registerUser(username, password) {
   try {
@@ -15,4 +15,5 @@ async function registerUser(username, password) {
   }
 }
 
-module.exports = { registerUser };
+export { registerUser };
+

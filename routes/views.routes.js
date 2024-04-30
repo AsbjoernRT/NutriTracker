@@ -1,58 +1,45 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+// import path from 'path';
 
 // Create a router instance
 const router = express.Router();
 
+
 // Define route handlers for serving HTML files
 router.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'homepage.html'));
+    res.sendFile('homepage.html', { root: './views' });
 });
 
-// router.get('/mealTracker', (req, res) => {
-//     res.sendFile(path.join(__dirname, '..', 'views', 'mealTracker.html'));
-// });
-router.get('/mealTracker.html', (req, res) => {
-    console.log('Accessing homepage');
-    res.sendFile(path.join(__dirname, '..', 'views', 'mealTracker.html'));
+router.get('/dashboard', (req, res) => {
+    res.sendFile('dashboard.html',  {root:'./views'});
 });
 
-router.get('/mealCreator.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'mealCreator.html'));
+router.get('/mealCreator', (req, res) => {
+    res.sendFile('mealCreator.html',{root:'./ views'});
 });
 
-router.get('/activityTracker.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'activityTracker.html'));
+router.get('/mealTracker', (req, res) => {
+    res.sendFile('mealTracker.html',{root:'./ views'});
 });
 
-router.get('/dashboard.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'dashboard.html'));
+router.get('/dailyNutri', (req, res) => {
+    res.sendFile('dailyNutri.html',  {root:'./ views'});
 });
 
-router.get('/nutriReport.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'nutriReport.html'));
+router.get('/login', (req, res) => {
+    res.sendFile('login.html', { root: './views' })
 });
 
-router.get('/register.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'register.html'));
+router.get('/register', (req, res) => {
+    res.sendFile('register.html', { root: './views' });
 });
 
-router.get('/login.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'login.html'));
+router.get('/footer', (req, res) => {
+    res.sendFile('footer.html', { root: './views' });
 });
 
-router.get('/header.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'header.html'));
+router.get('/settings', (req, res) => {
+    res.sendFile('settings.html', { root: './views' });
 });
 
-router.get('/footer.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'footer.html'));
-});
-
-router.get('/settings.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'settings.html'));
-});
-
-
-// Export the router
-module.exports = router;
+export default router;

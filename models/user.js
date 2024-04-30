@@ -1,5 +1,6 @@
 // models/User.js
-const sql = require('mssql');
+import sql from 'mssql';
+
 
 class User {
   constructor(name, password, email, age, weight, gender) {
@@ -31,4 +32,5 @@ class User {
   }
 }
 
-module.exports = User;
+export default User;
+

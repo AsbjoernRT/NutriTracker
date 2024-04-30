@@ -1,7 +1,9 @@
 // routes/authRoutes.js
-const express = require('express');
+import express from 'express';
+import authService from '../functions/auth.functions';
+
 const router = express.Router();
-const authService = require('../functions/auth.functions');
+
 
 // Route for user registration
 router.post('/register', async (req, res) => {
@@ -20,4 +22,4 @@ router.post('/register', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
