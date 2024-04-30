@@ -1,10 +1,10 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
 
 // Import route modules
-const viewsRoutes = require('./routes/views.routes.js');
-const helperRoutes = require('./routes/helper.routes.js');
-const functionsRoutes = require('./routes/functions.routes.js');
+import viewsRoutes from './routes/views.routes.js';
+import helperRoutes from './routes/helper.routes.js';
+import functionsRoutes from './routes/functions.routes.js';
+
 // const helperRoutes = require('./routes/helper.routes');
 // const functionsRoutes = require('./routes/functions.routes');
 
@@ -12,13 +12,18 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Configure Express to serve static files from the 'assets' directory
-app.use(express.static(path.join(__dirname, 'assets')));
+
+app.use(express.static('assets'));
+app.use(express.static('views'));
+app.use(express.static('helper'));
+
+
 
 // Serve files from the 'functions' directory with the correct MIME type
-app.use('/functions', express.static(path.join(__dirname, 'functions')));
-// Serve static files from the 'helper' directory
+// app.use('/functions', express.static(path.join(currentDirectory, 'functions')));
 
-app.use(express.static(path.join(__dirname, 'helper')));
+// Serve static files from the 'helper' directory
+// app.use(express.static(path.join(currentDirectory, 'helper')));
 
 
 // Use route modules

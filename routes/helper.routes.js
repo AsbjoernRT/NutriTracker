@@ -1,15 +1,17 @@
-const express = require('express');
+import express from 'express';
+// import path from 'path';
+
 const router = express.Router();
-const path = require('path');
+
 
 // import express from 'express';
 
 // Existing routes for other helper files...
 
 // Route for serving the sidebar helper
-router.get('/sidebar', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'helper', 'sidebar.js'));
-});
+// router.get('/sidebar', (req, res) => {
+//   res.sendFile('sidebar.js',{root:'./helper'});
+// });
 
 // Export the router
-module.exports = router;
+export default router;
