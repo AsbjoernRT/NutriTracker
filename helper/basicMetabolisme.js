@@ -59,13 +59,13 @@ let height = 170; // Brugerens højde (kan være valgfrit, afhængigt af beregni
 let basalMetabolism = calculateBasalMetabolism(age, gender, weight, height);
 console.log("Basal metabolism:", basalMetabolism + " Kcal");
 
-// Hvis stofskifteData allerede er defineret, skal du opdatere det, ellers initialisere det som et tomt objekt
-let stofskifteData = JSON.parse(localStorage.getItem('stofskifteData')) || {};
+// // Hvis stofskifteData allerede er defineret, skal du opdatere det, ellers initialisere det som et tomt objekt
+// let stofskifteData = JSON.parse(localStorage.getItem('stofskifteData')) || {};
 
-// Tilføj basal metabolisme til stofskifteData
-stofskifteData.basalMetabolism = basalMetabolism;
+// // Tilføj basal metabolisme til stofskifteData
+// stofskifteData.basalMetabolism = basalMetabolism;
 
-// Gem opdaterede stofskifteData i lokal lagring
-localStorage.setItem('stofskifteData', JSON.stringify(stofskifteData));
+// // Gem opdaterede stofskifteData i lokal lagring
+// localStorage.setItem('stofskifteData', JSON.stringify(stofskifteData));
 
 });
