@@ -8,4 +8,3 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error('Error loading the header:', error));
 });
 
-module.exports = header.helper

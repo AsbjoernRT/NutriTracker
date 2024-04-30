@@ -11,5 +11,5 @@ router.get('/register.functions.js', (req, res) => {
 });
 
 
-// // Export the router
+// Export the router
 module.exports = router;

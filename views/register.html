@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
@@ -7,56 +8,56 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div id="headerContainer"></div> <!-- Container for the header -->
-    <script>
-        fetch('/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('headerContainer').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading the header:', error));
-    </script>
-    <div class="registration-form">
-        <h1>Register User</h1>
-        <form id="userForm">
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
+    <header>
+        <div class="logo-container">
+            <span class="logo-text">NutriTracker</span>
+            <img src="./nutriTracker.png" alt="NutriTracker Logo" class="Logo" />
+        </div>
+    </header>
+    
+        <div class="registration-form">
+            <h1>Register User</h1>
+            <form id="userForm">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
 
-            <div class="form-group">
-                <label for="birthyear">Year of Birth:</label>
-                <input type="number" id="birthyear" name="birthyear" required>
-            </div>
+                <div class="form-group">
+                    <label for="birthyear">Year of Birth:</label>
+                    <input type="number" id="birthyear" name="birthyear" required>
+                </div>
 
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
 
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
 
-            <div class="form-group">
-                <label for="weight">Weight:</label>
-                <input type="number" id="weight" name="weight" step="0.1" required>
-            </div>
+                <div class="form-group">
+                    <label for="weight">Weight:</label>
+                    <input type="number" id="weight" name="weight" step="0.1" required>
+                </div>
 
-            <div class="form-group">
-                <label for="gender">Gender:</label>
-                <select id="gender" name="gender" required>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
 
-            <button type="submit" class="btn-submit">Create Account</button>
-        </form>
-    </div>
+                <button type="submit" class="btn-submit">Create Account</button>
+            </form>
+        </div>
     <script src="/functions/register.functions.js"></script>
 </body>
+
 </html>

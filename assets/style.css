@@ -18,7 +18,7 @@ header {
     /* Aligns children (logo-container and profile-container) on opposite ends */
     align-items: center;
     /* Centers children vertically */
-    padding: 64px 20px;
+    padding: 10px 20px;
     /* Add padding for breathing room */
 
 }
@@ -363,7 +363,7 @@ thead th {
     /* Bredden er 50% minus 80px */
     max-width: 500px;
     /* Maksimum bredde */
-    margin: auto;
+    margin: 2em auto;
     /* Centrerer formen horisontalt */
     /* align-items: center; */
 }
