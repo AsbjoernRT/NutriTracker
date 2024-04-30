@@ -1,6 +1,6 @@
 // register.functions.js
 
-import User from './models/user.js';
+import User from './models/User.js';
 
 // Function to handle form submission
 function handleSubmit(event) {
@@ -18,18 +18,16 @@ function handleSubmit(event) {
     // Create a new instance of the User class
     const newUser = new User(username, password, email, birthyear, weight, gender);
 
-    console.log(newUser);
-
-    // // Call the save method to save the user data to the database
-    // newUser.save()
-    //     .then(() => {
-    //         console.log('User registered successfully!');
-    //         // Optionally, you can redirect the user to another page or show a success message
-    //     })
-    //     .catch(error => {
-    //         console.error('Error registering user:', error);
-    //         // Optionally, you can display an error message to the user
-    //     });
+    // Call the save method to save the user data to the database
+    newUser.save()
+        .then(() => {
+            console.log('User registered successfully!');
+            // Optionally, you can redirect the user to another page or show a success message
+        })
+        .catch(error => {
+            console.error('Error registering user:', error);
+            // Optionally, you can display an error message to the user
+        });
 }
 
 // Add event listener to the form
