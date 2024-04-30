@@ -76,17 +76,18 @@
         </form>
         <div id="result"></div>
     </div>
+    <div id="btn-btn"><button onclick="window.location.href='./'" class="nav-btn btn-blue">Back to Home
+    </button></div>
     <section id="calories-section">
         <h2>Calories Burned Today</h2>
         <div id="calories-info"></div>
     </section>
 
-    <div id="btn-button"><button onclick="window.location.href='./'" class="nav-button button-green">Back to Home
-        </button></div>
+ 
 
 
-    <script  src="/Functions/Activity.js"></script>
-    <script  src="/helper/basicMetabolisme.js"></script>
+    <script src="/Functions/Activity.js"></script>
+    <script src="/helper/basicMetabolisme.js"></script>
     <script>
         fetch('partials/header.html')
             .then(response => response.text())

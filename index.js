@@ -1,4 +1,5 @@
 import express from 'express';
+import session from 'express-session';
 
 // Import route modules
 import viewsRoutes from './routes/views.routes.js';
@@ -12,12 +13,25 @@ import functionsRoutes from './routes/functions.routes.js';
 const app = express();
 const port = process.env.PORT || 3000;
 
+
 // Configure Express to serve static files from the 'assets' directory
+
+// Middleware function
+const logRequest = (req, res, next) => {
+  console.log(`Received a ${req.method} request from ${req.ip}`);
+  next();
+};
+
+// Use the middleware
+app.use(logRequest);
+app.use(express.json);
 
 app.use(express.static('assets'));
 app.use(express.static('views'));
 app.use(express.static('helper'));
 app.use(express.static('functions'));
+app.use(express.static('models'));
+
 
 // Use route modules
 
@@ -29,6 +43,13 @@ app.use(express.static('functions'));
 // Serve static files from the 'helper' directory
 // app.use(express.static(path.join(currentDirectory, 'helper')));
 
+
+app.use(session({
+  secret: 'your secret key',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
 
 // Use route modules
 app.use('/', viewsRoutes);
