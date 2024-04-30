@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mysql from 'mysql';
-import Database from 'database.js'
-import config from 'config.js'
+import Database from '/database/database.js'
+import {config} from '/config/config.js'
 const app = express();
 const port = 4000;
 

@@ -4,6 +4,13 @@ import express from 'express';
 import viewsRoutes from './routes/views.routes.js';
 import helperRoutes from './routes/helper.routes.js';
 import functionsRoutes from './routes/functions.routes.js';
+// import openapi from '.router/open.api.js';
+import { config } from './config/config.js';
+import Database from './database/database.js';
+
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 
 // const helperRoutes = require('./routes/helper.routes');
@@ -13,6 +20,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Configure Express to serve static files from the 'assets' directory
+
+const database = new Database(config);
+console.log(database.connect())
 
 app.use(express.static('assets'));
 app.use(express.static('views'));
@@ -34,7 +44,6 @@ app.use(express.static('functions'));
 app.use('/', viewsRoutes);
 app.use('/helper', helperRoutes);
 app.use('/functions', functionsRoutes);
-
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
