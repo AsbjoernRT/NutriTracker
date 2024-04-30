@@ -473,3 +473,15 @@ select {
 .close-button:hover {
     color: #ff3333;
 }
+
+#calories-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#btn-button {
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
