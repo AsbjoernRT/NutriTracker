@@ -89,13 +89,3 @@ select {
     padding: 15px; /* Indre afstand */
     margin-top: 5px; /* Afstand til toppen*/}
     
-
-    @media screen and (max-width: 768px) {
-        .container {
-            width: 100%;
-            padding: 0 10px;
-        }
-    }
-    
-
-    
