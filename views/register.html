@@ -1,63 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <!-- Sæt viewport for at sikre korrekt skalering på alle enheder -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>Register User</title>
+    <!-- Link til Google Fonts for at indlæse Nunito skrifttype -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
+    <!-- Link til ekstern CSS-fil for at style siden -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <!-- Sidehoved med logo og titel -->
     <header>
         <div class="logo-container">
+            <!-- Tekst logo -->
             <span class="logo-text">NutriTracker</span>
+            <!-- Billede logo -->
             <img src="./nutriTracker.png" alt="NutriTracker Logo" class="Logo" />
         </div>
     </header>
-    
-        <div class="registration-form">
-            <h1>Register User</h1>
-            <form id="userForm">
-                <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
 
-                <div class="form-group">
-                    <label for="birthyear">Year of Birth:</label>
-                    <input type="number" id="birthyear" name="birthyear" required>
-                </div>
+    <!-- Registreringsformular container -->
+    <div class="registration-form">
+        <!-- Luk-knap til at navigere tilbage til startsiden -->
+        <button class="close-button" onclick="window.location.href='/'">✖</button>
+        <h1>Register User</h1>
+        <!-- Formularen for brugerregistrering -->
+        <form id="userForm">
+            <!-- Gruppe for brugernavn -->
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
 
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
+            <!-- Gruppe for fødselsår -->
+            <div class="form-group">
+                <label for="birthyear">Year of Birth:</label>
+                <input type="number" id="birthyear" name="birthyear" required>
+            </div>
 
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
+            <!-- Gruppe for email -->
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
 
-                <div class="form-group">
-                    <label for="weight">Weight:</label>
-                    <input type="number" id="weight" name="weight" step="0.1" required>
-                </div>
+            <!-- Gruppe for password -->
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
 
-                <div class="form-group">
-                    <label for="gender">Gender:</label>
-                    <select id="gender" name="gender" required>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
+            <!-- Gruppe for vægt -->
+            <div class="form-group">
+                <label for="weight">Weight:</label>
+                <input type="number" id="weight" name="weight" step="0.1" required>
+            </div>
 
-                <button type="submit" class="btn-submit">Create Account</button>
-            </form>
-        </div>
-    <script src="/functions/register.functions.js"></script>
+            <!-- Gruppe for kønsvalg -->
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <!-- Indsendelsesknap -->
+            <button type="submit" class="btn-submit">Create Account</button>
+        </form>
+    </div>
+
+    <!-- Link til JavaScript-fil, der håndterer formularlogik -->
+    <script src="register.js"></script>
 </body>
 
 </html>
