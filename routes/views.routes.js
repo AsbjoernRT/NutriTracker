@@ -42,4 +42,7 @@ router.get('/settings', (req, res) => {
     res.sendFile('settings.html', { root: './views' });
 });
 
+router.get('/header', (req, res) => {
+    res.sendFile('header.html', { root: './views/partials' });
+});
 export default router;

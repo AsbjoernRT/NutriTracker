@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meal Creator</title>
     <link rel="stylesheet" href="/style.css">
+    <script src="/sidebar.js"></script>
     <!-- <base href="/"> -->
 
 </head>
@@ -14,7 +15,7 @@
 <body>
     <div id="headerContainer"></div> <!-- Container for the header -->
     <script>
-        fetch('/header.html')
+        fetch('partials/header.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('headerContainer').innerHTML = data;
@@ -59,10 +60,9 @@
 
     <div id="footerContainer"></div> <!-- Container for the footer -->
     <!-- JavaScript to load header -->
-    <script type="module" src="/date.helper.js"></script>
-    <script type="module" src="/header.helper.js"></script>
-    <script type="module" src="/footer.helper.js"></script>
-    <script type="module" src="/sidebar.js"></script>
+    <script src="/date.helper.js"></script>
+    <script src="/footer.helper.js"></script>
+    
 </body>
 
 </html>

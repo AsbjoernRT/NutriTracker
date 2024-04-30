@@ -1,33 +1,35 @@
-// opretBruger.js
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('userForm');
+// register.functions.js
 
-    form.addEventListener('submit', async function (event) {
-        event.preventDefault(); // Prevent the default form submission
+import User from './models/User.js';
 
-        const formData = new FormData(form);
-        const userData = Object.fromEntries(formData.entries()); // Convert FormData to object
+// Function to handle form submission
+function handleSubmit(event) {
+    event.preventDefault(); // Prevent the default form submission
 
-        try {
-            const response = await fetch('/functions/auth.functions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            });
+    // Get form data
+    const formData = new FormData(event.target);
+    const username = formData.get('username');
+    const birthyear = formData.get('birthyear');
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const weight = formData.get('weight');
+    const gender = formData.get('gender');
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to register user');
-            }
+    // Create a new instance of the User class
+    const newUser = new User(username, password, email, birthyear, weight, gender);
 
-            const responseData = await response.json();
-            console.log(responseData.message); // Log success message
-            form.reset(); // Clear the form
-        } catch (error) {
-            console.error('Error registering user:', error.message);
-            // Display error message to the user if needed
-        }
-    });
-});
+    // Call the save method to save the user data to the database
+    newUser.save()
+        .then(() => {
+            console.log('User registered successfully!');
+            // Optionally, you can redirect the user to another page or show a success message
+        })
+        .catch(error => {
+            console.error('Error registering user:', error);
+            // Optionally, you can display an error message to the user
+        });
+}
+
+// Add event listener to the form
+const userForm = document.getElementById('userForm');
+userForm.addEventListener('submit', handleSubmit);

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>activity Tracker</title>
     <link rel="stylesheet" href="/style.css">
+    <script src="/sidebar.js"></script>
     <!-- <base href="/"> -->
 
 </head>
@@ -87,7 +88,7 @@
     <script type="module" src="../Functions/Activity.js"></script>
     <script type="module" src="/basicMetabolisme.js"></script>
     <script>
-        fetch('/header.html')
+        fetch('partials/header.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('headerContainer').innerHTML = data;
