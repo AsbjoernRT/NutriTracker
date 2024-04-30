@@ -155,4 +155,4 @@ function calculateCalories() {
 
 // Event listeners for at udregne kalorier, når knap trykkes på.
 window.onload = updateCaloriesDisplay;
-document.getElementById('activity-form').addEventListener('submit', calculateCalories);
+document.getElementById('userForm').addEventListener('submit', calculateCalories);

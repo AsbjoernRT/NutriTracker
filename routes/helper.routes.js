@@ -13,3 +13,6 @@ router.get('/sidebar', (req, res) => {
 
 // Export the router
 module.exports = router;
+
+router.get('/basicMetabolisme.js', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'helper', 'basicMetabolisme.js'))})

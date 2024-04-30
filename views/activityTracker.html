@@ -15,7 +15,7 @@
     <div id="headerContainer"></div> <!-- Container for the header -->
     <div class="registration-form">
         <h1>Aktivitets Tracker</h1>
-        <form class="userForm">
+        <form id="userForm">
             <div class="form-group">
                 <label for="activity-search">Søg aktivitet:</label>
                 <input type="text" class="activity-search" oninput="filterActivities()" placeholder="Indtast aktivitet">
@@ -80,11 +80,11 @@
         <div id="calories-info"></div>
     </section>
 
-    <div id="btn-button"><button onclick="window.location.href='./'" class="nav-button button-green">Back to Home
+    <div id="box-for-back-btn"><button onclick="window.location.href='./'" class="nav-btn btn-green">Back to Home
         </button></div>
 
 
-    <script src="/Functions/Activity.js"></script>
+    <script src="../Functions/Activity.js""></script>
     <script src="/helper/basicMetabolisme.js"></script>
     <script>
         fetch('/header.html')
@@ -99,10 +99,8 @@
     <div id="footerContainer"></div> <!-- Container for the footer -->
     <!-- JavaScript to load header -->
     <script src="/date.helper.js"></script>
-    <script src="/header.helper.js"></script>
     <script src="/footer.helper.js"></script>
     <script src="/sidebar.js"></script>
-    <script src="../routes/views.routes.js"></script>
 </body>
 
 </html>

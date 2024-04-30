@@ -327,11 +327,15 @@ thead th {
 }
 
 #calories-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 50px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
+    flex-direction: column;
 }
 
 #calories-info {
@@ -456,4 +460,11 @@ select {
     /* Afstand til toppen*/
     border-radius: 6px;
     /* Afrundede hjørner på feltet */
+}
+
+#box-for-back-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
 }
