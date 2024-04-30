@@ -68,5 +68,4 @@ stofskifteData.basalMetabolism = basalMetabolism;
 // Gem opdaterede stofskifteData i lokal lagring
 localStorage.setItem('stofskifteData', JSON.stringify(stofskifteData));
 
-
 });

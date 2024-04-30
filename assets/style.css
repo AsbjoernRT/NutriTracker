@@ -461,10 +461,3 @@ select {
     border-radius: 6px;
     /* Afrundede hjørner på feltet */
 }
-
-#box-for-back-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-}
