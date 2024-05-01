@@ -7,6 +7,10 @@ import functionsRoutes from './routes/functions.routes.js';
 // import openapi from '.router/open.api.js';
 import { config } from './config/config.js';
 import Database from './database/database.js';
+// import userRoutes from './routes/user.route.js';
+// import { getUser } from './routes/user.route.js';
+
+
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -19,10 +23,15 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+
+// Her gør vi serveren i stand til at læse requests' body's
+app.use(express.urlencoded({extended: true}));
 // Configure Express to serve static files from the 'assets' directory
 
 const database = new Database(config);
-console.log(database.connect())
+console.log(database.connect());
+
+// const user = require('./routes/user.route');
 
 app.use(express.static('assets'));
 app.use(express.static('views'));
@@ -41,6 +50,7 @@ app.use(express.static('functions'));
 
 
 // Use route modules
+// app.use('/user', userRoutes);
 app.use('/', viewsRoutes);
 app.use('/helper', helperRoutes);
 app.use('/functions', functionsRoutes);

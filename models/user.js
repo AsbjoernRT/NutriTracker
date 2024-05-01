@@ -2,7 +2,7 @@
 // import sql from 'mssql';
 
 
-class User {
+export class User {
   constructor(name, password, email, age, weight, gender) {
     this.name = name;
     this.password = password;
@@ -32,5 +32,5 @@ class User {
   // }
 }
 
-export default User;
+// export default User;
 
