@@ -40,13 +40,17 @@
             <button type="submit" class="btn-submit">Login</button>
         </form>
     </div>
-
-    <h3 class="text-btn" onclick="window.location.href='/register';">Register User</h3>
-
+<div class="text-btn-container">
+    <h3 onclick="window.location.href='/register';" class="text-btn">Register User</h3>
+</div>
     <script>
-        if (new URLSearchParams(window.location.search).has('error')) {
-            alert('Bruger eksisterer allerede, gå til login');
-        }
+        if (new URLSearchParams(window.location.search).has('usernotfound')) {
+            alert('No user wiht that email');
+        };
+        
+        if (new URLSearchParams(window.location.search).has('wrongpassword')) {
+            alert('Wrong password');
+        };
     </script>
 </body>
 
