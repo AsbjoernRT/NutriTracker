@@ -1,19 +1,19 @@
 import express from 'express';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Import route modules
 import viewsRoutes from './routes/views.routes.js';
-import helperRoutes from './routes/helper.routes.js';
-import functionsRoutes from './routes/functions.routes.js';
+import apiRoutes from './routes/api.routes.js';
+// import helperRoutes from './routes/helper.routes.js';
+// import functionsRoutes from './routes/functions.routes.js';
 // import openapi from '.router/open.api.js';
+
 import { config } from './config/config.js';
 import Database from './database/database.js';
 // import userRoutes from './routes/user.route.js';
 // import { getUser } from './routes/user.route.js';
 
-
-
-import dotenv from 'dotenv';
-dotenv.config();
 
 
 
@@ -34,9 +34,9 @@ console.log(database.connect());
 // const user = require('./routes/user.route');
 
 app.use(express.static('assets'));
-app.use(express.static('views'));
-app.use(express.static('helper'));
-app.use(express.static('functions'));
+// app.use(express.static('views'));
+// app.use(express.static('helper'));
+// app.use(express.static('functions'));
 
 // Use route modules
 
@@ -52,12 +52,15 @@ app.use(express.static('functions'));
 // Use route modules
 // app.use('/user', userRoutes);
 app.use('/', viewsRoutes);
-app.use('/helper', helperRoutes);
-app.use('/functions', functionsRoutes);
+app.use('/api',apiRoutes)
+// app.use('/helper', helperRoutes);
+// app.use('/functions', functionsRoutes);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+export default {connectedDatabase:database}
 
 
 // const crypto = require('crypto');

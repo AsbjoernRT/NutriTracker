@@ -1,5 +1,7 @@
-import * as dotenv from 'dotenv';
-dotenv.config({ path: `.env.${process.env.NODE_ENV}`, debug: true });
+// import * as dotenv from 'dotenv';
+// dotenv.config({ path: `.env.${process.env.NODE_ENV}`, debug: true });
+import dotenv from 'dotenv';
+dotenv.config();
 
 const server = process.env.AZURE_SQL_SERVER;
 const database = process.env.AZURE_SQL_DATABASE;

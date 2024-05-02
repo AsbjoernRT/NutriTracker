@@ -326,6 +326,22 @@ thead th {
     align-items: center;
 }
 
+.text-btn-container {
+    display: flex;
+    align-items: center;  /* Vertical centering */
+    justify-content: center;  /* Horizontal centering */
+}
+
+
+.text-btn {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    text-decoration: underline;
+}
+
+
 #calories-section {
     margin-top: 50px;
     padding: 20px;
@@ -339,18 +355,21 @@ thead th {
 }
 
 #result {
-    text-align: center; /* Center the text horizontally */
-    margin-top: 20px; /* Add some top margin for spacing */
+    text-align: center;
+    /* Center the text horizontally */
+    margin-top: 20px;
+    /* Add some top margin for spacing */
 }
 
 #hours,
 #minutes {
     display: inline-block;
-    width: 48%; 
+    width: 48%;
 }
 
 /* register User Styling */
-.registration-form  {
+.registration-form,
+.login-form {
     background: white;
     /* Hvid baggrund */
     padding: 32px;
@@ -457,6 +476,7 @@ select {
     border-radius: 6px;
     /* Afrundede hjørner på feltet */
 }
+
 /* Styling af close-button */
 .close-button {
     position: absolute;

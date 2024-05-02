@@ -15,5 +15,5 @@ async function registerUser(username, password) {
   }
 }
 
-export { registerUser };
+// export { registerUser };
 

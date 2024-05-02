@@ -37,19 +37,19 @@ export default class Database {
   }
 
   // Opret en bruger 
-async createUser(user){
-  await this.connect();
-  const request = this.poolconnection.request()
-    .input('name', sql.NVarChar, user.fullname)
-    .input('password', sql.NVarChar, user.password)
-    .input('email', sql.NVarChar, user.email)
-    .input('age', sql.Int, user.age)
-    .input('weight', sql.Int, user.weight)
-    .input('gender', sql.NVarChar, user.gender)
-  const result = await request.query(`INSERT INTO NutriDB.users (name, password, email, age, weight, gender) VALUES (@name, @password, @email, @age, @weight, @gender)`);
-  return result.recordsets[0];
-}
-  
+  async createUser(user) {
+    await this.connect();
+    const request = this.poolconnection.request()
+      .input('name', sql.NVarChar, user.fullName)
+      .input('password', sql.NVarChar, user.password)
+      .input('email', sql.NVarChar, user.email)
+      .input('age', sql.Int, user.age)
+      .input('weight', sql.Int, user.weight)
+      .input('gender', sql.NVarChar, user.gender)
+    const result = await request.query(`INSERT INTO NutriDB.users (name, password, email, age, weight, gender) VALUES (@name, @password, @email, @age, @weight, @gender)`);
+    return result.recordsets[0];
+  }
+
   // bruges til at lave hvad som helst
   async executeQuery(query) {
     await this.connect();
@@ -63,8 +63,17 @@ async createUser(user){
     await this.connect();
     const request = this.poolconnection.request();
     const result = await request.query(`SELECT * FROM ` + tableName);
-    console.log(result.recordsets);
+    // console.log(result.recordsets);
     return result.recordsets[0];
+  }
+
+  async getUserByMail(email) {
+    await this.connect();
+    const request = this.poolconnection.request();
+    const result = await request
+    .input('email', sql.NVarChar,email)
+    .query(`SELECT * FROM NutriDB.users WHERE email = @email`)
+    return result.recordset[0];
   }
 
   async readIdFromTable(id, tableName) {
@@ -104,10 +113,10 @@ async createUser(user){
     const result = await request
       .input('id', sql.Int, idAsNumber)
       .query(`DELETE FROM Person WHERE id = @id`);
-      //indsæt mere
+    //indsæt mere
 
     return result.rowsAffected[0];
   }
 
-  
+
 }

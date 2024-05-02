@@ -1,11 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <h1>This is the login page</h1>
+    <header>
+        <div class="logo-container">
+            <!-- Tekst logo -->
+            <span class="logo-text">NutriTracker</span>
+            <!-- Billede logo -->
+            <img src="./nutriTracker.png" alt="NutriTracker Logo" class="Logo" />
+        </div>
+    </header>
+    <div class="login-form">
+        <!-- Luk-knap til at navigere tilbage til startsiden -->
+        <button class="close-button" onclick="window.location.href='/'">✖</button>
+        <h1>Login</h1>
+        <!-- Formularen for brugerregistrering -->
+        <form id="userForm" action="/api/login" method="post" target="_self">
+
+
+            <!-- Gruppe for email -->
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <!-- Gruppe for password -->
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <!-- Indsendelsesknap -->
+            <button type="submit" class="btn-submit">Login</button>
+        </form>
+    </div>
+
+    <h3 class="text-btn" onclick="window.location.href='/register';">Register User</h3>
+
+    <script>
+        if (new URLSearchParams(window.location.search).has('error')) {
+            alert('Bruger eksisterer allerede, gå til login');
+        }
+    </script>
 </body>
+
 </html>

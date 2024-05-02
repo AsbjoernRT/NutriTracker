@@ -86,20 +86,12 @@
 
         <script type="module" src="Activity.js"></script>
     <script  src="/basicMetabolisme.js"></script>
-    <script>
-        fetch('partials/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('headerContainer').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading the header:', error));
-    </script>
 
 
     <div id="footerContainer"></div> <!-- Container for the footer -->
     <!-- JavaScript to load header -->
     <script type="module" src="/date.helper.js"></script>
-    <script type="module" src="/footer.helper.js"></script>
+    <script src="/partials.helper.js"></script>
     <script type="module" src="/sidebar.js"></script>
 </body>
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Sæt viewport for at sikre korrekt skalering på alle enheder -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,17 +29,17 @@
         <button class="close-button" onclick="window.location.href='/'">✖</button>
         <h1>Register User</h1>
         <!-- Formularen for brugerregistrering -->
-        <form id="userForm">
+        <form id="userForm" action="/api/register" method="post" target="_self">
             <!-- Gruppe for brugernavn -->
             <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" required>
             </div>
 
             <!-- Gruppe for fødselsår -->
             <div class="form-group">
-                <label for="birthyear">Year of Birth:</label>
-                <input type="number" id="birthyear" name="birthyear" required>
+                <label for="age">Your Age:</label>
+                <input type="number" id="age" name="age" required>
             </div>
 
             <!-- Gruppe for email -->
@@ -74,6 +75,10 @@
         </form>
     </div>
 
+    <div class="text-btn-container">
+        <h3 onclick="window.location.href='/login';" class="text-btn">Login</h3>
+    </div>
+    <!-- <script src="user.js"></script> -->
     <!-- Link til JavaScript-fil, der håndterer formularlogik -->
     <!-- <script type="module" src="register.functions.js"></script> -->
 </body>
