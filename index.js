@@ -28,14 +28,17 @@ const port = process.env.PORT || 3000;
 app.use(express.urlencoded({extended: true}));
 // Configure Express to serve static files from the 'assets' directory
 
+// Initialize database
 const database = new Database(config);
-console.log(database.connect());
+database.connect()
+    .then(() => console.log('Database connected successfully'))
+    .catch(e => console.error('Failed to connect to the database', e));
 
 // const user = require('./routes/user.route');
 
 app.use(express.static('assets'));
 // app.use(express.static('views'));
-// app.use(express.static('helper'));
+app.use(express.static('helper'));
 // app.use(express.static('functions'));
 
 // Use route modules
