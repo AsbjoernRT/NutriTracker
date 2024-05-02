@@ -78,6 +78,12 @@
     <div class="text-btn-container">
         <h3 onclick="window.location.href='/login';" class="text-btn">Login</h3>
     </div>
+
+    <script>
+        if (new URLSearchParams(window.location.search).has('error')) {
+            alert('User with that email ecxists - login instead');
+        };
+    </script>
     <!-- <script src="user.js"></script> -->
     <!-- Link til JavaScript-fil, der håndterer formularlogik -->
     <!-- <script type="module" src="register.functions.js"></script> -->
