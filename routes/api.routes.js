@@ -9,8 +9,8 @@ router.post('/register', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-    login(req.body, res)
-    // console.log("Register:",req.body);
-})
+        login(req, res);
+        // console.log("Register:",req.body);
+    })
 
 export default router
