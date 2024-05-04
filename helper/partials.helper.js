@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     // Function to load content into a specified container from a URL
     function loadContent(url, containerId) {
         const container = document.getElementById(containerId);
@@ -14,6 +14,9 @@ document.addEventListener("DOMContentLoaded", function() {
     loadContent('/footer', 'footerContainer');
     loadContent('/header', 'headerContainer');
 });
+
+
+
 
 
 // document.addEventListener("DOMContentLoaded", function () {

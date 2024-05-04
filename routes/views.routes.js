@@ -1,6 +1,6 @@
 import express from 'express';
 import { renderLogin } from '../controller/login.js';  // Adjust the path as necessary
-
+import { authenticator } from '../controller/login.js';
 
 // import path from 'path';
 
@@ -9,31 +9,31 @@ const router = express.Router();
 
 // Then use it directly in your router setup
 router.get('/login', renderLogin);
-router.get('/', renderLogin);
+// router.get('/', renderLogin);
 
 
 // Define route handlers for serving HTML files
-// router.get('/', (req, res) => {
-//     res.sendFile('homepage.html', { root: './views' });
-// });
+router.get('/', authenticator, (req, res) => {
+    res.sendFile('homepage.html', { root: './views' });
+});
 
-router.get('/dashboard', (req, res) => {
+router.get('/dashboard', authenticator, (req, res) => {
     res.sendFile('dashboard.html', { root: './views' });
 });
 
-router.get('/mealCreator', (req, res) => {
+router.get('/mealCreator', authenticator, (req, res) => {
     res.sendFile('mealCreator.html', { root: './views' });
 });
 
-router.get('/mealTracker', (req, res) => {
+router.get('/mealTracker', authenticator, (req, res) => {
     res.sendFile('mealTracker.html', { root: './views' });
 });
 
-router.get('/dailyNutri', (req, res) => {
+router.get('/dailyNutri', authenticator, (req, res) => {
     res.sendFile('dailyNutri.html', { root: './views' });
 });
 
-router.get('/activityTracker', (req, res) => {
+router.get('/activityTracker',authenticator, (req, res) => {
     res.sendFile('activityTracker.html', { root: './views' });
 });
 

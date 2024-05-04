@@ -18,24 +18,22 @@
     </header>
 
     <div class="navigation-container">
-        <h1 class="navigation-header">Welcome back to NutriTracker</h1>
+        <h1 class="navigation-header">Welcome back <span id="userName"></span> to NutriTracker</h1>
         <div id="dateDisplay"></div>
         <h3 class="navigation-header">Navigate to</h3>
 
         <div class="center-navigation">
             <button onclick="window.location.href='/dashboard';" class="nav-btn btn-green">Dashboard</button>
-            <button onclick="window.location.href='/mealCreator';"
-                class="nav-btn btn-green">Meal Creator</button>
-            <button onclick="window.location.href='/mealTracker';"
-                class="nav-btn btn-green">Meal Tracker</button>
-            <button onclick="window.location.href='/DailyNutri';"
-                class="nav-btn btn-green">Daily Nutri</button>
-            <button onclick="window.location.href='/activityTracker';"
-                class="nav-btn btn-green">Activity Tracker</button>
+            <button onclick="window.location.href='/mealCreator';" class="nav-btn btn-green">Meal Creator</button>
+            <button onclick="window.location.href='/mealTracker';" class="nav-btn btn-green">Meal Tracker</button>
+            <button onclick="window.location.href='/DailyNutri';" class="nav-btn btn-green">Daily Nutri</button>
+            <button onclick="window.location.href='/activityTracker';" class="nav-btn btn-green">Activity
+                Tracker</button>
         </div>
     </div>
     <div id="footerContainer"></div> <!-- Container for the footer -->
     <script type="module" src="/date.helper.js"></script>
+    <script src="/user.js"></script>
     <script type="module" src="/alert.helper.js"></script>
 </body>
 

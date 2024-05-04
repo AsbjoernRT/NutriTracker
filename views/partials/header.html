@@ -17,16 +17,23 @@
         </nav>
     </div>
     <!-- Profile Section -->
-    <div class="profile-container" onclick= "toggleSidebar()">
+    <div class="profile-container" onclick= "toggleSidebar(),showNameSidebar()">
         <img src="/profile.png" alt="Profile Picture" class="profile-pic">
         <span class="profile-name">Profile</span>
     </div>
     <!-- Sliding Sidebar for Profile Details -->
     <div id="profileSidebar" class="profile-sidebar">
         <img src="/profile.png" alt="Profile Picture" class="sidebar-profile-pic">
-        <div class="sidebar-username">Gruppe 30s profil</div>
+        <div class="sidebar-username" id="userName">Profile name</div>
         <a href="/settings">Settings</a>
+        <!-- <button onclick="logout()">Logout</button> -->
+        <form id="logoutForm" action="/logout" method="POST" target="_self">
+            <input type="hidden" name="csrf_token" value="your_csrf_token_here"> <!-- Optional: CSRF token -->
+            <button type="submit" class="btn-submit">Logout</button>
+        </form>
     </div>
 
     <script src="/sidebar.js"></script>
+    <script src="/user.js"></script>
+
 </header>

@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     getDate()
-
+  
     var dateElement = document.getElementById("dateDisplay");
     console.log(dateElement);
     // If the element exists, call 'showDate()'

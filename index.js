@@ -36,10 +36,11 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
     cookie: {
-        secure: true,  // Set to true in production
+        secure: false,  // Set to true in production
         httpOnly: true,
         maxAge: 7 * 24 * 60 * 60 * 1000  // 7 days in milliseconds
-    }
+    },
+    name: 'NutriTracker.sid'
 }));
 
 // Initialize database
@@ -53,24 +54,42 @@ database.connect()
 app.use(express.static('assets'));
 // app.use(express.static('views'));
 app.use(express.static('helper'));
-// app.use(express.static('functions'));
-
-// Use route modules
-
-
-// Serve files from the 'functions' directory with the correct MIME type
-// app.use('/functions', express.static(path.join(currentDirectory, 'functions')));
-
-// Serve static files from the 'helper' directory
-// app.use(express.static(path.join(currentDirectory, 'helper')));
 
 
 // Use route modules
-// app.use('/user', userRoutes);
 app.use('/', viewsRoutes);
 app.use('/api', apiRoutes)
 // app.use('/helper', helperRoutes);
 // app.use('/functions', functionsRoutes);
+
+// / Define the POST route for logout
+app.post('/logout', (req, res) => {
+    if (req.session) {
+        req.session.destroy(err => {
+            if (err) {
+                res.status(500).send('Failed to log out');
+            } else {
+                res.clearCookie('connect.sid'); // Ensure you have the correct session cookie name
+                res.redirect('/login'); // Redirect to home page or login page
+            }
+        });
+    } else {
+        res.end('No session to log out');
+    }
+});
+
+app.get('/api/userinfo', (req, res) => {
+  if (req.session.user && req.session.loggedin) {
+      // getting the user info from session.
+      res.json({ name: req.session.user.name });
+      console.log(req.session.user.name);
+  } else {
+    //error response.
+      res.status(401).json({ error: 'Unauthorized' }); // User not logged in
+  }
+});
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

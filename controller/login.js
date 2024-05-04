@@ -2,14 +2,25 @@ import index from '../index.js'
 import bcrypt from 'bcryptjs'
 
 export const renderLogin = async (req, res) => {
-    console.log(req.session);
+    console.log("Session details: ", req.session && req.session.loggedin);
     if (req.session.loggedin) {
         // res.redirect('/');
         console.log("login Succes");
-        res.redirect('./');
+        res.redirect('../');
     } else {
         console.log("not logged in")
         res.sendFile('login.html', { root: './views' })
+    }
+}
+
+// Middleware to ensure the user is authenticated
+export function authenticator(req, res, next) {
+    if (!req.session || !req.session.loggedin) {
+        // Redirect to login page if not logged in
+        res.redirect('/login');
+    } else {
+        // Proceed to the next middleware or route handler if logged in
+        next();
     }
 }
 
@@ -53,5 +64,11 @@ export const login = async (req, res) => {
         }
 
     }
+};
+
+export const logout=(req,res)=>{
+    req.session.destroy();
+    res.redirect('../login');
+    
 };
 

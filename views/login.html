@@ -42,16 +42,8 @@
     </div>
 <div class="text-btn-container">
     <h3 onclick="window.location.href='/register';" class="text-btn">Register User</h3>
+    <script type="module" src="/alert.helper.js"></script>
 </div>
-    <script>
-        if (new URLSearchParams(window.location.search).has('usernotfound')) {
-            alert('No user wiht that email');
-        };
-        
-        if (new URLSearchParams(window.location.search).has('wrongpassword')) {
-            alert('Wrong password');
-        };
-    </script>
 </body>
 
 </html>
