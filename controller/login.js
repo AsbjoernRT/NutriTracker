@@ -48,7 +48,7 @@ export const login = async (req, res) => {
             res.redirect('../?login=success')
         } else {
             console.log("Wrong password");
-            const email = body.email; // Assuming you have access to the email entered by the user
+            const email = req.body.email; // Assuming you have access to the email entered by the user
             res.redirect(`/login?wrongpassword&email=${encodeURIComponent(email)}`);
         }
 
