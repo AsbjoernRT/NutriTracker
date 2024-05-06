@@ -50,6 +50,70 @@ export default class Database {
     return result.recordsets[0];
   }
 
+  // Søgning af ingredienser (lav input felt og tilddel det variablen searchTerm)
+  async searchIngredients(searchTerm) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request
+        .input('searchTerm', sql.NVarChar, `%${searchTerm}%`)
+        .query(`SELECT * FROM NutriDB.ingredients WHERE foodName LIKE @searchTerm`);
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved søgning efter ingredienser:', error);
+      throw error;
+    }
+  }
+  
+
+  // Finder informationer om ét måltid som en unik bruger har oprettet via userID og mealID
+  async getMealIngredients(userID, mealID) {
+    try {
+      await sql.connect(config);
+  
+      const result = await sql.query`
+        SELECT MI.*, M.*, I.*
+        FROM NutriDB.mealIngredients AS MI
+        JOIN NutriDB.meal AS M ON MI.mealID = M.mealID
+        JOIN NutriDB.ingredient AS I ON MI.IngredientID = I.ingredientID
+        WHERE M.userID = ${userID} AND M.mealID = ${mealID}
+      `;
+  
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved hentning af måltidsingredienser:', error);
+      throw error;
+    } finally {
+      sql.close();
+    }}
+
+// Finder alle oprettede måltider på baggrund af et userID
+    async getAllUserMeals(userID) {
+      try {
+        await sql.connect(config);
+    
+        const result = await sql.query`
+          SELECT M.*, MI.*, I.*
+          FROM NutriDB.meal AS M
+          JOIN NutriDB.mealIngredients AS MI ON M.mealID = MI.mealID
+          JOIN NutriDB.ingredient AS I ON MI.IngredientID = I.ingredientID
+          WHERE M.userID = ${userID}
+        `;
+    
+        return result.recordset;
+      } catch (error) {
+        console.error('Fejl ved hentning af brugerens måltider:', error);
+        throw error;
+      } finally {
+        sql.close();
+      }
+    }
+
+
+
+
+
+
   // bruges til at lave hvad som helst
   async executeQuery(query) {
     await this.connect();
@@ -96,6 +160,10 @@ export default class Database {
 
     return result.recordset[0];
   }
+
+
+  
+
 
   // async update(id, data) {
   //   await this.connect();
