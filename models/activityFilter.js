@@ -1,5 +1,4 @@
 
-
 // activities.js
 const activities = [
     { name: "Almindelig gang", calories: 215 },
@@ -43,3 +42,31 @@ const activities = [
     { name: "Murerarbejde", calories: 207 },
     { name: "Hugge og slæbe på brænde", calories: 1168 }
 ];
+
+function filterActivities() {
+    const input = document.getElementById('activity-search').value.toLowerCase();
+    const filteredActivities = activities.filter(activity => 
+        activity.name.toLowerCase().includes(input)
+    );
+
+    const activityList = document.getElementById('activity-list');
+    activityList.innerHTML = '';
+
+    filteredActivities.slice(0, 5).forEach(activity => {
+        const li = document.createElement('li');
+        li.textContent = `${activity.name} (${activity.calories} kcal/time)`;
+        li.onclick = function() { selectActivity(activity.name, activity.calories); };
+        activityList.appendChild(li);
+    });
+}
+
+
+function selectActivity(name, calories) {
+    document.getElementById('activity-search').value = ''; // Ryd søgefeltet
+    document.getElementById('activity-list').innerHTML = ''; // Ryd listen
+
+    // Vis den valgte aktivitet og gem kalorierne
+    document.getElementById('activity-display').textContent = `${name} (${calories} kcal/time)`;
+    document.getElementById('selected-activity-kcal').value = calories; // Antager du har dette hidden input
+}
+

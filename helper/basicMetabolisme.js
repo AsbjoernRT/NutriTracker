@@ -1,4 +1,4 @@
-function calculateBasalMetabolism(age, gender, weight, height) {
+function calculateBasalMetabolism(age, gender, weight) {
     let basalMetabolism = 0;
 
     // Beregn basalstofskiftet baseret på alder, køn, vægt og højde
@@ -43,25 +43,27 @@ function calculateBasalMetabolism(age, gender, weight, height) {
 
 // Dette er et eksempel, vi skal kunne hente dette ned dynamisk og herefter tilføje Kcal til brugerens forbrænding.
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
-let age = 30;
-let gender = 'male';
-let weight = 75; // Brugerens vægt
-let height = 180; // Brugerens højde (kan være valgfrit, afhængigt af beregningsformlerne)
+    let age = 30;
+    let gender = 'male';
+    let weight = 75; // Brugerens vægt
 
-// Beregn basal metabolisme
-let basalMetabolism = calculateBasalMetabolism(age, gender, weight, height);
-console.log("Basal metabolism:", basalMetabolism + " Kcal");
+    // Beregn basal metabolisme
+    fetch('/calculateBMR', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ age, gender, weight })
+    })
+        .then(response => response.json())
+        .then(data => {
+            const basalMetabolism = data.basalMetabolism;
+            console.log("Basal metabolism:", basalMetabolism + " Kcal");
+            document.getElementById('calories-info').textContent = `${basalMetabolism} kcal forbrændt grundlæggende`;
 
-// Hvis stofskifteData allerede er defineret, skal du opdatere det, ellers initialisere det som et tomt objekt
-let stofskifteData = JSON.parse(localStorage.getItem('stofskifteData')) || {};
-
-// Tilføj basal metabolisme til stofskifteData
-stofskifteData.basalMetabolism = basalMetabolism;
-
-// Gem opdaterede stofskifteData i lokal lagring
-localStorage.setItem('stofskifteData', JSON.stringify(stofskifteData));
-
-
+            // Her kan du tilføje yderligere logik for at kombinere dette med kalorier forbrændt fra aktiviteter
+        })
+        .catch(error => console.error('Error:', error));
 });
