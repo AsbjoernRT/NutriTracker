@@ -8,8 +8,7 @@
     <title>activity Tracker</title>
     <link rel="stylesheet" href="style.css">
     <script src="/user.js"></script>
-    <!-- <script src="/models/activityFilter.js"></script> -->
-    <script src="/helper/basicMetabolisme.js"></script>
+    <script src="../models/activityFilter.js"></script>
 
 </head>
 
@@ -20,7 +19,7 @@
         <form id="userForm">
             <div class="form-group">
                 <label for="activity-search">Søg aktivitet:</label>
-                <input type="text" id="activity-search" oninput="filterActivities()" placeholder="Indtast aktivitet">
+                <input type="text" id="activity-search" placeholder="Indtast aktivitet">
                 <ul id="activity-list" class="activity-options"></ul>
                 <div class="form-group">
                     <label>Varighed:</label>
@@ -29,11 +28,11 @@
                 </div>
                 <input type="hidden" id="selected-activity-kcal" name="kcal">
                 <div id="selected-activity">
-                <p id="activity-display"></p>
-            </div>
+                    <p id="activity-display"></p>
+                </div>
             </div>
     </div>
-    
+
     <button type="submit" class="btn-submit" onclick="calculateCalories();">Beregn Forbrænding og
         Basalstofskift</button>
     </form>

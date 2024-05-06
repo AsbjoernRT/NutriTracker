@@ -19,7 +19,7 @@ import Database from './database/database.js';
 // import userRoutes from './routes/user.route.js';
 // import { getUser } from './routes/user.route.js';
 
-
+app.use(express.json());
 
 
 // const helperRoutes = require('./routes/helper.routes');
@@ -90,11 +90,6 @@ app.get('/api/userinfo', (req, res) => {
   }
 });
 
-app.post('/calculateBMR', (req, res) => {
-  const { age, gender, weight } = req.body;
-  const basalMetabolism = calculateBasalMetabolism(age, gender, weight);
-  res.json({ basalMetabolism });
-});
 
 
 
@@ -127,3 +122,4 @@ export default { connectedDatabase: database }
 //   res.locals.currentPage = req.path;
 //   next();
 // });
+
