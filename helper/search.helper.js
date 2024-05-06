@@ -93,17 +93,43 @@ function selectItem(item) { // Here we can select the items from our API pull, w
     document.getElementById('selectedItem').textContent = `Selected Item: ${item.foodName}`;
     document.getElementById('searchResults').innerHTML = '';
 
-    selectedItemData = {
+    return selectedItemData = {
         foodName: item.foodName,
-        foodID: item.foodID,
+        ingredientID: item.ingredientID,
+        energyKj: item.energyKj,
+        protein: item.protein,
+        fat: item.fat,
+        fiber: item.fiber,
+        energyKcal: item.energyKcal,
+        water: item.water,
+        dryMatter: item.dryMatter,
         weight: null
     };
 }
 
 // Registrerer vi "addIngredient" klik
-document.getElementById('addIngredient').addEventListener('click', function(){
+document.getElementById('addIngredient').addEventListener('click', function() {
+    // Retrieve the weight input from the user
     const weight = parseFloat(document.getElementById('itemWeight').value);
-    console.log(weight);
+
+    // Check if the weight is a valid number
+    if (isNaN(weight)) {
+        console.error('Invalid weight entered');
+        return;
+    }
+
+    // Calculate the macros based on the weight
+    selectedItemData.weight = weight;
+    selectedItemData.cEnergyKj = (selectedItemData.energyKj / 100) * weight;
+    selectedItemData.cProtein = (selectedItemData.protein / 100) * weight;
+    selectedItemData.cFat = (selectedItemData.fat / 100) * weight;
+    selectedItemData.cFiber = (selectedItemData.fiber / 100) * weight;
+    selectedItemData.cEnergyKcal = (selectedItemData.energyKcal / 100) * weight;
+    selectedItemData.cWater = (selectedItemData.water / 100) * weight;
+    selectedItemData.cDryMatter = (selectedItemData.dryMatter / 100) * weight;
+
+    // Display or use the calculated data
+    console.log('Updated selectedItemData with macros:', selectedItemData);
 });
 
 
