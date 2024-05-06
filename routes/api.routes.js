@@ -12,22 +12,3 @@ router.post('/login', (req, res) => {
     login(req, res);
     // console.log("Register:",req.body);
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
