@@ -1,5 +1,6 @@
 import index from '../index.js'
 import bcrypt from 'bcryptjs'
+import { calculateMetabolism } from '../controller/calculater.js'
 
 export const register = async (body, res) => {
     console.log("Req.body modtaget:", body);
@@ -14,13 +15,15 @@ export const register = async (body, res) => {
     console.log(DBemail);
 
     if (DBemail == undefined) {
+        const cMetabolism = calculateMetabolism(age, gender, weight)
         const user = {
             fullName,
             email,
             age,
             weight,
             gender,
-            password: hashedPassword
+            password: hashedPassword,
+            metabolism: cMetabolism
         }
         index.connectedDatabase.createUser(user)
         console.log("Create User");
