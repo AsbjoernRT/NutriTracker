@@ -129,6 +129,7 @@ document.getElementById('addIngredient').addEventListener('click', function() {
     selectedItemData.cDryMatter = (selectedItemData.dryMatter / 100) * weight;
 
     // Display or use the calculated data
+    localStorage.setItem('ingredients', JSON.stringify(selectedItemData));
     console.log('Updated selectedItemData with macros:', selectedItemData);
 });
 

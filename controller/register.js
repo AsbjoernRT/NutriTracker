@@ -26,7 +26,6 @@ export const register = async (body, res) => {
             metabolism: cMetabolism
         }
         index.connectedDatabase.createUser(user)
-        console.log("Create User");
         // Redirect user to homepage with a query parameter indicating successful registration
         res.redirect('/?registration=success');
     } else {

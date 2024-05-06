@@ -46,7 +46,8 @@ export default class Database {
       .input('age', sql.Int, user.age)
       .input('weight', sql.Int, user.weight)
       .input('gender', sql.NVarChar, user.gender)
-    const result = await request.query(`INSERT INTO NutriDB.users (name, password, email, age, weight, gender) VALUES (@name, @password, @email, @age, @weight, @gender)`);
+      .input('metabolism', sql.Int, user.metabolism)
+    const result = await request.query(`INSERT INTO NutriDB.users (name, password, email, age, weight, gender, metabolism) VALUES (@name, @password, @email, @age, @weight, @gender, @metabolism)`);
     return result.recordsets[0];
   }
 
