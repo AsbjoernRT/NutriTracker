@@ -13,30 +13,6 @@ router.post('/login', (req, res) => {
     // console.log("Register:",req.body);
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import { calculateCalories } from '../controller/calculator.js';
 router.post('/calculateCalories', (req, res) => {
   
@@ -47,3 +23,4 @@ router.post('/calculateCalories', (req, res) => {
         res.json({ caloriesBurned: caloriesBurned.toFixed(2) });
     }
   });
+
