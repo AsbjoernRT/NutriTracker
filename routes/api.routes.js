@@ -1,8 +1,6 @@
 import express from 'express';
 import { register } from '../controller/register.js'
 import { login } from '../controller/login.js';
-import { calculateCalories } from '../controller/calculator.js';
-import { calculateBasalMetabolism } from '../controller/calculator.js';
 const router = express.Router();
 
 router.post('/register', (req, res) => {
@@ -39,7 +37,7 @@ router.post('/login', (req, res) => {
 
 
 
-
+import { calculateCalories } from '../controller/calculator.js';
 router.post('/calculateCalories', (req, res) => {
   
     if (duration <= 0 || isNaN(caloriesBurned)) {
@@ -49,12 +47,3 @@ router.post('/calculateCalories', (req, res) => {
         res.json({ caloriesBurned: caloriesBurned.toFixed(2) });
     }
   });
-
-
-router.post('/calculateBMR', (req, res) => {
-    const { age, gender, weight } = req.body;
-    const basalMetabolism = calculateBasalMetabolism(age, gender, weight);
-    res.json({ basalMetabolism: basalMetabolism.toFixed(2) });
-  });
-
-  export default router
