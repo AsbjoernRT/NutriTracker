@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="style.css">
     <script src="/user.js"></script>
     <!-- <script src="/models/activityFilter.js"></script> -->
-    <script src="/helper/basicMetabolisme.js"></script>
+    <script src="/search.helper.js"></script>
+    <script src="/activities.js"></script>
 
 </head>
 
@@ -19,9 +20,10 @@
         <h1>Aktivitets Tracker</h1>
         <form id="userForm">
             <div class="form-group">
-                <label for="activity-search">Søg aktivitet:</label>
-                <input type="text" id="activity-search" oninput="filterActivities()" placeholder="Indtast aktivitet">
-                <ul id="activity-list" class="activity-options"></ul>
+                <label for="activitys">Søg aktivitet:</label>
+                <input type="text" id="activity-search" placeholder="Indtast aktivitet">
+                <div id="searchResult"></div>
+                <!-- <ul id="activity-list" class="activity-options"></ul> -->
                 <div class="form-group">
                     <label>Varighed:</label>
                     <input type="number" id="hours" name="hours" min="0" step="1" pattern="[0-9]*" placeholder="Timer">
@@ -47,8 +49,7 @@
         </button></div>
 
 
-    <script type="module" src="Activity.js"></script>
-    <script src="/basicMetabolisme.js"></script>
+    <!-- <script type="module" src="Activity.js"></script> -->
 
 
     <div id="footerContainer"></div> <!-- Container for the footer -->

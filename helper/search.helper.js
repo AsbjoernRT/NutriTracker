@@ -1,15 +1,133 @@
 let debounceTimerId;
-document.getElementById('searchInput').addEventListener('input', function (event) {
-    clearTimeout(debounceTimerId);
-    debounceTimerId = setTimeout(async () => {
-        const searchTerm = event.target.value.trim();
-        if (searchTerm.length > 1) {
-            await index.connectedDatabase.searchFoodItems(searchTerm);
-        } else {
-            document.getElementById('searchResults').innerHTML = '';
-        }
-    }, 400);
+
+//Activities Search
+
+// document.addEventListener('DOMContentLoaded', function () {
+//     var inputElement = document.getElementById('activity-search');
+//     var resultsDiv = document.getElementById('searchResult');
+//     var debounceTimerId;
+
+//     inputElement.addEventListener('input', function () {
+//         clearTimeout(debounceTimerId);
+//         debounceTimerId = setTimeout(() => {
+//             var searchTerm = inputElement.value;
+//             if (searchTerm.length > 1) {
+//                 var filteredActivities = searchActivities(searchTerm);
+//                 displayResults(filteredActivities);
+//             } else {
+//                 resultsDiv.innerHTML = ''; // Clear results if input is too short
+//             }
+//         }, 400);
+//     });
+// });
+
+// function searchActivities(searchTerm) {
+//     return activities.filter(activity => activity.name.toLowerCase().includes(searchTerm.toLowerCase()));
+// }
+
+// function displayResults(filteredActivities) {
+//     var resultsDiv = document.getElementById('searchResult');
+//     resultsDiv.innerHTML = ''; // Clear previous results
+//     filteredActivities.forEach(activity => {
+//         var div = document.createElement('div');
+//         div.textContent = `${activity.name} - ${activity.calories} calories`;
+//         resultsDiv.appendChild(div);
+//     });
+// }
+
+
+
+
+
+// function selectActivity(name, calories) {
+//     document.getElementById('activity-search').value = ''; // Ryd søgefeltet
+//     document.getElementById('activity-list').innerHTML = ''; // Ryd listen
+
+//     // Vis den valgte aktivitet og gem kalorierne
+//     document.getElementById('activity-display').textContent = `${name} (${calories} kcal/time)`;
+//     document.getElementById('selected-activity-kcal').value = calories; // Antager du har dette hidden input
+// }
+
+
+
+// //Food Search
+document.addEventListener('DOMContentLoaded', function () {
+    var inputElement = document.getElementById('searchInput');
+    var resultsDiv = document.getElementById('searchResults');
+    var debounceTimerId;
+
+    inputElement.addEventListener('input', function () {
+        clearTimeout(debounceTimerId);
+        debounceTimerId = setTimeout(() => {
+            var searchTerm = inputElement.value;
+            if (searchTerm.length > 1) {
+                fetch("/api/ingredient_search?searchTerm=" + searchTerm)
+                    .then(res => res.json())
+                    .then((res) => {
+                        console.log(res);
+                        displayResults(res)
+                    });
+            } else {
+                resultsDiv.innerHTML = ''; // Clear results if input is too short
+            }
+        }, 200);
+    });
 });
+
+
+function displayResults(items) {
+    const resultsContainer = document.getElementById('searchResults');
+    resultsContainer.innerHTML = '';
+
+    items.forEach(item => {
+        const resultItem = document.createElement('div');
+        resultItem.classList.add('result-item');
+        resultItem.textContent = item.foodName;
+        resultItem.onclick = function () { selectItem(item); };
+        resultsContainer.appendChild(resultItem);
+    });
+}
+
+function selectItem(item) { // Here we can select the items from our API pull, which we are displaying in our html file. 
+    document.getElementById('searchInput').value = item.foodName;
+    document.getElementById('selectedItem').textContent = `Selected Item: ${item.foodName}`;
+    document.getElementById('searchResults').innerHTML = '';
+
+    selectedItemData = {
+        foodName: item.foodName,
+        foodID: item.foodID,
+        weight: null
+    };
+}
+
+// Registrerer vi "addIngredient" klik
+document.getElementById('addIngredient').addEventListener('click', function(){
+    const weight = parseFloat(document.getElementById('itemWeight').value);
+    console.log(weight);
+});
+
+
+
+// function selectItem(item) {
+//     console.log('Selected:', item);
+//     
+// }
+
+
+
+
+
+// document.getElementById('searchInput').addEventListener('input', function (event) {
+//     clearTimeout(debounceTimerId);
+//     debounceTimerId = setTimeout(async () => {
+//         const searchTerm = event.target.value.trim();
+//         if (searchTerm.length > 1) {
+//             await index.connectedDatabase.searchFoodItems(searchTerm);
+//         } else {
+//             document.getElementById('searchResults').innerHTML = '';
+//         }
+//     }, 400);
+// });
 
 // async function index.connectedDatabase.searchFoodItems(searchTerm) {
 //     try {
@@ -22,20 +140,4 @@ document.getElementById('searchInput').addEventListener('input', function (event
 //     }
 // }
 
-// function displayResults(items) {
-//     const resultsContainer = document.getElementById('searchResults');
-//     resultsContainer.innerHTML = '';
-    
-//     items.forEach(item => {
-//         const resultItem = document.createElement('div');
-//         resultItem.classList.add('result-item');
-//         resultItem.textContent = item.foodName;
-//         resultItem.onclick = function () { selectItem(item); };
-//         resultsContainer.appendChild(resultItem);
-//     });
-// }
 
-// function selectItem(item) {
-//     console.log('Selected:', item);
-//     // Implement additional logic to handle selected item
-// }

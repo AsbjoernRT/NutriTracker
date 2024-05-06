@@ -27,7 +27,7 @@
                 <button id="add-recipe-btn" type="btn" class="btn-plus btn-green" aria-label="Add new recipe">+</button>
             </div>
         </section>
-        
+
         <!-- List of meals -->
         <section aria-labelledby="mealsHeader">
             <!-- <header>
@@ -53,7 +53,7 @@
     <modal id="modal-wrapper" class="hide">
         <div id="modal-content-wrapper">
             <div id="close-create-btn" class="modal-close-wrapper">
-                <button type="button" class="modal-close-button">X</button>
+                <button type="button" class="modal-close-btn">X</button>
             </div>
 
             <div id="modal-content">
@@ -80,7 +80,7 @@
                     <p id="selectedItem">Selected Item: None</p>
                     <p>Weight in grams:</p>
                     <input type="number" id="itemWeight" placeholder="Weight (g)" value="1">
-                    <button id="calculateButton">Add ingredient</button>
+                    <button id="addIngredient">Add ingredient</button>
                 </div>
 
                 <div id="selectedIngredientsList">
@@ -88,7 +88,7 @@
                 </div>
                 <div id="recipeButtonContainer">
                     <button id="addRecipe">Add Reciepe</button>
-                    <button id="editRecipe">Edit Recipe</button>
+                    <!-- <button id="editRecipe">Edit Recipe</button> -->
                 </div>
             </div>
         </div>
@@ -97,7 +97,7 @@
     <modal id="modal-wrapper" class="inspect-list hide">
         <div class="modal-content-wrapper">
             <div id="inspection-list-close-btn" class="modal-close-wrapper">
-                <button type="button" class="modal-close-button">X</button>
+                <button type="button" class="modal-close-btn">X</button>
             </div>
 
             <div id="modal-content">
@@ -112,14 +112,20 @@
             </div>
         </div>
     </modal>
-    
+
 
     <div id="footerContainer"></div> <!-- Container for the footer -->
     <!-- JavaScript to load header -->
+    <script>
+        
+    </script>
+
+
     <script src="/date.helper.js"></script>
     <script src="/partials.helper.js"></script>
     <script src="/modal.js"></script>
-    
+    <script src="/search.helper.js"></script>
+
 </body>
 
 </html>

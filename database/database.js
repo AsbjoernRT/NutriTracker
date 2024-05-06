@@ -57,7 +57,7 @@ export default class Database {
       const request = this.poolconnection.request();
       const result = await request
         .input('searchTerm', sql.NVarChar, `%${searchTerm}%`)
-        .query(`SELECT * FROM NutriDB.ingredients WHERE foodName LIKE @searchTerm`);
+        .query(`SELECT * FROM NutriDB.ingredient WHERE foodName LIKE @searchTerm`);
       return result.recordset;
     } catch (error) {
       console.error('Fejl ved søgning efter ingredienser:', error);

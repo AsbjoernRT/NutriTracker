@@ -328,8 +328,10 @@ thead th {
 
 .text-btn-container {
     display: flex;
-    align-items: center;  /* Vertical centering */
-    justify-content: center;  /* Horizontal centering */
+    align-items: center;
+    /* Vertical centering */
+    justify-content: center;
+    /* Horizontal centering */
 }
 
 
@@ -496,6 +498,85 @@ select {
     color: #ff3333;
 }
 
+.inspect-button,
+.delete-button,
+#addRecipe,
+#editRecipe,
+#ingredientButton,
+.edit-button,
+#addIngredient {
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+    /* Prevents the button from shrinking */
+}
+
+.inspect-button {
+    background-color: #569BD5;
+    color: white;
+    border: none;
+}
+
+.inspect-button:hover {
+    background-color: #467daa;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+}
+
+.delete-button:hover {
+    background-color: darkred;
+}
+
+#editRecipe,
+#addRecipe,
+#addIngredient {
+    background-color: #91c789;
+    color: white;
+    border: none;
+
+}
+
+#editRecipe.hide,
+#addRecipe.hide {
+    background-color: #91c789;
+    color: white;
+    border: none;
+
+}
+
+.edit-button {
+    background-color: #91c789;
+    color: white;
+    border: none;
+
+}
+
+.edit-button:hover {
+    background-color: #6c9565;
+}
+
+#editRecipe:hover,
+#addRecipe:hover,
+#addIngredient:hover {
+    background-color: #6c9565;
+}
+
+#addRecipe:disabled {
+    background-color: #354932;
+    cursor: default;
+}
+
+
+
+
+
+
 
 /* modal styling start*/
 #modal-wrapper {
@@ -539,6 +620,97 @@ select {
     border: 0px;
     cursor: pointer;
     font-size: 1.5rem;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    /* Include padding and border in the width */
+}
+
+#nameInput {
+    padding: 10px;
+    font-size: 10;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+
+.result-item {
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.result-item:hover {
+    background-color: #f0f0f0;
+}
+
+#itemWeight,
+#calculateButton {
+    margin-left: 10px;
+}
+
+#selectionArea {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    /* Ensure full width within container */
+    box-sizing: border-box;
+    /* Include padding and border in width */
+    margin-bottom: 10px;
+    /* Space below the selection area */
+}
+
+#selectedItem {
+    margin: 0;
+    /* Remove default margin */
+}
+
+#itemWeight {
+    width: 100px;
+    /* Adjust width as needed */
+}
+
+#mainContainer {
+    border: 2px solid #000;
+    padding: 20px;
+    position: relative;
+    max-width: 1200px;
+    /* Adjust as per your layout */
+    margin: auto;
+    box-sizing: border-box;
+}
+
+#recipeButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+#selectedIngredientsList {
+    margin-top: 20px;
+    /* Space above the list */
+}
+
+#ingredientList {
+    list-style-type: none;
+    padding-left: 0;
+    /* Remove default padding */
+    margin-top: 10px;
+    /* Space above the list */
+}
+
+#ingredientList li {
+    background-color: #f0f0f0;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 4px;
 }
 
 /* modal styling end. */
