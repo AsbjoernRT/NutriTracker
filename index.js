@@ -15,6 +15,7 @@ import apiRoutes from './routes/api.routes.js';
 
 import { config } from './config/config.js';
 import Database from './database/database.js';
+
 // import userRoutes from './routes/user.route.js';
 // import { getUser } from './routes/user.route.js';
 
@@ -87,6 +88,12 @@ app.get('/api/userinfo', (req, res) => {
     //error response.
       res.status(401).json({ error: 'Unauthorized' }); // User not logged in
   }
+});
+
+app.post('/calculateBMR', (req, res) => {
+  const { age, gender, weight } = req.body;
+  const basalMetabolism = calculateBasalMetabolism(age, gender, weight);
+  res.json({ basalMetabolism });
 });
 
 
