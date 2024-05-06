@@ -71,9 +71,18 @@ export default class Database {
     await this.connect();
     const request = this.poolconnection.request();
     const result = await request
-    .input('email', sql.NVarChar,email)
-    .query(`SELECT * FROM NutriDB.users WHERE email = @email`)
+      .input('email', sql.NVarChar, email)
+      .query(`SELECT * FROM NutriDB.users WHERE email = @email`)
     return result.recordset[0];
+  }
+
+  async searchFoodItems(searchTerm) {
+    await this.connect();
+    const request = this.poolConnection.request();
+    const result = await request
+      .input('searchTerm', sql.NVarChar, `%${searchTerm}%`)
+      .query(`SELECT * FROM NutriDB.food_items WHERE foodName LIKE @searchTerm`);
+    return result.recordset;
   }
 
   async readIdFromTable(id, tableName) {

@@ -495,6 +495,53 @@ select {
 }
 
 
+/* modal styling start*/
+#modal-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    background-color: #00000080;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    z-index: 1;
+}
+
+#modal-content-wrapper {
+    flex-direction: column;
+    display: flex;
+    margin-top: 2rem;
+    width: 80%;
+    height: fit-content;
+}
+
+#modal-content {
+    border-radius: 0.75rem;
+    padding: 1rem;
+    background-color: white;
+}
+
+#modal-wrapper.hide {
+    display: none;
+}
+
+.modal-close-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 0.5rem;
+}
+
+.modal-close-button {
+    background-color: transparent;
+    border: 0px;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+/* modal styling end. */
+
+
 
 
 

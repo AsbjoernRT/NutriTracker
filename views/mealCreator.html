@@ -49,12 +49,76 @@
             </table>
         </section>
     </main>
+
+    <modal id="modal-wrapper" class="hide">
+        <div id="modal-content-wrapper">
+            <div id="close-create-btn" class="modal-close-wrapper">
+                <button type="button" class="modal-close-button">X</button>
+            </div>
+
+            <div id="modal-content">
+                <h2>Create recipe</h2>
+                <input type="text" id="nameInput" placeholder="Name you recipe...">
+                <h3>Select meal type</h3>
+                <select id="typeSelect" name="options">
+                    <option value="" selected>Choose...</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Snack">Snack</option>
+                    <option value="Desert">Desert</option>
+                    <option value="Water">Water</option>
+                </select>
+                <h3>Did you buy or cook yourself?</h3>
+                <input type="text" id="sourceInput" placeholder="Write the source...">
+                <h3>Select ingredients</h3>
+                <input type="text" id="searchInput" placeholder="Search food items..." autocomplete="off">
+                <div id="searchResults"></div>
+                <!-- <p id="selectedItem">Selected Item: None</p> New element for displaying the chosen item -->
+
+                <div id="selectionArea"> <!-- Flex container -->
+                    <p id="selectedItem">Selected Item: None</p>
+                    <p>Weight in grams:</p>
+                    <input type="number" id="itemWeight" placeholder="Weight (g)" value="1">
+                    <button id="calculateButton">Add ingredient</button>
+                </div>
+
+                <div id="selectedIngredientsList">
+                    <ul id="ingredientList"></ul>
+                </div>
+                <div id="recipeButtonContainer">
+                    <button id="addRecipe">Add Reciepe</button>
+                    <button id="editRecipe">Edit Recipe</button>
+                </div>
+            </div>
+        </div>
+    </modal>
+
+    <modal id="modal-wrapper" class="inspect-list hide">
+        <div class="modal-content-wrapper">
+            <div id="inspection-list-close-btn" class="modal-close-wrapper">
+                <button type="button" class="modal-close-button">X</button>
+            </div>
+
+            <div id="modal-content">
+                <table>
+                    <thead id="mealInspectionListHead">
+                        <tr>
+                            <th>Meal Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mealInspectionListBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </modal>
     
 
     <div id="footerContainer"></div> <!-- Container for the footer -->
     <!-- JavaScript to load header -->
     <script src="/date.helper.js"></script>
     <script src="/partials.helper.js"></script>
+    <script src="/modal.js"></script>
     
 </body>
 
