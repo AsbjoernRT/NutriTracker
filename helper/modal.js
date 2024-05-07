@@ -18,6 +18,13 @@ function toggleModalVisibility() {
     }
 }
 
+function toggleModalVisibilitySettings() {
+    const modalWrapper = document.getElementById('modal-wrapper');
+    if (modalWrapper) {
+        modalWrapper.classList.toggle('hide');
+    }
+}
+
 document.getElementById('add-recipe-btn').addEventListener('click', function () {
     modalType = 'food';
     toggleModalVisibility();
@@ -28,5 +35,14 @@ document.getElementById('add-liquid-btn').addEventListener('click', function () 
     toggleModalVisibility();
 });
 
+document.getElementById('updateUserInSettings-Btn').addEventListener('click', function () {
+    modalType = 'Settings';
+    toggleModalVisibilitySettings();
+});
+
+
+
+
 //Close Modal
-document.getElementById('close-create-btn').addEventListener('click', toggleModalVisibility);
+// document.getElementById('close-create-btn').addEventListener('click', toggleModalVisibility);
+// document.getElementById('close-settings-btn').addEventListener('click', toggleModalVisibilitySettings);
