@@ -22,7 +22,7 @@
         <label>Age of profil</label>
         <div id="age">Age</div>
         <label>Weight of profil</label>
-        <div id="weight">Age</div>
+        <div id="weight">Weight</div>
         <label>Gender of profil</label>
         <div id="gender">Gender</div>
 
@@ -37,6 +37,7 @@
                         <button type="button" class="modal-close-btn" onclick=toggleModalVisibilitySettings()>X</button>
                     </div>
                     <h2>Change your profile here:</h2>
+                    
                     <form id="settingsForm" action="/api/settings/update" method="post" target="_self">
                         <label for="age">Age:</label>
                         <input type="number" id="age" name="age" required><br>
@@ -46,12 +47,13 @@
 
                         <label for="gender">Gender:</label>
                         <select id="gender" name="gender">
+
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                             <option value="other">Other</option>
-                        </select><br>
+                        </select><br> 
 
-                        <button type="submit" class="btn-submit" onclick=toggleModalVisibilitySettings()>Update</button>
+                        <button type="submit" class="btn-submit" onclick="toggleModalVisibilitySettings()">Update</button>
                     </form>
                 </div>
             </div>
