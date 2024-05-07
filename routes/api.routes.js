@@ -28,7 +28,7 @@ router.get('/ingredient_search', async (req, res) => {
 })
 
 router.post('/settings/update', (req, res) => {
-    updateUser(req)
+    updateUser(req) 
 });
 
 router.get('/userinfo', (req, res) => {
@@ -41,14 +41,11 @@ router.get('/userinfo', (req, res) => {
         weight: req.session.user.weight,
         gender: req.session.user.gender
         });
-      console.log(req.session.user.name);
-      console.log(req.session.user.age);
-      console.log(req.session.user.weight);
-      console.log(req.session.user.gender);
     } else {
       //error response.
       res.status(401).json({ error: 'Unauthorized' }); // User not logged in
     }
+    
   });
 
 export default router
