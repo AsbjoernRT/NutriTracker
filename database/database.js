@@ -65,7 +65,7 @@ export default class Database {
       throw error;
     }
   }
-  
+
 
   // Finder informationer om ét måltid som en unik bruger har oprettet via userID og mealID
   async getMealIngredients(userID, mealID) {
@@ -79,93 +79,94 @@ export default class Database {
         JOIN NutriDB.ingredient AS I ON MI.IngredientID = I.ingredientID
         WHERE M.userID = ${userID} AND M.mealID = ${mealID}
       `;
-  
+
       return result.recordset;
     } catch (error) {
       console.error('Fejl ved hentning af måltidsingredienser:', error);
       throw error;
     } finally {
       sql.close();
-    }}
+    }
+  }
 
-// Finder alle oprettede måltider på baggrund af et userID og samler tabellerne meal, mealingredient og ingredients for at få et overblik over måltiderne
-    async getAllUserMeals(userID) {
-      try {
-        await sql.connect(config);
-    
-        const result = await sql.query`
+  // Finder alle oprettede måltider på baggrund af et userID og samler tabellerne meal, mealingredient og ingredients for at få et overblik over måltiderne
+  async getAllUserMeals(userID) {
+    try {
+      await sql.connect(config);
+
+      const result = await sql.query`
           SELECT M.*, MI.*, I.*
           FROM NutriDB.meal AS M
           JOIN NutriDB.mealIngredients AS MI ON M.mealID = MI.mealID
           JOIN NutriDB.ingredient AS I ON MI.IngredientID = I.ingredientID
           WHERE M.userID = ${userID}
         `;
-    
-        return result.recordset;
-      } catch (error) {
-        console.error('Fejl ved hentning af brugerens måltider:', error);
-        throw error;
-      } finally {
-        sql.close();
-      }
+
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved hentning af brugerens måltider:', error);
+      throw error;
+    } finally {
+      sql.close();
     }
+  }
 
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 1: Indsætter et måltid via Meal Creator (Denne er todelt, da den først skal oprette måltidsnavnet og derefter ingredienser)
-async postIntoDbMeal(name, userID) {
-  try {
-    await sql.connect(config);
-    const result = await sql.query`
+  // 1: Indsætter et måltid via Meal Creator (Denne er todelt, da den først skal oprette måltidsnavnet og derefter ingredienser)
+  async postIntoDbMeal(name, userID) {
+    try {
+      await sql.connect(config);
+      const result = await sql.query`
     INSERT INTO [NutriDB].[meal] (name, userID)
     VALUES (${name}, ${userID})`;
 
-    return result.recordset;
-  } catch (error) {
-    console.error('Fejl ved indsætning af brugerens måltidsnavn i [NutriDB].[meal]:', error);
-    throw error;
-  } finally {
-    sql.close();
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved indsætning af brugerens måltidsnavn i [NutriDB].[meal]:', error);
+      throw error;
+    } finally {
+      sql.close();
+    }
   }
-}
 
-// 2: Indsætter de ingredienser et måltid består af (bemærk at ernæringsværdierne skal være udregnet før de lægges herind). 
-// mealID kommer fra [NutriDB].[meal] og fungerer som fremmednøgle her
-async postIntoDbMealIngredient(mealID, ingredientID, quantity, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDrymatter) {
-  try {
-    await sql.connect(config);
-    const result = await sql.query`
+  // 2: Indsætter de ingredienser et måltid består af (bemærk at ernæringsværdierne skal være udregnet før de lægges herind). 
+  // mealID kommer fra [NutriDB].[meal] og fungerer som fremmednøgle her
+  async postIntoDbMealIngredient(mealID, ingredientID, quantity, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDrymatter) {
+    try {
+      await sql.connect(config);
+      const result = await sql.query`
     INSERT INTO [NutriDB].[mealIngredient] (mealID, ingredientID, quantity, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDrymatter)
     VALUES (${mealID}, ${ingredientID}, ${quantity}, ${cEnergyKj}, ${cProtein}, ${cFat}, ${cFiber}, ${cEnergyKcal}, ${cWater}, ${cDrymatter})`;
-// Bemærk at denne kode kun vil indsætte én ingrediens. Måske kan man lave en løkke der kører funktionen indtil alle ingredienser er kørt igennem??? 
-    return result.recordset;
-  } catch (error) {
-    console.error('Fejl ved indsætning af brugerens ingredienser i [NutriDB].[mealIngredient]:', error);
-    throw error;
-  } finally {
-    sql.close();
+      // Bemærk at denne kode kun vil indsætte én ingrediens. Måske kan man lave en løkke der kører funktionen indtil alle ingredienser er kørt igennem??? 
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved indsætning af brugerens ingredienser i [NutriDB].[mealIngredient]:', error);
+      throw error;
+    } finally {
+      sql.close();
+    }
   }
-}
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Indsætning af måltid i mealtracker 
-async postIntoDbMealTracker(mealID, userID, date, quantity) {
-  try {
-    await sql.connect(config);
-    const result = await sql.query`
+  // Indsætning af måltid i mealtracker 
+  async postIntoDbMealTracker(mealID, userID, date, quantity) {
+    try {
+      await sql.connect(config);
+      const result = await sql.query`
     INSERT INTO [NutriDB].[mealTracker] (mealID, userID, date, quantity)
     VALUES (${mealID}, ${userID}, ${date}, ${quantity})`;
 
-    return result.recordset;
-  } catch (error) {
-    console.error('Fejl ved indsætning af brugerens måltid tracker i [NutriDB].[mealTracker]:', error);
-    throw error;
-  } finally {
-    sql.close();
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved indsætning af brugerens måltid tracker i [NutriDB].[mealTracker]:', error);
+      throw error;
+    } finally {
+      sql.close();
+    }
   }
-}
 
 
 
@@ -216,8 +217,29 @@ async postIntoDbMealTracker(mealID, userID, date, quantity) {
     return result.recordset[0];
   }
 
+  async updateUser(email, age, weight, gender, metabolism) {
+    await this.connect(); // Ensure there is a database connection
+    try {
+      // Use the existing connection
+      // Prepare SQL query with parameters for updating user details
+      const request = this.poolconnection.request()
+        .input('email', sql.NVarChar, email)
+        .input('age', sql.Int, age)
+        .input('weight', sql.Decimal, weight)
+        .input('gender', sql.NVarChar, gender)
+        .input('metabolism', sql.Int, metabolism)
+        const result = await request.query(`UPDATE NutriDB.users SET age = @age, weight = @weight, gender = @gender, metabolism = @metabolism WHERE email = @email`);
 
-  
+      if (result.rowsAffected[0] > 0) {
+        return { success: true, message: 'User updated successfully' };
+      } else {
+        return { success: false, message: 'No user found with the given email' };
+      }
+    } catch (err) {
+      console.error('Failed to update user:', err);
+      throw new Error('Database operation failed');
+    }}
+
 
 
   // async update(id, data) {
@@ -237,18 +259,18 @@ async postIntoDbMealTracker(mealID, userID, date, quantity) {
   // }
 
   async deleteWithId(id, tableName) {
-    await this.connect();
+      await this.connect();
 
-    const idAsNumber = Number(id);
+      const idAsNumber = Number(id);
 
-    const request = this.poolconnection.request();
-    const result = await request
-      .input('id', sql.Int, idAsNumber)
-      .query(`DELETE FROM Person WHERE id = @id`);
-    //indsæt mere
+      const request = this.poolconnection.request();
+      const result = await request
+        .input('id', sql.Int, idAsNumber)
+        .query(`DELETE FROM Person WHERE id = @id`);
+      //indsæt mere
 
-    return result.rowsAffected[0];
+      return result.rowsAffected[0];
+    }
+
+
   }
-
-
-}

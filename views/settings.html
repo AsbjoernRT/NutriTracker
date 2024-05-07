@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
     <link rel="stylesheet" href="/style.css">
+    <script src="/sidebar.js"></script>
     <!-- <base href="/"> -->
 
 </head>
@@ -14,13 +15,86 @@
 <body>
     <div id="headerContainer"></div> <!-- Container for the header -->
 
+    <section id="section">
+        <h1 id="settings">Settings</h1>
+        <label>Profile name</label>
+        <div class="sidebar-username" id="userName">Profile name</div>
+        <label>Age of profil</label>
+        <div id="age">Age</div>
+        <label>Weight of profil</label>
+        <div id="weight">Age</div>
+        <label>Gender of profil</label>
+        <div id="gender">Gender</div>
 
-    <div id="footerContainer"></div> <!-- Container for the footer -->
-    <!-- JavaScript to load header -->
+        <div id="updateSettingsContainer">
+            <button id="updateUserInSettings-Btn" class="btn-submit" onclick=toggleModalVisibilitySettings()> Update
+                user </button>
+        </div>
+        <modal id="modal-wrapper" class="hide">
+            <div id="modal-content-wrapper-for-settings">
+                <div id="modal-content">
+                    <div id="close-settings-btn" class="modal-close-wrapper">
+                        <button type="button" class="modal-close-btn" onclick=toggleModalVisibilitySettings()>X</button>
+                    </div>
+                    <h2>Change your profile here:</h2>
+                    <form id="settingsForm" action="/api/settings/update" method="post" target="_self">
+                        <label for="age">Age:</label>
+                        <input type="number" id="age" name="age" required><br>
+
+                        <label for="weight">Weight:</label>
+                        <input type="number" id="weight" name="weight" required><br>
+
+                        <label for="gender">Gender:</label>
+                        <select id="gender" name="gender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select><br>
+
+                        <button type="submit" class="btn-submit" onclick=toggleModalVisibilitySettings()>Update</button>
+                    </form>
+                </div>
+            </div>
+        </modal>
+
+        <div id="footerContainer"></div> <!-- Container for the footer -->
+        <!-- JavaScript to load header --
+
+  <script>
+                document.getElementById('settingsForm').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    // const age = document.getElementById('age').value;
+                    // const weight = document.getElementById('weight').value;
+                    // const gender = document.getElementById('gender').value;
+
+                   
+        
+                    fetch('api/settings/update', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ age, weight, gender })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert('Settings updated successfully!');
+                        console.log(data);
+                    })
+                    .catch(error => {
+                        console.error('Error updating settings:', error);
+                    });
+
+                 
+                });
+            </script> -->
+    </section>
+
+    <script src="/user.js"></script>
+    <script src="/modal.js"></script>
     <script type="module" src="/header.helper.js"></script>
     <script type="module" src="/date.helper.js"></script>
     <script type="module" src="/partials.helper.js"></script>
-    <script type="module" src="/sidebar.js"></script>
 </body>
 
 </html>

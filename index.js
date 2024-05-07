@@ -36,12 +36,12 @@ app.use(session({
   secret: 'keyboardcat',
   resave: false,
   saveUninitialized: false,
-    cookie: {
-        secure: false,  // Set to true in production
-        httpOnly: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000  // 7 days in milliseconds
-    },
-    name: 'NutriTracker.sid'
+  cookie: {
+    secure: false,  // Set to true in production
+    httpOnly: true,
+    maxAge: 7 * 24 * 60 * 60 * 1000  // 7 days in milliseconds
+  },
+  name: 'NutriTracker.sid'
 }));
 
 // Initialize database
@@ -65,30 +65,20 @@ app.use('/api', apiRoutes)
 
 // / Define the POST route for logout
 app.post('/logout', (req, res) => {
-    if (req.session) {
-        req.session.destroy(err => {
-            if (err) {
-                res.status(500).send('Failed to log out');
-            } else {
-                res.clearCookie('connect.sid'); // Ensure you have the correct session cookie name
-                res.redirect('/login'); // Redirect to home page or login page
-            }
-        });
-    } else {
-        res.end('No session to log out');
-    }
-});
-
-app.get('/api/userinfo', (req, res) => {
-  if (req.session.user && req.session.loggedin) {
-      // getting the user info from session.
-      res.json({ name: req.session.user.name });
-      console.log(req.session.user.name);
+  if (req.session) {
+    req.session.destroy(err => {
+      if (err) {
+        res.status(500).send('Failed to log out');
+      } else {
+        res.clearCookie('connect.sid'); // Ensure you have the correct session cookie name
+        res.redirect('/login'); // Redirect to home page or login page
+      }
+    });
   } else {
-    //error response.
-      res.status(401).json({ error: 'Unauthorized' }); // User not logged in
+    res.end('No session to log out');
   }
 });
+
 
 app.post('/calculateBMR', (req, res) => {
   const { age, gender, weight } = req.body;
@@ -109,21 +99,3 @@ app.use((err, req, res, next) => {
 
 
 export default { connectedDatabase: database }
-
-
-// const crypto = require('crypto');
-// const secretKey = crypto.randomBytes(32).toString('hex');
-// // Session middleware setup
-
-
-// Access the session as req.session
-// app.get('/', function(req, res, next) {
-// 	console.log(req.session)
-//   res.send('Hello World!')
-// })
-// // Middleware function to make user data accessible in views
-// app.use(function(req, res, next) {
-//   res.locals.user = req.session.user; // Assuming user data is stored in session
-//   res.locals.currentPage = req.path;
-//   next();
-// });

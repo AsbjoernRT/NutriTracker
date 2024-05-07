@@ -227,6 +227,20 @@ nav a {
     padding-bottom: 30px;
 }
 
+#settings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#section {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 /* Main HTML content: Tables */
 main {
     width: 100%;
@@ -605,6 +619,14 @@ select {
     background-color: white;
 }
 
+#modal-content-wrapper-for-settings {
+    flex-direction: column;
+    display: flex;
+    margin-top: 2rem;
+    width: 30%;
+    height: fit-content;
+}
+
 #modal-wrapper.hide {
     display: none;
 }
@@ -782,4 +804,23 @@ select {
 
 #activity-list li:hover {
     background-color: #ddd;
+}
+
+
+#updateSettingsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#age {
+    margin-bottom: 20px;
+}
+
+#weight {
+    margin-bottom: 20px;
+}
+
+#gender {
+    margin-bottom: 20px;
 }
