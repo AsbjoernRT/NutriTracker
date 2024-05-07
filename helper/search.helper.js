@@ -1,5 +1,8 @@
 let debounceTimerId;
 
+// let savedIngredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+
+
 //Activities Search
 
 // document.addEventListener('DOMContentLoaded', function () {
@@ -108,30 +111,154 @@ function selectItem(item) { // Here we can select the items from our API pull, w
 }
 
 // Registrerer vi "addIngredient" klik
-document.getElementById('addIngredient').addEventListener('click', function() {
-    // Retrieve the weight input from the user
+document.getElementById('addIngredient').addEventListener('click', function () {
     const weight = parseFloat(document.getElementById('itemWeight').value);
-
-    // Check if the weight is a valid number
     if (isNaN(weight)) {
         console.error('Invalid weight entered');
         return;
     }
 
-    // Calculate the macros based on the weight
+    // Assuming selectedItemData is defined elsewhere and has the proper structure
     selectedItemData.weight = weight;
-    selectedItemData.cEnergyKj = (selectedItemData.energyKj / 100) * weight;
-    selectedItemData.cProtein = (selectedItemData.protein / 100) * weight;
-    selectedItemData.cFat = (selectedItemData.fat / 100) * weight;
-    selectedItemData.cFiber = (selectedItemData.fiber / 100) * weight;
-    selectedItemData.cEnergyKcal = (selectedItemData.energyKcal / 100) * weight;
-    selectedItemData.cWater = (selectedItemData.water / 100) * weight;
-    selectedItemData.cDryMatter = (selectedItemData.dryMatter / 100) * weight;
+    const properties = ['energyKj', 'protein', 'fat', 'fiber', 'energyKcal', 'water', 'dryMatter'];
+    properties.forEach(prop => {
+        selectedItemData['c' + prop.charAt(0).toUpperCase() + prop.slice(1)] = (selectedItemData[prop] / 100) * weight;
+    });
 
-    // Display or use the calculated data
-    localStorage.setItem('ingredients', JSON.stringify(selectedItemData));
+    // // Retrieve saved ingredients from localStorage and validate
+    // let savedIngredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+    // if (!Array.isArray(savedIngredients)) {
+    //     console.error('savedIngredients is not an array:', savedIngredients);
+    //     savedIngredients = [];
+    // }
+
+    let savedIngredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+
+    let ingredientAlreadyExists = false;
+
+    savedIngredients = savedIngredients.map(ingredient => {
+        if (ingredient.foodID === selectedItemData.foodID) {
+            ingredient.weight += weight; // Sum up the weights if already exists
+            ingredientAlreadyExists = true;
+            updateListItem(ingredient); // Assuming this function updates the UI
+        }
+        return ingredient;
+    });
+
+    if (!ingredientAlreadyExists) {
+        savedIngredients.push(selectedItemData);
+        addItemToList(selectedItemData); // Assuming this function updates the UI
+    }
+
+    // Save updated ingredient list to localStorage
+    localStorage.setItem('ingredients', JSON.stringify(savedIngredients));
     console.log('Updated selectedItemData with macros:', selectedItemData);
 });
+
+
+function addItemToList(item) {
+    const list = document.getElementById('ingredientList');
+    const listItem = document.createElement('li');
+    listItem.classList.add('ingredient-item');
+    listItem.classList.add(`ingredient_${item.foodID}`);
+    listItem.style.display = 'flex';
+    listItem.style.justifyContent = 'space-between';
+    listItem.style.alignItems = 'center';
+
+    // Text content container
+    const textContent = document.createElement('span');
+    textContent.textContent = `Ingredint: ${item.foodName}, Weight: ${item.weight}g`;
+    listItem.appendChild(textContent);
+
+    // Button container
+    const buttonContainer = document.createElement('div');
+
+    // Create an Inspect button
+    const inspectButton = document.createElement('button');
+    inspectButton.textContent = 'Inspect';
+    inspectButton.classList.add('inspect-button');
+    // Add future functionality here
+    buttonContainer.appendChild(inspectButton);
+
+
+    // Create a Delete button
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.classList.add('delete-button');
+    deleteButton.onclick = function () {
+        console.log("Deleting item with ID:", item.foodID);
+        list.removeChild(listItem);
+        removeItemFromLocalStorage(item.foodID);
+    };
+
+    buttonContainer.appendChild(deleteButton);
+
+    // Add the button container to the list item
+    listItem.appendChild(buttonContainer);
+
+    // Add the list item to the list
+    list.appendChild(listItem);
+
+    inspectButton.addEventListener('click', function () {
+        localStorage.setItem('selectedIngredientId', item.foodID);
+        window.location.href = 'foodInspect.html';
+    });
+}
+
+function updateListItem(ingedient) {
+    const listItems = document.getElementsByClassName(`ingredient_${ingedient.foodID}`);
+
+    // dårlig kode 
+    for (const listItem of listItems) {
+        listItem.remove();
+        addItemToList(ingedient);
+    }
+}
+
+
+function removeItemFromLocalStorage(itemId) {
+    // Retrieve the array of ingredients from local storage, or initialize an empty array if none exists
+    let ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+
+    // Filter the array, keeping only the ingredients whose id does NOT match the provided itemId
+    ingredients = ingredients.filter(ingredient => ingredient.foodID !== itemId);
+
+    // Update the local storage with the new array of ingredients
+    localStorage.setItem('ingredients', JSON.stringify(ingredients));
+}
+
+document.getElementById('recipeForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    // Collecting the form data
+    const recipeName = document.getElementById('nameInput').value;
+    const mealType = document.getElementById('typeSelect').value;
+    const source = document.getElementById('sourceInput').value;
+
+    // Retrieve ingredients from local storage
+    const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+
+    // Combine all data into one object
+    const postData = {
+        recipeName,
+        mealType,
+        source,
+        ingredients
+    };
+
+    // Send the data using fetch API
+    fetch('/api/ingredients', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    })
+    .then(response => response.json())
+    .then(data => console.log('Success:', data))
+    .catch(error => console.error('Error:', error));
+});
+
 
 
 

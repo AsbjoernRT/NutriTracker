@@ -2,12 +2,13 @@
 let modalType; // Declare at the top of your script if this needs to be accessed globally.
 
 function toggleModalVisibility() {
+    removeItemFromLocalStorage();
     console.log('toggleModalVisibility');
     const ingredientList = document.getElementById('ingredientList');
     // const editRecipe = document.getElementById('editRecipe');
     const addRecipe = document.getElementById('addRecipe');
     const modalWrapper = document.getElementById('modal-wrapper');
-
+    
     if (ingredientList && addRecipe && modalWrapper) {
         ingredientList.innerHTML = '';
         // editRecipe.classList.add('hide');
