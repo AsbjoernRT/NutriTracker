@@ -1,4 +1,3 @@
-
 let modalType; // Declare at the top of your script if this needs to be accessed globally.
 
 function toggleModalVisibility() {
@@ -23,7 +22,10 @@ function toggleModalVisibilitySettings() {
     if (modalWrapper) {
         modalWrapper.classList.toggle('hide');
     }
+    
 }
+
+
 
 document.getElementById('add-recipe-btn').addEventListener('click', function () {
     modalType = 'food';

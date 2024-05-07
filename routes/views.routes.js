@@ -45,7 +45,7 @@ router.get('/register', (req, res) => {
     res.sendFile('register.html', { root: './views' });
 });
 
-router.get('/settings', (req, res) => {
+router.get('/settings', authenticator, (req, res) => {
     res.sendFile('settings.html', { root: './views' });
 });
 

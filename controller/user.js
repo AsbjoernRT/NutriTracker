@@ -13,3 +13,4 @@ export const updateUser = async (req,res) =>{
     console.log(user);
 
 }
+
