@@ -71,7 +71,7 @@ export default class Database {
   async getMealIngredients(userID, mealID) {
     try {
       await sql.connect(config);
-  
+
       const result = await sql.query`
         SELECT MI.*, M.*, I.*
         FROM NutriDB.mealIngredients AS MI
@@ -88,7 +88,7 @@ export default class Database {
       sql.close();
     }}
 
-// Finder alle oprettede måltider på baggrund af et userID
+// Finder alle oprettede måltider på baggrund af et userID og samler tabellerne meal, mealingredient og ingredients for at få et overblik over måltiderne
     async getAllUserMeals(userID) {
       try {
         await sql.connect(config);
@@ -111,7 +111,61 @@ export default class Database {
     }
 
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// 1: Indsætter et måltid via Meal Creator (Denne er todelt, da den først skal oprette måltidsnavnet og derefter ingredienser)
+async postIntoDbMeal(name, userID) {
+  try {
+    await sql.connect(config);
+    const result = await sql.query`
+    INSERT INTO [NutriDB].[meal] (name, userID)
+    VALUES (${name}, ${userID})`;
+
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved indsætning af brugerens måltidsnavn i [NutriDB].[meal]:', error);
+    throw error;
+  } finally {
+    sql.close();
+  }
+}
+
+// 2: Indsætter de ingredienser et måltid består af (bemærk at ernæringsværdierne skal være udregnet før de lægges herind). 
+// mealID kommer fra [NutriDB].[meal] og fungerer som fremmednøgle her
+async postIntoDbMealIngredient(mealID, ingredientID, quantity, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDrymatter) {
+  try {
+    await sql.connect(config);
+    const result = await sql.query`
+    INSERT INTO [NutriDB].[mealIngredient] (mealID, ingredientID, quantity, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDrymatter)
+    VALUES (${mealID}, ${ingredientID}, ${quantity}, ${cEnergyKj}, ${cProtein}, ${cFat}, ${cFiber}, ${cEnergyKcal}, ${cWater}, ${cDrymatter})`;
+// Bemærk at denne kode kun vil indsætte én ingrediens. Måske kan man lave en løkke der kører funktionen indtil alle ingredienser er kørt igennem??? 
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved indsætning af brugerens ingredienser i [NutriDB].[mealIngredient]:', error);
+    throw error;
+  } finally {
+    sql.close();
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Indsætning af måltid i mealtracker 
+async postIntoDbMealTracker(mealID, userID, date, quantity) {
+  try {
+    await sql.connect(config);
+    const result = await sql.query`
+    INSERT INTO [NutriDB].[mealTracker] (mealID, userID, date, quantity)
+    VALUES (${mealID}, ${userID}, ${date}, ${quantity})`;
+
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved indsætning af brugerens måltid tracker i [NutriDB].[mealTracker]:', error);
+    throw error;
+  } finally {
+    sql.close();
+  }
+}
 
 
 
