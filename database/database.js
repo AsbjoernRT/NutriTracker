@@ -112,7 +112,7 @@ export default class Database {
   }
 
 
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////Meal CREATOR FUNTKIONER/////////////////////////////////////////////////////////////
 
   // 1: Indsætter et måltid via Meal Creator (Denne er todelt, da den først skal oprette måltidsnavnet og derefter ingredienser)
   async postIntoDbMeal(name, userID) {
@@ -149,15 +149,33 @@ export default class Database {
     }
   }
 
+// Slet et måltid oprettet i mealCreator/mealTracker
+async dropMeal(database, mealID) {
+  try {
+    await sql.connect(config);
+    const result = await sql.query`
+  DELETE FROM [NutriDB].[${database}] WHERE mealID = ${mealID}`;
+
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved indsætning af brugerens måltidsnavn i [NutriDB].[meal]:', error);
+    throw error;
+  } finally {
+    sql.close();
+  }
+}
+
+
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  // Indsætning af måltid i mealtracker 
+  // Indsætning af måltid i mealtracker. Date følger YYYY-MM-DD. regTime følger HH.MM.SS. (dette skal opfyldes, for at SQL vi acceptere dette.)
+  //Der kan måske komme med problemer med geoLocation (lige nu er den sat til varchar, da jeg er bekymret for at INT ikke kan lide punktummer)
   async postIntoDbMealTracker(mealID, userID, date, quantity) {
     try {
       await sql.connect(config);
       const result = await sql.query`
-    INSERT INTO [NutriDB].[mealTracker] (mealID, userID, date, quantity)
-    VALUES (${mealID}, ${userID}, ${date}, ${quantity})`;
+    INSERT INTO [NutriDB].[mealTracker] (mealID, userID, date, quantity, regTime, geoLocation)
+    VALUES (${mealID}, ${userID}, ${date}, ${quantity}, ${regTime}), ${geoLocation}`;
 
       return result.recordset;
     } catch (error) {
@@ -167,6 +185,29 @@ export default class Database {
       sql.close();
     }
   }
+
+
+// Visning af alle trackede måltider for én specifik bruger. 
+async getListofMealsTracked(userID) {
+  try {
+    await sql.connect(config);
+    const result = await sql.query`
+    SELECT M.*, MI.*, I.*, MT.*
+    FROM NutriDB.meal AS M
+    JOIN NutriDB.mealIngredient AS MI ON M.mealID = MI.mealID
+    JOIN NutriDB.ingredient AS I ON MI.IngredientID = I.ingredientID
+    JOIN NutriDB.mealTracker AS MT ON MT.mealID = MI.mealID 
+    WHERE M.userID = ${userID}`;
+
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved indlæsning af brugerens måltid tracker i [NutriDB].[mealTracker]:', error);
+    throw error;
+  } finally {
+    sql.close();
+  }
+}
+
 
 
 
@@ -239,6 +280,9 @@ export default class Database {
       console.error('Failed to update user:', err);
       throw new Error('Database operation failed');
     }}
+
+
+
 
 
 
