@@ -8,7 +8,7 @@ function toggleModalVisibility() {
     // const editRecipe = document.getElementById('editRecipe');
     const addRecipe = document.getElementById('addRecipe');
     const modalWrapper = document.getElementById('modal-wrapper');
-    
+
     if (ingredientList && addRecipe && modalWrapper) {
         ingredientList.innerHTML = '';
         // editRecipe.classList.add('hide');
@@ -20,10 +20,13 @@ function toggleModalVisibility() {
 }
 
 function toggleModalVisibilitySettings() {
+    showUserInfo()
     const modalWrapper = document.getElementById('modal-wrapper');
     if (modalWrapper) {
         modalWrapper.classList.toggle('hide');
+      
     }
+
 }
 
 document.getElementById('add-recipe-btn').addEventListener('click', function () {
