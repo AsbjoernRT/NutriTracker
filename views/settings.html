@@ -26,10 +26,13 @@
         <label>Gender of profil</label>
         <div id="gender">Gender</div>
 
-        <div id="updateSettingsContainer">
+        <div>
             <button id="updateUserInSettings-Btn" class="btn-submit" onclick=toggleModalVisibilitySettings()> Update
                 user </button>
+
+                <button id="delete-btn" class="btn-submit" onclick="deleteUser()"> Delete User</button>
         </div>
+
         <modal id="modal-wrapper" class="hide">
             <div id="modal-content-wrapper-for-settings">
                 <div id="modal-content">
