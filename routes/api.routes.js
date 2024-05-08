@@ -37,11 +37,9 @@ router.post('/settings/update', (req, res) => {
     req.session.user.age = age
 
     req.session.user.weight = weight
-    
+
     req.session.user.gender = gender
        
-    console.log(age)
-
     res.redirect('/settings?userUpdated');
 });
 
