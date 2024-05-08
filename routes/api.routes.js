@@ -29,6 +29,15 @@ router.get('/ingredient_search', async (req, res) => {
 
 router.post('/settings/update', (req, res) => {
     updateUser(req);
+
+    const { age, weight, gender } = req.body
+
+    req.session.user.age = age
+
+    req.session.user.weight = weight
+
+    req.session.user.gender = gender
+
     res.redirect('/settings?userUpdated');
 });
 
