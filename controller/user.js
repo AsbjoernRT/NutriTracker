@@ -14,13 +14,4 @@ export const updateUser = async (req, res) => {
     console.log(user);
     req.session.user = user
 
-    console.log("Ny session data: ", req.session.user);
 }
-
-// export const updateSession = async (req, res) => {
-//     console.log("Før: ", req.session.user);
-//     req.session.user.age = parseInt(req.body.age)
-//     req.session.user.weight = parseInt(req.body.weight)
-//     req.session.user.gender = req.body.gender
-//     console.log("Efter: ", req.session.user);
-// }

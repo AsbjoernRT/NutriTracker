@@ -74,7 +74,7 @@ export default class Database {
 
       const result = await sql.query`
         SELECT MI.*, M.*, I.*
-        FROM NutriDB.mealIngredients AS MI
+        FROM NutriDB.mealIngredient AS MI
         JOIN NutriDB.meal AS M ON MI.mealID = M.mealID
         JOIN NutriDB.ingredient AS I ON MI.IngredientID = I.ingredientID
         WHERE M.userID = ${userID} AND M.mealID = ${mealID}
@@ -97,7 +97,7 @@ export default class Database {
       const result = await sql.query`
           SELECT M.*, MI.*, I.*
           FROM NutriDB.meal AS M
-          JOIN NutriDB.mealIngredients AS MI ON M.mealID = MI.mealID
+          JOIN NutriDB.mealIngredient AS MI ON M.mealID = MI.mealID
           JOIN NutriDB.ingredient AS I ON MI.IngredientID = I.ingredientID
           WHERE M.userID = ${userID}
         `;
@@ -115,12 +115,12 @@ export default class Database {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // 1: Indsætter et måltid via Meal Creator (Denne er todelt, da den først skal oprette måltidsnavnet og derefter ingredienser)
-  async postIntoDbMeal(name, userID) {
+  async postIntoDbMeal(name, userID, mealType) {
     try {
       await sql.connect(config);
       const result = await sql.query`
-    INSERT INTO [NutriDB].[meal] (name, userID)
-    VALUES (${name}, ${userID})`;
+    INSERT INTO [NutriDB].[meal] (name, userID, mealType)
+    VALUES (${name}, ${userID}, ${mealType})`;
 
       return result.recordset;
     } catch (error) {
