@@ -19,11 +19,11 @@ function toggleModalVisibility() {
 }
 
 function toggleModalVisibilitySettings() {
-    showUserInfo()
+    
     const modalWrapper = document.getElementById('modal-wrapper');
     if (modalWrapper) {
         modalWrapper.classList.toggle('hide');
-      
+        showUserInfo()
     }
 }
 

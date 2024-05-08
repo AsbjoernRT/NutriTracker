@@ -807,12 +807,6 @@ select {
 }
 
 
-#updateSettingsContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 #age {
     margin-bottom: 20px;
 }
@@ -823,4 +817,38 @@ select {
 
 #gender {
     margin-bottom: 20px;
+}
+
+#delete-btn {
+    width: 100%;
+    /* Fylder hele bredden af sin container */
+    padding: 15px;
+    /* Indre afstand */
+    background-color: red;
+    /* Baggrundsfarve */
+    border: 2px solid red;
+    /* Kanten af knappen */
+    color: white;
+    /* Tekstfarve */
+    border-radius: 4px;
+    /* Afrundede hjørner på knappen */
+    cursor: pointer;
+    /* Cursor ændres til en hånd når man hover */
+    font-size: 16px;
+    /* Skriftstørrelse */
+    font-weight: 700;
+    /* Fed tekst */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    /* Overgangseffekt */
+    margin-top: 20px;
+    /* Afstand til toppen */
+}
+
+#delete-btn:hover {
+    background-color: transparent;
+    /* Gør baggrunden transparent */
+    color: rgb(130, 22, 22);
+    /* Tekstfarve */
+    border-color: rgb(130, 22, 22);
+    /* Kanten af knappen */
 }

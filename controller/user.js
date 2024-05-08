@@ -13,5 +13,4 @@ export const updateUser = async (req, res) => {
     const user = await index.connectedDatabase.getUserByMail(email)
     console.log(user);
     req.session.user = user
-
 }
