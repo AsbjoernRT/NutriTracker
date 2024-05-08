@@ -3,6 +3,8 @@ import { register } from '../controller/register.js';
 import { login } from '../controller/login.js';
 import index from '../index.js';
 import { updateUser } from '../controller/user.js'
+import { deleteUser } from '../controller/user.js'
+
 const router = express.Router();
 
 router.post('/register', (req, res) => {
@@ -29,9 +31,28 @@ router.get('/ingredient_search', async (req, res) => {
 
 router.post('/settings/update', (req, res) => {
     updateUser(req);
+
+    const { age, weight, gender } = req.body
+
+    req.session.user.age = age
+
+    req.session.user.weight = weight
+    
+    req.session.user.gender = gender
+       
+    console.log(age)
+
     res.redirect('/settings?userUpdated');
 });
 
+
+router.delete('/delete', async (req, res) => {
+    
+    if (req.session.user && req.session.loggedin) {
+
+        
+    }
+});
 // router.post('/updateUser', (req, res) => {
 //     const { age, weight, gender } = req.body
 

@@ -17,6 +17,28 @@ export const updateUser = async (req, res) => {
     console.log("Ny session data: ", req.session.user);
 }
 
+export const deleteUser = async (req, res) => {
+
+    const email = req.session.user.email
+
+    const user = await index.connectedDatabase.getUserByMail(email)
+}
+    // try {
+    //     const email = req.body.email;  // Antager at email sendes i body af DELETE request.
+    //     const result = await index.connectedDatabase.deleteUser(email);  // Brug deleteUser metoden som allerede er implementeret i Database klassen.
+    //     if (result.success) {
+    //         res.status(200).send(result);
+    //     } else {
+    //         res.status(404).send(result);
+    //     }
+    // } catch (error) {
+    //     console.error('Error deleting user:', error);
+    //     res.status(500).send({ success: false, message: 'Internal server error', error: error.message });
+    // }
+
+
+
+
 // export const updateSession = async (req, res) => {
 //     console.log("Før: ", req.session.user);
 //     req.session.user.age = parseInt(req.body.age)

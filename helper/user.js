@@ -17,6 +17,7 @@ function showUserInfo() {
             }
 
             // Update age
+            console.log('Received data:', data);
             const ageDisplay = document.getElementById("age");
             if (ageDisplay) {
                 ageDisplay.textContent = data.age;
@@ -45,5 +46,35 @@ function showUserInfo() {
         });
 }
 
+
+function deleteUser(userID) {
+
+    console.log(userID);
+    fetch('api/delete', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+       
+        body: JSON.stringify({ userID: userID })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('User deleted successfully');
+            // Here you might want to redirect or refresh the page
+        } else {
+            alert('Error deleting user: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.log(body);
+        console.error('Error:', error);
+        alert('Failed to delete user');
+    });
+}
+
+
 // You can call this function when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', showUserInfo);
+
