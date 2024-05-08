@@ -46,11 +46,11 @@ router.post('/settings/update', (req, res) => {
 });
 
 
-router.delete('/delete', async (req, res) => {
+router.post('/delete', async (req, res) => {
     
     if (req.session.user && req.session.loggedin) {
 
-        
+
     }
 });
 // router.post('/updateUser', (req, res) => {
