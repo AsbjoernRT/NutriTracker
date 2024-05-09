@@ -66,45 +66,62 @@ export default class Database {
     }
   }
 
-
-  // Finder informationer om ét måltid som en unik bruger har oprettet via userID og mealID
-  async getMealIngredients(userID, mealID) {
+  // Funktion til at søge efter måltider. searchTerm og UserID er dynamiske
+  async searchMeals(searchTerm, userID) {
     try {
-      await sql.connect(config);
-
-      const result = await sql.query`
-        SELECT MI.*, M.*, I.*
-        FROM NutriDB.mealIngredient AS MI
-        JOIN NutriDB.meal AS M ON MI.mealID = M.mealID
-        JOIN NutriDB.ingredient AS I ON MI.IngredientID = I.ingredientID
-        WHERE M.userID = ${userID} AND M.mealID = ${mealID}
-      `;
-
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request
+        .input('searchTerm', sql.NVarChar, `%${ searchTerm }%`)
+        .input('userID', sql.Int, userID)
+        .query('SELECT * FROM NutriDB.meal WHERE userID = @userID AND name LIKE searchTerm;');
       return result.recordset;
     } catch (error) {
-      console.error('Fejl ved hentning af måltidsingredienser:', error);
+      console.error('Fejl ved søgning efter måltider:', error);
       throw error;
-    } finally {
-      sql.close();
     }
-  }
+  };
 
   // Finder alle oprettede måltider på baggrund af et userID og samler tabellerne meal, mealingredient og ingredients for at få et overblik over måltiderne
   async getAllUserMeals(userID) {
     try {
-      await sql.connect(config);
+      await this.connect();
+      const request = this.poolconnection.request();
+      console.log(`Attempting to fetch meals for userID: ${userID}`);
+      const result = await request
 
-      const result = await sql.query`
-          SELECT M.*, MI.*, I.*
-          FROM NutriDB.meal AS M
-          JOIN NutriDB.mealIngredient AS MI ON M.mealID = MI.mealID
-          JOIN NutriDB.ingredient AS I ON MI.IngredientID = I.ingredientID
-          WHERE M.userID = ${userID}
-        `;
+        .query(`
+        SELECT * FROM [NutriDB].[meal]
+        JOIN [NutriDB].[mealTracker] ON [NutriDB].[meal].mealID = [NutriDB].[mealTracker].mealID
+        WHERE [NutriDB].[meal].userID = 46`);
 
       return result.recordset;
     } catch (error) {
       console.error('Fejl ved hentning af brugerens måltider:', error);
+      throw error;
+    }
+  }
+
+
+
+  // Finder informationer om ét måltid som en unik bruger har oprettet via userID og mealID
+  async getMealIngredients(userID, mealID) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      console.log(`Attempting to fetch meals for userID: ${userID}`);
+      const result = await request
+        .query(
+          `SELECT MI.*, M.*, I.*
+        FROM NutriDB.mealIngredient AS MI
+        JOIN NutriDB.meal AS M ON MI.mealID = M.mealID
+        JOIN NutriDB.ingredient AS I ON MI.IngredientID = I.ingredientID
+        WHERE M.userID = ${userID} AND M.mealID = ${mealID}
+      `);
+
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved hentning af måltidsingredienser:', error);
       throw error;
     } finally {
       sql.close();
@@ -168,7 +185,20 @@ export default class Database {
     }
   }
 
-
+  // Finder alle meals der er oprettet i mealTracker
+  async getTrackedMeals(userID) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request.query('SELECT M.*, MT.* FROM NutriDB.meal AS M JOIN NutriDB.mealTracker AS MT ON M.mealID = MT.mealID WHERE M.userID = @userID', {
+        userID: userID
+      });
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved hentning af brugerens måltider:', error);
+      throw error;
+    }
+  }
 
   // bruges til at lave hvad som helst
   async executeQuery(query) {

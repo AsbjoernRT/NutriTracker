@@ -21,10 +21,8 @@
             <!-- Form for creating a meal -->
             <div class="btn-container">
                 <!-- Submit button -->
-                <button id="add-liquid-btn" type="btn" class="btn-plus btn-blue"
-                    aria-label="Add new liquid">+</button>
-                <button id="add-meal-btn" type="btn" class="btn-plus btn-green"
-                    aria-label="Add new meal">+</button>
+                <button id="add-liquid-btn" type="btn" class="btn-plus btn-blue" aria-label="Add new liquid" onclick="toggleModalVisibility();">+</button>
+                <button id="add-meal-btn" type="btn" class="btn-plus btn-green" aria-label="Add new meal" onclick="toggleModalVisibility()";>+</button>
             </div>
         </section>
         <!-- Table to display tracked meals -->
@@ -40,15 +38,76 @@
                     </tr>
                 </thead>
                 <tbody id="meal-item">
+                    <!-- Dynamisk meal entry -->
                 </tbody>
             </table>
         </section>
     </main>
+    <button type="get" class="btn-submit">Get Users</button>
 
-    <div id="footerContainer"></div> <!-- Container for the footer -->
-    <!-- JavaScript to load header -->
-    <script src="/date.helper.js"></script>
-    <script src="/partials.helper.js"></script>
+    <modal id="modal-wrapper" class="hide">
+        <div id="modal-content-wrapper">
+            <div id="close-create-btn" class="modal-close-wrapper">
+                <button type="button" class="modal-close-btn" onclick=toggleModalVisibility()>X</button>
+            </div>
+
+            <form id="recipeForm">
+                <div id="modal-content">
+                    <h3>Find your meal</h3>
+                    <input type="text" id="searchInput" placeholder="Search meal to add..." autocomplete="off">
+                    <div id="searchResults"></div>
+                    <div id="selectionArea">
+                        <p id="selectedItem">Selected Meal: None</p>
+                        <p>Weight in grams:</p>
+                        <input type="number" id="itemWeight" placeholder="Weight (g)" value="1" required>
+                        <button type="button" id="addIngredient">Add meal</button>
+                    </div>
+                    <div id="selectedIngredientsList">
+                        <ul id="ingredientList"></ul>
+                    </div>
+                    <div id="recipeButtonContainer">
+                        <button type="submit" id="addRecipe">Save</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- <button id="editRecipe">Edit Recipe</button> -->
+        </div>
+    </modal>
+
+    <modal id="modal-wrapper" class="inspect-list hide">
+        <div class="modal-content-wrapper">
+            <div id="inspection-list-close-btn" class="modal-close-wrapper">
+                <button type="button" class="modal-close-btn">X</button>
+            </div>
+
+            <modal id="modal-wrapper" class="inspect-list hide">
+                <div class="modal-content-wrapper">
+                    <div id="inspection-list-close-btn" class="modal-close-wrapper">
+                        <button type="button" class="modal-close-btn">X</button>
+                    </div>
+
+                    <div id="modal-content">
+                        <table>
+                            <thead id="mealInspectionListHead">
+                                <tr>
+                                    <th>Meal Name</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mealInspectionListBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </modal>
+
+
+            <div id="footerContainer"></div> <!-- Container for the footer -->
+            <!-- JavaScript to load header -->
+            <script src="/date.helper.js"></script>
+            <script src="/mealTracker.helper.js"></script>
+            <script src="/partials.helper.js"></script>
+            <script src="/modal.js"></script>
+
 </body>
 
 </html>

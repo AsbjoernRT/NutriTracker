@@ -7,9 +7,6 @@ import { deleteUser } from '../controller/user.js'
 import bodyParser from 'body-parser';
 
 
-
-
-
 const router = express.Router();
 
 router.use(express.json());
@@ -53,6 +50,7 @@ router.post('/settings/update', (req, res) => {
 
     res.redirect('/settings?userUpdated');
 });
+
 
 
 router.post('/delete', async (req, res) => {
@@ -120,6 +118,43 @@ router.get('/userinfo', (req, res) => {
         res.status(401).json({ error: 'Unauthorized' }); // User not logged in
     }
 
+});
+
+
+router.get('/mealTracker', async (req, res) => {
+
+    console.log("Received userID:", req.session.userID);  // Check what's received
+    console.log(req);
+    //const userID = req.session.user.userID;
+    const userID = 42
+
+    if (userID) {
+        const result = await index.connectedDatabase.getAllUserMeals(userID)
+        // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
+        console.log("succes", result)
+        res.json(result)
+
+    } else {
+
+        res.status(401).json({ error: 'Unauthorized' }); // User not logged in
+    }
+
+})
+
+
+
+router.get('/addWeightToMeal', async (req, res) => {
+    const searchTerm = req.query.searchTerm
+    const userID = req.session.userID
+    
+    try {
+        const result = await index.connectedDatabase.searchMeals(searchTerm, userID)
+        // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
+        console.log(result);
+        res.json(result)
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 
