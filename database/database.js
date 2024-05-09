@@ -115,40 +115,57 @@ export default class Database {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // 1: Indsætter et måltid via Meal Creator (Denne er todelt, da den først skal oprette måltidsnavnet og derefter ingredienser)
-  async postIntoDbMeal(name, userID, mealType) {
+  async postIntoDbMeal(name, userID, mealType, source) {
     try {
-      await sql.connect(config);
-      const result = await sql.query`
-    INSERT INTO [NutriDB].[meal] (name, userID, mealType)
-    VALUES (${name}, ${userID}, ${mealType})`;
-
-      return result.recordset;
+      // Assuming `sql` has been previously configured with connection settings
+      await this.connect();
+      const request = this.poolconnection.request();
+  
+      // Properly add inputs to avoid SQL injection
+      request.input('name', sql.NVarChar, name);
+      request.input('UserID', sql.Int, userID);
+      request.input('mealType', sql.NVarChar, mealType);
+      request.input('source', sql.NVarChar, source);
+  
+      // Use parameters in your query instead of template literals
+      const result = await request.query(`INSERT INTO [NutriDB].[meal] (name, userID, mealType, source) OUTPUT INSERTED.mealID VALUES (@name, @UserID, @mealType, @source)`);
+  
+      // Assuming you want to return some information about the operation, for example, the number of affected rows
+      return result.recordset[0].mealID;
     } catch (error) {
-      console.error('Fejl ved indsætning af brugerens måltidsnavn i [NutriDB].[meal]:', error);
+      console.error('Fejl:', error);
       throw error;
-    } finally {
-      sql.close();
+    
     }
   }
 
+
   // 2: Indsætter de ingredienser et måltid består af (bemærk at ernæringsværdierne skal være udregnet før de lægges herind). 
   // mealID kommer fra [NutriDB].[meal] og fungerer som fremmednøgle her
-  async postIntoDbMealIngredient(mealID, ingredientID, quantity, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDrymatter) {
+  async postIntoDbMealIngredient(mealID, ingredientID, quantity, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDryMatter) {
     try {
-      await sql.connect(config);
-      const result = await sql.query`
-    INSERT INTO [NutriDB].[mealIngredient] (mealID, ingredientID, quantity, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDrymatter)
-    VALUES (${mealID}, ${ingredientID}, ${quantity}, ${cEnergyKj}, ${cProtein}, ${cFat}, ${cFiber}, ${cEnergyKcal}, ${cWater}, ${cDrymatter})`;
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request
+      .input('mealID', sql.Int, mealID)
+      .input('ingredientID', sql.Int, ingredientID)
+      .input('quantity', sql.Int, quantity)
+      .input('cEnergyKj', sql.Int, cEnergyKj)
+      .input('cProtein', sql.Int, cProtein)
+      .input('cFat', sql.Int, cFat)
+      .input('cFiber', sql.Int, cFiber)
+      .input('cEnergyKcal', sql.Int, cEnergyKcal)
+      .input('cWater', sql.Int, cWater)
+      .input('cDryMatter', sql.Int, cDryMatter)
+      .query(' INSERT INTO [NutriDB].[mealIngredient] (mealID, ingredientID, quantity, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDrymatter) VALUES (@mealID, @ingredientID, @quantity, @cEnergyKj, @cProtein, @cFat, @cFiber, @cEnergyKcal, @cWater, @cDrymatter)')
       // Bemærk at denne kode kun vil indsætte én ingrediens. Måske kan man lave en løkke der kører funktionen indtil alle ingredienser er kørt igennem??? 
       return result.recordset;
     } catch (error) {
       console.error('Fejl ved indsætning af brugerens ingredienser i [NutriDB].[mealIngredient]:', error);
       throw error;
-    } finally {
-      sql.close();
     }
   }
-
+  
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Indsætning af måltid i mealtracker 
@@ -167,6 +184,28 @@ export default class Database {
       sql.close();
     }
   }
+
+
+  async postCmacroMeal(mealID, tEnergyKj, tProtein, tFat, tFiber, tEnergyKcal, tWater, tDryMatter) {
+  try {
+    await this.connect();
+    const request = this.poolconnection.request();
+    const result = await request
+    .input('mealID', sql.Int, mealID)
+    .input('tEnergyKj', sql.Int, tEnergyKj)
+    .input('tProtein', sql.Int, tProtein)
+    .input('tFat', sql.Int, tFat)
+    .input('tFiber', sql.Int, tFiber)
+    .input('tEnergyKcal', sql.Int, tEnergyKcal)
+    .input('tWater', sql.Int, tWater)
+    .input('tDryMatter', sql.Int, tDryMatter)
+    .query(' INSERT INTO [NutriDB].[totalNutrientsForCreateMeal] (mealID, tEnergyKj, tProtein, tFat, tFiber, tEnergyKcal, tWater, tDryMatter) VALUES (@mealID, @tEnergyKj, @tProtein, @tFat, @tFiber, @tEnergyKcal, @tWater, @tDryMatter)')
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved indsætning af måltidets totale ernæringsindhold i [NutriDB].[totalNutrientsForCreateMeal]:', error);
+    throw error;
+  }
+}
 
 
 
@@ -286,7 +325,23 @@ export default class Database {
       const request = this.poolconnection.request();
       const result = await request
         .input('id', sql.Int, idAsNumber)
-        .query(`DELETE FROM NutriDB.users WHERE UserId = @id`);
+        .query(`DELETE FROM [NutriDB].[activityTracker]
+        WHERE userID = @id;
+        
+        DELETE FROM [NutriDB].[mealTracker]
+        WHERE userID = @id;
+        
+        DELETE FROM [NutriDB].[mealIngredient]
+        WHERE mealID IN (SELECT mealID FROM [NutriDB].[meal] WHERE userID = @id);
+        
+        DELETE FROM [NutriDB].[totalNutrientsForCreateMeal]
+        WHERE mealID IN (SELECT mealID FROM [NutriDB].[meal] WHERE userID = @id);
+        
+        DELETE FROM [NutriDB].[meal]
+        WHERE userID = @id;
+        
+        DELETE FROM [NutriDB].[users]
+        WHERE userID = @id;`);
 
       return result.rowsAffected[0];
     } catch (error) {

@@ -41,7 +41,7 @@ router.post('/ingredients', async (req, res) => {
     // console.log("Modtaget måltid: ", req.body);
     // console.log("Person der logger: ", req.session.user.uersID);
 
-    mealcreator(req.body,req.session.user.userID, res)
+    mealcreator(req,req.session.user.userID, res)
 })
 
 router.post('/settings/update', (req, res) => {
@@ -107,6 +107,21 @@ router.post('/logout', (req, res) => {
 
 // });
 
+router.get('/recipes',(req,res)=>{
+    if (req.session.user && req.session.loggedin  && req.session.meal) {
+        res.json({
+            mealID: req.session.meal.mealId,
+            mealName: req.session.meal.mealName,
+            mealType: req.session.meal.mealType,
+            source: req.session.meal.source,
+            ingredients: req.session.meal.ingredients,
+            macrosPer100g: req.session.meal.macrosPer100g
+        })
+    } else {
+        
+        res.status(401).json({ error: 'Unauthorized' }); // User not logged in
+    }
+})
 
 
 router.get('/userinfo', (req, res) => {

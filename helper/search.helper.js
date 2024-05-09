@@ -133,23 +133,41 @@ document.getElementById('addIngredient').addEventListener('click', function () {
     // }
 
     let savedIngredients = JSON.parse(localStorage.getItem('ingredients')) || [];
-
-
     let ingredientAlreadyExists = false;
 
-    savedIngredients = savedIngredients.map(ingredient => {
-        if (ingredient.foodID === selectedItemData.foodID) {
-            ingredient.weight += weight; // Sum up the weights if already exists
+    savedIngredients.forEach(ingredient => {
+        if (ingredient.ingredientID === selectedItemData.ingredientID) {
+            console.log("Updating existing ingredient:", ingredient.foodName);
+            ingredient.weight += weight;
             ingredientAlreadyExists = true;
-            updateListItem(ingredient); // Assuming this function updates the UI
+            updateListItem(ingredient);
         }
-        return ingredient;
     });
 
     if (!ingredientAlreadyExists) {
+        console.log("Adding new ingredient:", selectedItemData.foodName);
         savedIngredients.push(selectedItemData);
-        addItemToList(selectedItemData); // Assuming this function updates the UI
+        addItemToList(selectedItemData);
     }
+
+
+
+
+
+
+    // savedIngredients = savedIngredients.map(ingredient => {
+    //     if (ingredient.foodID === selectedItemData.foodID) {
+    //         ingredient.weight += weight; // Sum up the weights if already exists
+    //         ingredientAlreadyExists = true;
+    //         updateListItem(ingredient); // Assuming this function updates the UI
+    //     }
+    //     return ingredient;
+    // });
+
+    // if (!ingredientAlreadyExists) {
+    //     savedIngredients.push(selectedItemData);
+    //     addItemToList(selectedItemData); // Assuming this function updates the UI
+    // }
 
     // Save updated ingredient list to localStorage
     // let IngredientsSaved = savedIngredients
@@ -192,9 +210,9 @@ function addItemToList(item) {
     deleteButton.textContent = 'Delete';
     deleteButton.classList.add('delete-button');
     deleteButton.onclick = function () {
-        console.log("Deleting item with ID:", item.foodID);
+        console.log("Deleting item with ID:", item.ingredientID);
         list.removeChild(listItem);
-        removeItemFromLocalStorage(item.foodID);
+        removeItemFromLocalStorage(item.ingredientID);
     };
 
     buttonContainer.appendChild(deleteButton);
@@ -206,13 +224,13 @@ function addItemToList(item) {
     list.appendChild(listItem);
 
     inspectButton.addEventListener('click', function () {
-        localStorage.setItem('selectedIngredientId', item.foodID);
+        localStorage.setItem('selectedIngredientId', item.ingredientID);
         window.location.href = 'foodInspect.html';
     });
 }
 
 function updateListItem(ingedient) {
-    const listItems = document.getElementsByClassName(`ingredient_${ingedient.foodID}`);
+    const listItems = document.getElementsByClassName(`ingredient_${ingedient.ingredientID}`);
 
     // dårlig kode 
     for (const listItem of listItems) {
@@ -227,7 +245,7 @@ function removeItemFromLocalStorage(itemId) {
     let ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
 
     // Filter the array, keeping only the ingredients whose id does NOT match the provided itemId
-    ingredients = ingredients.filter(ingredient => ingredient.foodID !== itemId);
+    ingredients = ingredients.filter(ingredient => ingredient.ingredientID !== itemId);
 
     // Update the local storage with the new array of ingredients
     localStorage.setItem('ingredients', JSON.stringify(ingredients));
@@ -252,7 +270,7 @@ document.getElementById('recipeForm').addEventListener('submit', function (event
         ingredients
     };
 
-    console.log("Opskrifts Data:", postData );
+    console.log("Opskrifts Data:", postData);
 
     // Send the data using fetch API
     fetch('/api/ingredients', {
@@ -262,11 +280,15 @@ document.getElementById('recipeForm').addEventListener('submit', function (event
         },
         body: JSON.stringify(postData)
     })
-    // fetch('/api/ingredients' + postData)
+        // fetch('/api/ingredients' + postData)
         .then(response => response.json())
         .then(data => console.log('Success:', data))
         .catch(error => console.error('Error:', error));
+
+
+    toggleModalVisibility()
 });
+
 
 
 

@@ -1,7 +1,7 @@
 let modalType; // Declare at the top of your script if this needs to be accessed globally.
 
 function toggleModalVisibility() {
-    removeItemFromLocalStorage();
+    localStorage.clear();
     console.log('toggleModalVisibility');
     const ingredientList = document.getElementById('ingredientList');
     // const editRecipe = document.getElementById('editRecipe');
@@ -19,7 +19,7 @@ function toggleModalVisibility() {
 }
 
 function toggleModalVisibilitySettings() {
-    
+
     const modalWrapper = document.getElementById('modal-wrapper');
     if (modalWrapper) {
         modalWrapper.classList.toggle('hide');
