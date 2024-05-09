@@ -27,7 +27,7 @@
         <div class="sidebar-username" id="userName">Profile name</div>
         <a href="/settings">Settings</a>
         <!-- <button onclick="logout()">Logout</button> -->
-        <form id="logoutForm" action="/logout" method="POST" target="_self">
+        <form id="logoutForm" action="/api/logout" method="POST" target="_self">
             <input type="hidden" name="csrf_token" value="your_csrf_token_here"> <!-- Optional: CSRF token -->
             <button type="submit" class="btn-submit">Logout</button>
         </form>

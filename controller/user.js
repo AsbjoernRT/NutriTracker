@@ -14,3 +14,14 @@ export const updateUser = async (req, res) => {
     console.log(user);
     req.session.user = user
 }
+
+export const deleteUser = async (req, res) =>{
+    console.log("backend: ", req.session.user);
+    const {userID, email} = req.session.user;
+
+    console.log(userID, email);
+    
+    const deleteUser = await index.connectedDatabase.deleteUserId(userID)
+
+    console.log("User to delete: ", deleteUser);
+}

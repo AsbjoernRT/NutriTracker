@@ -304,5 +304,26 @@ export default class Database {
   }
 
 
-}
+  async deleteUserId(id) {
+    try {
+      await this.connect(); // Ensure there's error handling within this function.
 
+      const idAsNumber = Number(id);
+      if (isNaN(idAsNumber)) {
+        throw new Error("Invalid ID provided");
+      }
+
+      const request = this.poolconnection.request();
+      const result = await request
+        .input('id', sql.Int, idAsNumber)
+        .query(`DELETE FROM NutriDB.users WHERE UserId = @id`);
+
+      return result.rowsAffected[0];
+    } catch (error) {
+      console.error('Failed to delete user:', error);
+      throw error; // rethrow or handle error appropriately
+    }
+  }
+
+
+}

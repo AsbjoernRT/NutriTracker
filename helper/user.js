@@ -50,6 +50,49 @@ function showUserInfo() {
 
 
 
+function deleteUser() {
+    fetch('api/delete', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include' // Necessary if using cookies to manage session
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('User deleted successfully');
+            // Here you might want to redirect or refresh the page
+        } else {
+            alert('Error deleting user: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.log(body);
+        console.error('Error:', error);
+        alert('Failed to delete user');
+    });
+}
+
+// function logout() {
+//     fetch('/logout', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//     })
+//         .then(response => {
+//             if (response.ok) {
+//                 console.log('Logged out successfully');
+//                 window.location.href = '/login';
+//             } else {
+//                 throw new Error('Logout failed');
+//             }
+//         })
+//         .catch(error => console.error('Error:', error));
+// }
+
+
 // You can call this function when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', showUserInfo);
 
