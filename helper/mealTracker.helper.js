@@ -1,56 +1,47 @@
+document.addEventListener('DOMContentLoaded', function() {
+    fetchMeals();  // Call fetchMeals when the DOM is fully loaded
+});
+
+
+function fetchMeals() {
+    fetch("/api/mealTracker")
+
+        .then(response => response.json())
+        .then(mealData => {
+            console.log(mealData[0].name)
+            console.log(mealData)   // Process and display meal data
+            // Update your UI accordingly
+            const mealListElement = document.getElementById('meal-item')
+            mealData.forEach(meal => { // Looper mealData objektet
+                const row = document.createElement('tr'); // Laver en ny række
+                const nameCell = document.createElement('td');
+                const mealSource = document.createElement('td');
+                const weightEnergy = document.createElement('td'); // Laver en TD
+                const addedOn = document.createElement('td');
+                const dailyCons = document.createElement('td');
+
+
+            nameCell.textContent = meal.name // displayer tekst
+            mealSource.textContent = meal.source
+            weightEnergy.textContent = meal.mTEnergy
+            addedOn.textContent = meal.date
+            dailyCons.textContent = meal.mTFat
+
+
+            mealListElement.appendChild(row);
+            row.appendChild(nameCell); // displayer elementet i frontend
+            row.appendChild(mealSource);
+            row.appendChild(weightEnergy);
+            row.appendChild(addedOn);
+            row.appendChild(dailyCons);
+
+         }) 
+        })
+}
+
+
+
 let debounceTimerId;
-
-// let savedIngredients = JSON.parse(localStorage.getItem('ingredients')) || [];
-
-
-//Activities Search
-
-// document.addEventListener('DOMContentLoaded', function () {
-//     var inputElement = document.getElementById('activity-search');
-//     var resultsDiv = document.getElementById('searchResult');
-//     var debounceTimerId;
-
-//     inputElement.addEventListener('input', function () {
-//         clearTimeout(debounceTimerId);
-//         debounceTimerId = setTimeout(() => {
-//             var searchTerm = inputElement.value;
-//             if (searchTerm.length > 1) {
-//                 var filteredActivities = searchActivities(searchTerm);
-//                 displayResults(filteredActivities);
-//             } else {
-//                 resultsDiv.innerHTML = ''; // Clear results if input is too short
-//             }
-//         }, 400);
-//     });
-// });
-
-// function searchActivities(searchTerm) {
-//     return activities.filter(activity => activity.name.toLowerCase().includes(searchTerm.toLowerCase()));
-// }
-
-// function displayResults(filteredActivities) {
-//     var resultsDiv = document.getElementById('searchResult');
-//     resultsDiv.innerHTML = ''; // Clear previous results
-//     filteredActivities.forEach(activity => {
-//         var div = document.createElement('div');
-//         div.textContent = `${activity.name} - ${activity.calories} calories`;
-//         resultsDiv.appendChild(div);
-//     });
-// }
-
-
-
-
-
-// function selectActivity(name, calories) {
-//     document.getElementById('activity-search').value = ''; // Ryd søgefeltet
-//     document.getElementById('activity-list').innerHTML = ''; // Ryd listen
-
-//     // Vis den valgte aktivitet og gem kalorierne
-//     document.getElementById('activity-display').textContent = `${name} (${calories} kcal/time)`;
-//     document.getElementById('selected-activity-kcal').value = calories; // Antager du har dette hidden input
-// }
-
 
 
 // //Food Search
@@ -64,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
         debounceTimerId = setTimeout(() => {
             var searchTerm = inputElement.value;
             if (searchTerm.length > 1) {
-                fetch("/api/ingredient_search?searchTerm=" + searchTerm)
+                fetch("/api/addWeightToMeal?searchTerm=" + searchTerm)
                     .then(res => res.json())
                     .then((res) => {
                         console.log(res);
@@ -85,13 +76,13 @@ function displayResults(items) {
     items.forEach(item => {
         const resultItem = document.createElement('div');
         resultItem.classList.add('result-item');
-        resultItem.textContent = [i].name;
-        resultItem.onclick = function () { selectItem(meal); };
+        resultItem.textContent = mealData.name;
+        resultItem.onclick = function () { selectItem(item); };
         resultsContainer.appendChild(resultItem);
     });
 }
 
-function selectItem(meal) { // Here we can select the items from our API pull, which we are displaying in our html file. 
+function selectItem(item) { // Here we can select the items from our API pull, which we are displaying in our html file. 
     document.getElementById('searchInput').value = item.foodName;
     document.getElementById('selectedItem').textContent = `Selected Item: ${item.foodName}`;
     document.getElementById('searchResults').innerHTML = '';
@@ -133,51 +124,27 @@ document.getElementById('addIngredient').addEventListener('click', function () {
     // }
 
     let savedIngredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+
     let ingredientAlreadyExists = false;
 
-    savedIngredients.forEach(ingredient => {
-        if (ingredient.ingredientID === selectedItemData.ingredientID) {
-            console.log("Updating existing ingredient:", ingredient.foodName);
-            ingredient.weight += weight;
+    savedIngredients = savedIngredients.map(ingredient => {
+        if (ingredient.foodID === selectedItemData.foodID) {
+            ingredient.weight += weight; // Sum up the weights if already exists
             ingredientAlreadyExists = true;
-            updateListItem(ingredient);
+            updateListItem(ingredient); // Assuming this function updates the UI
         }
+        return ingredient;
     });
 
     if (!ingredientAlreadyExists) {
-        console.log("Adding new ingredient:", selectedItemData.foodName);
         savedIngredients.push(selectedItemData);
-        addItemToList(selectedItemData);
+        addItemToList(selectedItemData); // Assuming this function updates the UI
     }
 
-
-
-
-
-
-    // savedIngredients = savedIngredients.map(ingredient => {
-    //     if (ingredient.foodID === selectedItemData.foodID) {
-    //         ingredient.weight += weight; // Sum up the weights if already exists
-    //         ingredientAlreadyExists = true;
-    //         updateListItem(ingredient); // Assuming this function updates the UI
-    //     }
-    //     return ingredient;
-    // });
-
-    // if (!ingredientAlreadyExists) {
-    //     savedIngredients.push(selectedItemData);
-    //     addItemToList(selectedItemData); // Assuming this function updates the UI
-    // }
-
     // Save updated ingredient list to localStorage
-    // let IngredientsSaved = savedIngredients
     localStorage.setItem('ingredients', JSON.stringify(savedIngredients));
-    // console.log(IngredientsSaved);
     console.log('Updated selectedItemData with macros:', selectedItemData);
 });
-
-// Global variable to store ingredients
-// let ingredients = [];
 
 
 function addItemToList(item) {
@@ -210,9 +177,9 @@ function addItemToList(item) {
     deleteButton.textContent = 'Delete';
     deleteButton.classList.add('delete-button');
     deleteButton.onclick = function () {
-        console.log("Deleting item with ID:", item.ingredientID);
+        console.log("Deleting item with ID:", item.foodID);
         list.removeChild(listItem);
-        removeItemFromLocalStorage(item.ingredientID);
+        removeItemFromLocalStorage(item.foodID);
     };
 
     buttonContainer.appendChild(deleteButton);
@@ -224,13 +191,13 @@ function addItemToList(item) {
     list.appendChild(listItem);
 
     inspectButton.addEventListener('click', function () {
-        localStorage.setItem('selectedIngredientId', item.ingredientID);
+        localStorage.setItem('selectedIngredientId', item.foodID);
         window.location.href = 'foodInspect.html';
     });
 }
 
 function updateListItem(ingedient) {
-    const listItems = document.getElementsByClassName(`ingredient_${ingedient.ingredientID}`);
+    const listItems = document.getElementsByClassName(`ingredient_${ingedient.foodID}`);
 
     // dårlig kode 
     for (const listItem of listItems) {
@@ -245,7 +212,7 @@ function removeItemFromLocalStorage(itemId) {
     let ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
 
     // Filter the array, keeping only the ingredients whose id does NOT match the provided itemId
-    ingredients = ingredients.filter(ingredient => ingredient.foodID !== itemId);
+    //ingredients = ingredients.filter(ingredient => ingredient.foodID !== itemId);
 
     // Update the local storage with the new array of ingredients
     localStorage.setItem('ingredients', JSON.stringify(ingredients));
@@ -270,8 +237,6 @@ document.getElementById('recipeForm').addEventListener('submit', function (event
         ingredients
     };
 
-    console.log("Opskrifts Data:", postData);
-
     // Send the data using fetch API
     fetch('/api/ingredients', {
         method: 'POST',
@@ -280,49 +245,17 @@ document.getElementById('recipeForm').addEventListener('submit', function (event
         },
         body: JSON.stringify(postData)
     })
-        // fetch('/api/ingredients' + postData)
         .then(response => response.json())
         .then(data => console.log('Success:', data))
         .catch(error => console.error('Error:', error));
-
-
-    toggleModalVisibility()
 });
 
 
 
+//     document.addEventListener('DOMContentLoaded', () => {
+//         // Simulating fetching the meal data arra
 
+//         fetchMeals().then(mealData => {
 
-// function selectItem(item) {
-//     console.log('Selected:', item);
-//     
-// }
-
-
-
-
-
-// document.getElementById('searchInput').addEventListener('input', function (event) {
-//     clearTimeout(debounceTimerId);
-//     debounceTimerId = setTimeout(async () => {
-//         const searchTerm = event.target.value.trim();
-//         if (searchTerm.length > 1) {
-//             await index.connectedDatabase.searchFoodItems(searchTerm);
-//         } else {
-//             document.getElementById('searchResults').innerHTML = '';
-//         }
-//     }, 400);
-// });
-
-// async function index.connectedDatabase.searchFoodItems(searchTerm) {
-//     try {
-//         const response = await fetch(`http://your-api-url/search-food?term=${encodeURIComponent(searchTerm)}`);
-//         if (!response.ok) throw new Error('Failed to fetch');
-//         const items = await response.json();
-//         displayResults(items);
-//     } catch (error) {
-//         console.error('Error fetching food items:', error);
-//     }
-// }
-
-
+//     })
+// })

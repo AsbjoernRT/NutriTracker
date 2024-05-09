@@ -17,6 +17,8 @@ function showUserInfo() {
             }
 
             // Update age
+            console.log(data)
+
             console.log('Received data:', data);
             const ageDisplay = document.getElementById("age");
             if (ageDisplay) {
@@ -47,6 +49,7 @@ function showUserInfo() {
 }
 
 
+
 function deleteUser() {
     fetch('api/delete', {
         method: 'post',
@@ -70,7 +73,6 @@ function deleteUser() {
         alert('Failed to delete user');
     });
 }
-
 
 // function logout() {
 //     fetch('/logout', {
