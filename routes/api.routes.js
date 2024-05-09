@@ -5,7 +5,7 @@ import index from '../index.js';
 import { updateUser } from '../controller/user.js'
 import { deleteUser } from '../controller/user.js'
 import bodyParser from 'body-parser';
-import NutritionController from '../controllers/NutritionController.js';
+
 
 
 
@@ -123,21 +123,5 @@ router.get('/userinfo', (req, res) => {
 });
 
 
-router.get('/nutrition/:userId/:type/:period', async (req, res) => {
-    try {
-        // Udtræk dynamiske parametre fra URL'en
-        const { userId, type, period } = req.params;
-        
-        // Brug NutritionController til at hente ernæringsdata baseret på de angivne parametre
-        const data = await NutritionController.getNutritionData(userId, type, period);
-        
-        // Send ernæringsdata som JSON-respons
-        res.json(data);
-    } catch (error) {
-        // Håndter fejl, hvis der opstår en under hentning af data
-        console.error("Failed to fetch nutrition data", error);
-        res.status(500).send("Failed to fetch data");
-    }
-});
 
 export default router;
