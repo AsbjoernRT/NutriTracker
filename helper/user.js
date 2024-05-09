@@ -47,16 +47,13 @@ function showUserInfo() {
 }
 
 
-function deleteUser(userID) {
-
-    console.log(userID);
+function deleteUser() {
     fetch('api/delete', {
-        method: 'DELETE',
+        method: 'post',
         headers: {
             'Content-Type': 'application/json'
         },
-       
-        body: JSON.stringify({ userID: userID })
+        credentials: 'include' // Necessary if using cookies to manage session
     })
     .then(response => response.json())
     .then(data => {
@@ -73,6 +70,25 @@ function deleteUser(userID) {
         alert('Failed to delete user');
     });
 }
+
+
+// function logout() {
+//     fetch('/logout', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//     })
+//         .then(response => {
+//             if (response.ok) {
+//                 console.log('Logged out successfully');
+//                 window.location.href = '/login';
+//             } else {
+//                 throw new Error('Logout failed');
+//             }
+//         })
+//         .catch(error => console.error('Error:', error));
+// }
 
 
 // You can call this function when the DOM is fully loaded

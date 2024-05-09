@@ -134,6 +134,7 @@ document.getElementById('addIngredient').addEventListener('click', function () {
 
     let savedIngredients = JSON.parse(localStorage.getItem('ingredients')) || [];
 
+
     let ingredientAlreadyExists = false;
 
     savedIngredients = savedIngredients.map(ingredient => {
@@ -151,9 +152,14 @@ document.getElementById('addIngredient').addEventListener('click', function () {
     }
 
     // Save updated ingredient list to localStorage
+    // let IngredientsSaved = savedIngredients
     localStorage.setItem('ingredients', JSON.stringify(savedIngredients));
+    // console.log(IngredientsSaved);
     console.log('Updated selectedItemData with macros:', selectedItemData);
 });
+
+// Global variable to store ingredients
+// let ingredients = [];
 
 
 function addItemToList(item) {
@@ -227,7 +233,7 @@ function removeItemFromLocalStorage(itemId) {
     localStorage.setItem('ingredients', JSON.stringify(ingredients));
 }
 
-document.getElementById('recipeForm').addEventListener('submit', function(event) {
+document.getElementById('recipeForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent the default form submission behavior
 
     // Collecting the form data
@@ -243,8 +249,9 @@ document.getElementById('recipeForm').addEventListener('submit', function(event)
         recipeName,
         mealType,
         source,
-        ingredients
     };
+
+    console.log("Opskrifts Data:", postData );
 
     // Send the data using fetch API
     fetch('/api/ingredients', {
@@ -254,9 +261,10 @@ document.getElementById('recipeForm').addEventListener('submit', function(event)
         },
         body: JSON.stringify(postData)
     })
-    .then(response => response.json())
-    .then(data => console.log('Success:', data))
-    .catch(error => console.error('Error:', error));
+    // fetch('/api/ingredients' + postData)
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch(error => console.error('Error:', error));
 });
 
 

@@ -4,8 +4,14 @@ import { login } from '../controller/login.js';
 import index from '../index.js';
 import { updateUser } from '../controller/user.js'
 import { deleteUser } from '../controller/user.js'
+import bodyParser from 'body-parser';
+
+
+
 
 const router = express.Router();
+
+router.use(express.json());
 
 router.post('/register', (req, res) => {
     register(req.body, res)
@@ -29,6 +35,10 @@ router.get('/ingredient_search', async (req, res) => {
     }
 })
 
+router.post('/ingredients', async (req,res)=>{
+    console.log(req.body);
+})
+
 router.post('/settings/update', (req, res) => {
     updateUser(req);
 
@@ -39,18 +49,46 @@ router.post('/settings/update', (req, res) => {
     req.session.user.weight = weight
 
     req.session.user.gender = gender
-       
+
     res.redirect('/settings?userUpdated');
 });
 
 
 router.post('/delete', async (req, res) => {
-    
-    if (req.session.user && req.session.loggedin) {
+    console.log("Modtaget: ", req.session);
+    deleteUser(req);
 
-
+    if (req.session) {
+        req.session.destroy(err => {
+            if (err) {
+                res.status(500).send('Failed to log out');
+            } else {
+                res.clearCookie('connect.sid'); // Ensure you have the correct session cookie name
+                res.redirect('/login'); // Redirect to home page or login page
+            }
+        });
+    } else {
+        res.end('No session to log out');
     }
+
+
 });
+
+
+router.post('/logout', (req, res) => {
+    if (req.session) {
+      req.session.destroy(err => {
+        if (err) {
+          res.status(500).send('Failed to log out');
+        } else {
+          res.clearCookie('connect.sid'); // Ensure you have the correct session cookie name
+          res.redirect('/login'); // Redirect to home page or login page
+        }
+      });
+    } else {
+      res.end('No session to log out');
+    }
+  });
 // router.post('/updateUser', (req, res) => {
 //     const { age, weight, gender } = req.body
 
@@ -63,6 +101,8 @@ router.post('/delete', async (req, res) => {
 //     res.send("User Update")
 
 // });
+
+
 
 router.get('/userinfo', (req, res) => {
     if (req.session.user && req.session.loggedin) {

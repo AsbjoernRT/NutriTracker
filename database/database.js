@@ -228,7 +228,7 @@ export default class Database {
         .input('weight', sql.Decimal, weight)
         .input('gender', sql.NVarChar, gender)
         .input('metabolism', sql.Int, metabolism)
-        const result = await request.query(`UPDATE NutriDB.users SET age = @age, weight = @weight, gender = @gender, metabolism = @metabolism WHERE email = @email`);
+      const result = await request.query(`UPDATE NutriDB.users SET age = @age, weight = @weight, gender = @gender, metabolism = @metabolism WHERE email = @email`);
 
       if (result.rowsAffected[0] > 0) {
         return { success: true, message: 'User updated successfully' };
@@ -238,7 +238,8 @@ export default class Database {
     } catch (err) {
       console.error('Failed to update user:', err);
       throw new Error('Database operation failed');
-    }}
+    }
+  }
 
 
 
@@ -259,18 +260,40 @@ export default class Database {
   // }
 
   async deleteWithId(id, tableName) {
-      await this.connect();
+    await this.connect();
+
+    const idAsNumber = Number(id);
+
+    const request = this.poolconnection.request();
+    const result = await request
+      .input('id', sql.Int, idAsNumber)
+      .query(`DELETE FROM Person WHERE id = @id`);
+    //indsæt mere
+
+    return result.rowsAffected[0];
+  }
+
+
+  async deleteUserId(id) {
+    try {
+      await this.connect(); // Ensure there's error handling within this function.
 
       const idAsNumber = Number(id);
+      if (isNaN(idAsNumber)) {
+        throw new Error("Invalid ID provided");
+      }
 
       const request = this.poolconnection.request();
       const result = await request
         .input('id', sql.Int, idAsNumber)
-        .query(`DELETE FROM Person WHERE id = @id`);
-      //indsæt mere
+        .query(`DELETE FROM NutriDB.users WHERE UserId = @id`);
 
       return result.rowsAffected[0];
+    } catch (error) {
+      console.error('Failed to delete user:', error);
+      throw error; // rethrow or handle error appropriately
     }
-
-
   }
+
+
+}

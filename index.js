@@ -64,20 +64,20 @@ app.use('/api', apiRoutes)
 // app.use('/functions', functionsRoutes);
 
 // / Define the POST route for logout
-app.post('/logout', (req, res) => {
-  if (req.session) {
-    req.session.destroy(err => {
-      if (err) {
-        res.status(500).send('Failed to log out');
-      } else {
-        res.clearCookie('connect.sid'); // Ensure you have the correct session cookie name
-        res.redirect('/login'); // Redirect to home page or login page
-      }
-    });
-  } else {
-    res.end('No session to log out');
-  }
-});
+// app.post('/logout', (req, res) => {
+//   if (req.session) {
+//     req.session.destroy(err => {
+//       if (err) {
+//         res.status(500).send('Failed to log out');
+//       } else {
+//         res.clearCookie('connect.sid'); // Ensure you have the correct session cookie name
+//         res.redirect('/login'); // Redirect to home page or login page
+//       }
+//     });
+//   } else {
+//     res.end('No session to log out');
+//   }
+// });
 
 
 app.post('/calculateBMR', (req, res) => {

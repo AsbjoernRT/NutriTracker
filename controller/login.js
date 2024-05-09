@@ -66,9 +66,9 @@ export const login = async (req, res) => {
     }
 };
 
-export const logout=(req,res)=>{
-    req.session.destroy();
-    res.redirect('../login');
+// export const logout=(req,res)=>{
+//     req.session.destroy();
+//     res.redirect('../login');
     
-};
+// };
 
