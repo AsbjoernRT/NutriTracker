@@ -5,6 +5,7 @@ import index from '../index.js';
 import { updateUser } from '../controller/user.js'
 import { deleteUser } from '../controller/user.js'
 import bodyParser from 'body-parser';
+import {mealcreator} from '../controller/mealCreator.js'
 
 
 
@@ -35,8 +36,12 @@ router.get('/ingredient_search', async (req, res) => {
     }
 })
 
-router.post('/ingredients', async (req,res)=>{
-    console.log(req.body);
+router.post('/ingredients', async (req, res) => {
+
+    // console.log("Modtaget måltid: ", req.body);
+    // console.log("Person der logger: ", req.session.user.uersID);
+
+    mealcreator(req.body,req.session.user.userID, res)
 })
 
 router.post('/settings/update', (req, res) => {
@@ -77,18 +82,18 @@ router.post('/delete', async (req, res) => {
 
 router.post('/logout', (req, res) => {
     if (req.session) {
-      req.session.destroy(err => {
-        if (err) {
-          res.status(500).send('Failed to log out');
-        } else {
-          res.clearCookie('connect.sid'); // Ensure you have the correct session cookie name
-          res.redirect('/login'); // Redirect to home page or login page
-        }
-      });
+        req.session.destroy(err => {
+            if (err) {
+                res.status(500).send('Failed to log out');
+            } else {
+                res.clearCookie('connect.sid'); // Ensure you have the correct session cookie name
+                res.redirect('/login'); // Redirect to home page or login page
+            }
+        });
     } else {
-      res.end('No session to log out');
+        res.end('No session to log out');
     }
-  });
+});
 // router.post('/updateUser', (req, res) => {
 //     const { age, weight, gender } = req.body
 

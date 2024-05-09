@@ -249,6 +249,7 @@ document.getElementById('recipeForm').addEventListener('submit', function (event
         recipeName,
         mealType,
         source,
+        ingredients
     };
 
     console.log("Opskrifts Data:", postData );
