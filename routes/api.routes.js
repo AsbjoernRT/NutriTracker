@@ -3,7 +3,7 @@ import { register } from '../controller/register.js';
 import { login } from '../controller/login.js';
 import index from '../index.js';
 import { updateUser } from '../controller/user.js'
-
+import { deleteUser } from '../controller/user.js'
 
 const router = express.Router();
 
@@ -39,10 +39,9 @@ router.post('/settings/update', (req, res) => {
     req.session.user.weight = weight
 
     req.session.user.gender = gender
-
+       
     res.redirect('/settings?userUpdated');
 });
-
 // router.post('/updateUser', (req, res) => {
 //     const { age, weight, gender } = req.body
 

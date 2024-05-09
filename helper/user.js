@@ -18,6 +18,8 @@ function showUserInfo() {
 
             // Update age
             console.log(data)
+
+            console.log('Received data:', data);
             const ageDisplay = document.getElementById("age");
             if (ageDisplay) {
                 ageDisplay.textContent = data.age;
@@ -46,5 +48,8 @@ function showUserInfo() {
         });
 }
 
+
+
 // You can call this function when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', showUserInfo);
+
