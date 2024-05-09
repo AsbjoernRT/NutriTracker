@@ -5,7 +5,6 @@ import index from '../index.js';
 import { updateUser } from '../controller/user.js'
 import { deleteUser } from '../controller/user.js'
 import bodyParser from 'body-parser';
-import express from 'express';
 import NutritionController from '../controllers/NutritionController';
 
 
