@@ -93,7 +93,7 @@ export default class Database {
         .query(`
         SELECT * FROM [NutriDB].[meal]
         JOIN [NutriDB].[mealTracker] ON [NutriDB].[meal].mealID = [NutriDB].[mealTracker].mealID
-        WHERE [NutriDB].[meal].userID = 42`);
+        WHERE [NutriDB].[meal].userID = 46`);
 
       return result.recordset;
     } catch (error) {

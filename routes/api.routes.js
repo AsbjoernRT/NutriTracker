@@ -3,7 +3,6 @@ import { register } from '../controller/register.js';
 import { login } from '../controller/login.js';
 import index from '../index.js';
 import { updateUser } from '../controller/user.js'
-import { deleteUser } from '../controller/user.js'
 
 const router = express.Router();
 
