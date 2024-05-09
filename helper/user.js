@@ -17,6 +17,7 @@ function showUserInfo() {
             }
 
             // Update age
+            console.log(data)
             const ageDisplay = document.getElementById("age");
             if (ageDisplay) {
                 ageDisplay.textContent = data.age;
