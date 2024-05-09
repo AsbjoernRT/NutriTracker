@@ -852,3 +852,61 @@ select {
     border-color: rgb(130, 22, 22);
     /* Kanten af knappen */
 }
+
+
+
+/* daily nutri */
+.nutrition-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.nutrition-table th,
+.nutrition-table td {
+    
+    padding: 8px;
+    text-align: left;
+}
+
+/* Tilføj afrundede hjørner til første og sidste celle i hver række */
+.nutrition-table th:first-child,
+.nutrition-table td:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.nutrition-table th:last-child,
+.nutrition-table td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.nutrition-table th {
+    background-color: #f29A8A;
+    color: rgb(0, 0, 0);
+}
+
+
+/* Style for view-selector container */
+.view-selector {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Style for view buttons */
+.view-selector button {
+    background-color: #91c789; /* Baggrundsfarve */
+    color: white; /* Tekstfarve */
+    border: none;
+    padding: 10px 20px; /* Tilpas polstring efter behov */
+    font-size: 16px; /* Juster skriftstørrelsen efter behov */
+    border-radius: 5px; /* Afrundede hjørner */
+    cursor: pointer;
+    margin: 0 10px; /* Tilføj margen mellem knapper */
+}
+
+/* Style for view buttons on hover */
+.view-selector button:hover {
+    background-color: #7aa579; /* Ændrer baggrundsfarve ved hover */
+}
+
