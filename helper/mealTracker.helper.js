@@ -66,9 +66,7 @@ function fetchMeals() {
                 mealSource.textContent = meal.source
                 geoLocation.textContent = meal.geoLocation
 
-                let date = showDate(meal.date)
-
-                addedOn.textContent = date
+                addedOn.textContent = meal.date
 
 
 

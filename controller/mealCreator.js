@@ -118,7 +118,7 @@ export const getMeals = async (req,res) => {
             // Meal data is not in session, fetch it from the database
             try {
                 const userID = req.session.user.userID;
-                const meals = await index.connectedDatabase.getAllUserMeals(userID);
+                const meals = await index.connectedDatabase.getAllUserReceipies(userID);
                 console.log("Meals retrieved from the database:", meals);
 
                 // Assuming meals contain all required data

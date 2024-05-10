@@ -83,7 +83,7 @@ export default class Database {
   };
 
   // Finder alle oprettede måltider på baggrund af et userID og samler tabellerne meal, mealingredient og ingredients for at få et overblik over måltiderne
-  async getAllUserMeal(userID) {
+  async getAllUserMeals(userID) {
     try {
       await this.connect();
       const request = this.poolconnection.request();
@@ -223,7 +223,7 @@ export default class Database {
   }
 }
 
-async getAllUserMeals(userID) {
+async getAllUserReceipies(userID) {
   try {
     await this.connect();
     const request = this.poolconnection.request();

@@ -4,7 +4,6 @@ import { login } from '../controller/login.js';
 import index from '../index.js';
 import { updateUser } from '../controller/user.js'
 import { deleteUser } from '../controller/user.js'
-import bodyParser from 'body-parser';
 import {mealcreator, getMeals} from '../controller/mealCreator.js'
 
 
@@ -108,19 +107,6 @@ router.post('/logout', (req, res) => {
 
 router.get('/recipes',(req,res) => {
     getMeals(req,res)
-    // if (req.session.user && req.session.loggedin  && req.session.meal) {
-    //     res.json({
-    //         mealID: req.session.meal.mealId,
-    //         mealName: req.session.meal.mealName,
-    //         mealType: req.session.meal.mealType,
-    //         source: req.session.meal.source,
-    //         ingredients: req.session.meal.ingredients,
-    //         macrosPer100g: req.session.meal.macrosPer100g
-    //     })
-    // } else {
-        
-    //     res.status(401).json({ error: 'Unauthorized' }); // User not logged in
-    // }
 })
 
 
