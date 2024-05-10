@@ -15,16 +15,59 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function showRecipes() {
-// Make a single API call
-fetch('/api/recipes')
-.then(response => {
-    if (response.ok) {
-        return response.json();
+    // Make a single API call
+    fetch('/api/recipes')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data); // Log the received data
+            // Check if there are any recipes
+            if (data.length > 0) {
+                data.forEach(displayRecipes()); // Call a function to display the recipes
+            } else {
+                console.log('No recipes found.');
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error); // Log any errors that occur during the fetch operation
+        });
+}
+
+function displayRecipes(recipe) {
+        const list = document.getElementById('mealList');
+        const row = document.createElement('tr');
+        row.classList.add('recipe-row');
+    
+        // Set the background color based on the recipe type
+        // if (recipe.type === 'beverage') {
+        //     row.style.backgroundColor = '#99d9de'; // Blue for beverages
+        // } else if (recipe.type === 'food') {
+        //     row.style.backgroundColor = '#def6d8'; // Green for food
+        // }
+    
+        // Add cells and data for the meal name, etc.
+        addTableCell(row, recipe.name);
+        addTableCell(row, recipe.kcalPer100g?.toFixed(2) || 'N/A');
+        addTableCell(row, recipe.date ? new Date(recipe.date).toLocaleDateString() : 'Unknown Date');
+        addTableCell(row, recipe.ingredients?.length || 0);
+    
+        // Inspect, Edit, and Delete buttons with functionality
+        addInspectButton(row, recipe);
+        addEditButton(row, recipe);
+        addDeleteButton(row, recipe);
+    
+        list.appendChild(row);
     }
-    throw new Error('Network response was not ok.');
-})
-.then(data => {
-    console.log(data);})};
+    
+    function addTableCell(row, text) {
+        const cell = document.createElement('td');
+        cell.textContent = text;
+        row.appendChild(cell);
+    }
 //     // Update user name
 //     const nameDisplay = document.getElementById("");
 //     if (nameDisplay) {

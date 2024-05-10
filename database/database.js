@@ -222,12 +222,30 @@ export default class Database {
     throw error;
   }
 }
+
+async getAllUserMeals(userID) {
+  try {
+    await this.connect();
+    const request = this.poolconnection.request();
+    const result = await request
+    .input('userID', sql.Int, userID)
+    .query('SELECT M.*, MI.*, TN.* FROM NutriDB.meal AS M JOIN NutriDB.mealIngredient AS MI ON M.mealID = MI.mealID LEFT JOIN NutriDB.totalNutrientsForCreateMeal AS TN ON M.mealID = TN.mealID WHERE M.userID = @userID')
+  
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved hentning af brugerens måltider:', error);
+    throw error;
+  }
+}
+
+
   // Finder alle meals der er oprettet i mealTracker
   async getTrackedMeals(userID) {
     try {
       await this.connect();
       const request = this.poolconnection.request();
-      const result = await request.query('SELECT M.*, MT.* FROM NutriDB.meal AS M JOIN NutriDB.mealTracker AS MT ON M.mealID = MT.mealID WHERE M.userID = @userID', {
+      const result = await request.query
+      ('SELECT M.*, MT.* FROM NutriDB.meal AS M JOIN NutriDB.mealTracker AS MT ON M.mealID = MT.mealID WHERE M.userID = @userID', {
         userID: userID
       });
       return result.recordset;

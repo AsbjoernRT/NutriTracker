@@ -98,3 +98,46 @@ export const mealcreator = async (req, id, res) => {
     }
 };
 
+export const getMeals = async (req,res) => {
+    // Check if user is logged in
+    if (req.session.user && req.session.loggedin) {
+        // Check if meal data is available in the session
+        if (req.session.meal) {
+            console.log("Using cached meal data from session: ",req.session.meal );
+            res.json(req.session.meal, {
+                mealID: req.session.meal.mealId,
+                mealName: req.session.meal.mealName,
+                mealType: req.session.meal.mealType,
+                source: req.session.meal.source,
+                ingredients: req.session.meal.ingredients,
+                macrosPer100g: req.session.meal.macrosPer100g
+            });
+
+            
+        } else {
+            // Meal data is not in session, fetch it from the database
+            try {
+                const userID = req.session.user.userID;
+                const meals = await index.connectedDatabase.getAllUserMeals(userID);
+                console.log("Meals retrieved from the database:", meals);
+
+                // Assuming meals contain all required data
+                req.session.meal = meals;
+                req.session.save(err => {
+                    if (err) {
+                        console.error("Error saving session:", err);
+                        res.status(500).json({ error: 'Failed to save session data' });
+                    } else {
+                        res.json(meals);
+                    }
+                });
+            } catch (error) {
+                console.error("Failed to retrieve meals from the database:", error);
+                res.status(500).json({ error: 'Failed to retrieve data' });
+            }
+        }
+    } else {
+        // User is not logged in
+        res.status(401).json({ error: 'Unauthorized' });
+    }
+};

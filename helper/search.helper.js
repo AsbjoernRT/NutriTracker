@@ -85,13 +85,13 @@ function displayResults(items) {
     items.forEach(item => {
         const resultItem = document.createElement('div');
         resultItem.classList.add('result-item');
-        resultItem.textContent = [i].name;
-        resultItem.onclick = function () { selectItem(meal); };
+        resultItem.textContent = item.foodName;
+        resultItem.onclick = function () { selectItem(item); };
         resultsContainer.appendChild(resultItem);
     });
 }
 
-function selectItem(meal) { // Here we can select the items from our API pull, which we are displaying in our html file. 
+function selectItem(item) { // Here we can select the items from our API pull, which we are displaying in our html file. 
     document.getElementById('searchInput').value = item.foodName;
     document.getElementById('selectedItem').textContent = `Selected Item: ${item.foodName}`;
     document.getElementById('searchResults').innerHTML = '';
@@ -245,7 +245,7 @@ function removeItemFromLocalStorage(itemId) {
     let ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
 
     // Filter the array, keeping only the ingredients whose id does NOT match the provided itemId
-    ingredients = ingredients.filter(ingredient => ingredient.foodID !== itemId);
+    ingredients = ingredients.filter(ingredient => ingredient.ingredientID !== itemId);
 
     // Update the local storage with the new array of ingredients
     localStorage.setItem('ingredients', JSON.stringify(ingredients));
@@ -255,7 +255,7 @@ document.getElementById('recipeForm').addEventListener('submit', function (event
     event.preventDefault(); // Prevent the default form submission behavior
 
     // Collecting the form data
-    const recipeName = document.getElementById('nameInput').value;
+    const mealName = document.getElementById('nameInput').value;
     const mealType = document.getElementById('typeSelect').value;
     const source = document.getElementById('sourceInput').value;
 
@@ -264,7 +264,7 @@ document.getElementById('recipeForm').addEventListener('submit', function (event
 
     // Combine all data into one object
     const postData = {
-        recipeName,
+        mealName,
         mealType,
         source,
         ingredients
