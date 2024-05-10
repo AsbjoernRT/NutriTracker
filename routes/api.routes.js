@@ -5,7 +5,7 @@ import index from '../index.js';
 import { updateUser } from '../controller/user.js'
 import { deleteUser } from '../controller/user.js'
 import bodyParser from 'body-parser';
-import {mealcreator} from '../controller/mealCreator.js'
+import {mealcreator, getMeals} from '../controller/mealCreator.js'
 
 
 const router = express.Router();
@@ -107,23 +107,26 @@ router.post('/logout', (req, res) => {
 // });
 
 router.get('/recipes',(req,res)=>{
-    if (req.session.user && req.session.loggedin  && req.session.meal) {
-        res.json({
-            mealID: req.session.meal.mealId,
-            mealName: req.session.meal.mealName,
-            mealType: req.session.meal.mealType,
-            source: req.session.meal.source,
-            ingredients: req.session.meal.ingredients,
-            macrosPer100g: req.session.meal.macrosPer100g
-        })
-    } else {
+    getMeals(req,res)
+    // if (req.session.user && req.session.loggedin  && req.session.meal) {
+    //     res.json({
+    //         mealID: req.session.meal.mealId,
+    //         mealName: req.session.meal.mealName,
+    //         mealType: req.session.meal.mealType,
+    //         source: req.session.meal.source,
+    //         ingredients: req.session.meal.ingredients,
+    //         macrosPer100g: req.session.meal.macrosPer100g
+    //     })
+    // } else {
         
-        res.status(401).json({ error: 'Unauthorized' }); // User not logged in
-    }
+    //     res.status(401).json({ error: 'Unauthorized' }); // User not logged in
+    // }
 })
 
 
-router.get('/userinfo', (req, res) => {
+router.get('/userinfo', async  (req, res) => {
+    const userID = req.session.user.userID
+
     if (req.session.user && req.session.loggedin) {
         // getting the user info from session.
         res.json(
@@ -134,8 +137,11 @@ router.get('/userinfo', (req, res) => {
                 gender: req.session.user.gender
             });
     } else {
-        //error response.
-        res.status(401).json({ error: 'Unauthorized' }); // User not logged in
+        const result = await index.connectedDatabase.getAllUserMeals(userID)
+        // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
+        console.log("succes", result)
+        res.json(result)
+        // res.status(401).json({ error: 'Unauthorized' }); // User not logged in
     }
 
 });
