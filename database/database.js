@@ -74,7 +74,7 @@ export default class Database {
       const result = await request
         .input('searchTerm', sql.NVarChar, `%${ searchTerm }%`)
         .input('userID', sql.Int, userID)
-        .query('SELECT * FROM NutriDB.meal WHERE userID = @userID AND name LIKE searchTerm;');
+        .query('SELECT * FROM NutriDB.meal WHERE userID = 42 AND name LIKE @searchTerm;');
       return result.recordset;
     } catch (error) {
       console.error('Fejl ved søgning efter måltider:', error);
@@ -83,7 +83,7 @@ export default class Database {
   };
 
   // Finder alle oprettede måltider på baggrund af et userID og samler tabellerne meal, mealingredient og ingredients for at få et overblik over måltiderne
-  async getAllUserMeals(userID) {
+  async getAllUserMeal(userID) {
     try {
       await this.connect();
       const request = this.poolconnection.request();
@@ -93,7 +93,7 @@ export default class Database {
         .query(`
         SELECT * FROM [NutriDB].[meal]
         JOIN [NutriDB].[mealTracker] ON [NutriDB].[meal].mealID = [NutriDB].[mealTracker].mealID
-        WHERE [NutriDB].[meal].userID = 46`);
+        WHERE [NutriDB].[meal].userID = 42`);
 
       return result.recordset;
     } catch (error) {

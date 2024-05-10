@@ -5,7 +5,8 @@ import index from '../index.js';
 import { updateUser } from '../controller/user.js'
 import { deleteUser } from '../controller/user.js'
 import bodyParser from 'body-parser';
-import {mealcreator} from '../controller/mealCreator.js'
+import { mealcreator } from '../controller/mealCreator.js'
+
 
 
 const router = express.Router();
@@ -39,7 +40,7 @@ router.post('/ingredients', async (req, res) => {
     // console.log("Modtaget måltid: ", req.body);
     // console.log("Person der logger: ", req.session.user.uersID);
 
-    mealcreator(req,req.session.user.userID, res)
+    mealcreator(req, req.session.user.userID, res)
 })
 
 router.post('/settings/update', (req, res) => {
@@ -106,8 +107,8 @@ router.post('/logout', (req, res) => {
 
 // });
 
-router.get('/recipes',(req,res)=>{
-    if (req.session.user && req.session.loggedin  && req.session.meal) {
+router.get('/recipes', (req, res) => {
+    if (req.session.user && req.session.loggedin && req.session.meal) {
         res.json({
             mealID: req.session.meal.mealId,
             mealName: req.session.meal.mealName,
@@ -117,7 +118,7 @@ router.get('/recipes',(req,res)=>{
             macrosPer100g: req.session.meal.macrosPer100g
         })
     } else {
-        
+
         res.status(401).json({ error: 'Unauthorized' }); // User not logged in
     }
 })
@@ -164,18 +165,32 @@ router.get('/mealTracker', async (req, res) => {
 
 
 router.get('/addWeightToMeal', async (req, res) => {
+
+    console.log(req)
     const searchTerm = req.query.searchTerm
-    const userID = req.session.userID
-    
-    try {
+    const userID = 42
+
+    if (userID) {
         const result = await index.connectedDatabase.searchMeals(searchTerm, userID)
-        // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
-        console.log(result);
+        console.log("succes", result)
         res.json(result)
-    } catch (error) {
-        console.log(error);
+
+
+    } else {
+
+        res.status(401).json({ error: 'Unauthorized' }); // User not logged in
     }
-});
+
+})
+//     try {
+//         const result = await index.connectedDatabase.searchMeals(searchTerm, userID)
+//         // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
+//         console.log(result);
+//         res.json(result)
+//     } catch (error) {
+//         console.log(error);
+//     }
+
 
 
 
