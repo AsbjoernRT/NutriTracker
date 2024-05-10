@@ -320,8 +320,9 @@ thead th {
 /* Apply this to all elements to prevent padding and border from affecting width */
 * {
     box-sizing: border-box;
-} */
+}
 
+*/
 /* Dashboard CSS */
 
 #dashboard {
@@ -595,7 +596,8 @@ select {
 
 
 /* Table styling start*/
-#modal-wrapper {
+#modal-wrapper,
+#ingdredient-modal-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -629,7 +631,8 @@ select {
     height: fit-content;
 }
 
-#modal-wrapper.hide {
+#modal-wrapper.hide,
+#ingdredient-modal-wrapper.hide {
     display: none;
 }
 
@@ -773,21 +776,27 @@ td.meal-name {
 }
 
 /* General padding and alignment for all table headers and cells */
-table td, table th {
+table td,
+table th {
     padding: 10px;
     text-align: center;
     border: none;
 }
 
 /* Specific padding for the last three header and data cells */
-thead th:last-child, thead th:nth-last-child(2), thead th:nth-last-child(3),
-tbody td:last-child, tbody td:nth-last-child(2), tbody td:nth-last-child(3) {
+thead th:last-child,
+thead th:nth-last-child(2),
+thead th:nth-last-child(3),
+tbody td:last-child,
+tbody td:nth-last-child(2),
+tbody td:nth-last-child(3) {
     padding-right: 2px;
     padding-left: 2px;
 }
 
 /* Rounded corners for the first and last cells in each row */
-.recipe-row td:first-child div, .recipe-row td:last-child div {
+.recipe-row td:first-child div,
+.recipe-row td:last-child div {
     border-radius: 50px;
 }
 
@@ -913,7 +922,7 @@ tbody td:last-child, tbody td:nth-last-child(2), tbody td:nth-last-child(3) {
 
 .nutrition-table th,
 .nutrition-table td {
-    
+
     padding: 8px;
     text-align: left;
 }
@@ -945,22 +954,30 @@ tbody td:last-child, tbody td:nth-last-child(2), tbody td:nth-last-child(3) {
 
 /* Style for view buttons */
 .view-selector button {
-    background-color: #91c789; /* Baggrundsfarve */
-    color: white; /* Tekstfarve */
+    background-color: #91c789;
+    /* Baggrundsfarve */
+    color: white;
+    /* Tekstfarve */
     border: none;
-    padding: 10px 20px; /* Tilpas polstring efter behov */
-    font-size: 16px; /* Juster skriftstørrelsen efter behov */
-    border-radius: 5px; /* Afrundede hjørner */
+    padding: 10px 20px;
+    /* Tilpas polstring efter behov */
+    font-size: 16px;
+    /* Juster skriftstørrelsen efter behov */
+    border-radius: 5px;
+    /* Afrundede hjørner */
     cursor: pointer;
-    margin: 0 10px; /* Tilføj margen mellem knapper */
+    margin: 0 10px;
+    /* Tilføj margen mellem knapper */
 }
 
 /* Style for view buttons on hover */
 .view-selector button:hover {
-    background-color: #7aa579; /* Ændrer baggrundsfarve ved hover */
+    background-color: #7aa579;
+    /* Ændrer baggrundsfarve ved hover */
 }
 
-.meal-tracker .meal-header, .meal-tracker .meal-entry {
+.meal-tracker .meal-header,
+.meal-tracker .meal-entry {
     display: flex;
     justify-content: space-between;
     padding: 10px;
@@ -972,7 +989,7 @@ tbody td:last-child, tbody td:nth-last-child(2), tbody td:nth-last-child(3) {
     flex: 1;
     text-align: left;
     text-align: center;
-    padding: 0 10px; 
+    padding: 0 10px;
 }
 
 .meal-row {
@@ -984,13 +1001,16 @@ tbody td:last-child, tbody td:nth-last-child(2), tbody td:nth-last-child(3) {
 }
 
 .weight-energy div {
-    padding: 2px 0; 
+    padding: 2px 0;
     text-align: center;
 }
 
 .daily-cons-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Opretter to kolonner */
-    gap: 10px; /* Afstand mellem grid-elementer */
-    align-items: center; /* Centrerer elementerne vertikalt */
+    grid-template-columns: repeat(2, 1fr);
+    /* Opretter to kolonner */
+    gap: 10px;
+    /* Afstand mellem grid-elementer */
+    align-items: center;
+    /* Centrerer elementerne vertikalt */
 }

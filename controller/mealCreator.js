@@ -100,108 +100,140 @@ export const mealcreator = async (req, id, res) => {
 
 export const getMeals = async (req, res) => {
     // Check if user is logged in
-    if (req.session.user && req.session.loggedin) {
-        // Check if meal data is available in the session
-        if (req.session.meal) {
-            console.log("Using cached meal data from session: ", req.session.meal);
-            res.json(req.session.meal, {
-                mealID: req.session.meal.mealId,
-                mealName: req.session.meal.mealName,
-                mealType: req.session.meal.mealType,
-                source: req.session.meal.source,
-                ingredients: req.session.meal.ingredients,
-                macrosPer100g: req.session.meal.macrosPer100g
-            });
+    if (!req.session.user || !req.session.loggedin) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    // Check if meal data is available in the session
+    // if (req.session.meal) {
+    //     console.log("Using cached meal data from session: ", req.session.meal);
+    //     res.json(req.session.meal, {
+    //         mealID: req.session.meal.mealId,
+    //         mealName: req.session.meal.mealName,
+    //         mealType: req.session.meal.mealType,
+    //         source: req.session.meal.source,
+    //         ingredients: req.session.meal.ingredients,
+    //         macrosPer100g: req.session.meal.macrosPer100g
+    //     });
+    // Meal data is not in session, fetch it from the database
+    try {
+        const userID = req.session.user.userID;
+        const meals = await index.connectedDatabase.getAllUserRecipes(userID);
 
 
-        } else {
-            // Meal data is not in session, fetch it from the database
-            try {
-                const userID = req.session.user.userID;
-                const meals = await index.connectedDatabase.getAllUserRecipes(userID);
+        console.log("Meals retrieved from the database:", meals);
 
+        const groupedMeals = meals.reduce((acc, item) => {
+            const { mealID, name, userID, mealType, source, mealCategory, ingredientID, foodName, mealIngredientID, quantity, tEnergyKj,
+                tProtein,
+                tFat,
+                tFiber,
+                tEnergyKcal,
+                tWater,
+                tDryMatter,
+                cEnergyKj,
+                cProtein,
+                cFat,
+                cFiber,
+                cEnergyKcal,
+                cWater,
+                cDryMatter,
+                ...otherNutrients
+            } = item;
 
-                console.log("Meals retrieved from the database:", meals);
+            // Check if mealID is an array and take the first element, or use it as is if it's not
+            const uniqueMealID = Array.isArray(mealID) ? mealID[0] : mealID;
 
-                const groupedMeals = meals.reduce((acc, item) => {
-                    const { mealID, name, userID, mealType, source, mealCategory, ingredientID, mealIngredientID, quantity, tEnergyKj,
+            if (!acc[uniqueMealID]) {
+                acc[uniqueMealID] = {
+                    mealID: uniqueMealID, // Assign mealID directly as an integer
+                    name,
+                    userID,
+                    mealType,
+                    source,
+                    mealCategory,
+                    ingredients: [],
+                    ingredientCount: 0,  // Initialize the counter
+                    totalNutrients: {
+                        tEnergyKj,
                         tProtein,
                         tFat,
                         tFiber,
                         tEnergyKcal,
                         tWater,
                         tDryMatter,
-                        ...otherNutrients
-                      } = item;
-
-                    // Check if mealID is an array and take the first element, or use it as is if it's not
-                    const uniqueMealID = Array.isArray(mealID) ? mealID[0] : mealID;
-
-                    if (!acc[uniqueMealID]) {
-                        acc[uniqueMealID] = {
-                            mealID: uniqueMealID, // Assign mealID directly as an integer
-                            name,
-                            userID,
-                            mealType,
-                            source,
-                            mealCategory,
-                            ingredients: [],
-                            ingredientCount: 0,  // Initialize the counter
-                            totalNutrients: {
-                                tEnergyKj,
-                                tProtein,
-                                tFat,
-                                tFiber,
-                                tEnergyKcal,
-                                tWater,
-                                tDryMatter,
-                              }
-                        };
+                    },
+                    aggregatedNutrients: {
+                        aEnergyKj: 0,
+                        aProtein: 0,
+                        aFat: 0,
+                        aFiber: 0,
+                        aEnergyKcal: 0,
+                        aWater: 0,
+                        aDryMatter: 0,
+                        aQuanity:0
                     }
-                    acc[uniqueMealID].ingredients.push({
-                        ingredientID,
-                        mealIngredientID,
-                        quantity,
-                        nutritionalValues: {
-                            tEnergyKj,
-                            tProtein,
-                            tFat,
-                            tFiber,
-                            tEnergyKcal,
-                            tWater,
-                            tDryMatter,
-                            ...otherNutrients
-                          }
-                    });
-
-                    acc[uniqueMealID].ingredientCount++;
-
-                    return acc;
-                }, {});
-
-                const formattedMeals = Object.values(groupedMeals);
-
-                console.log(formattedMeals);
-
-                res.json(groupedMeals);
-
-                // // Assuming meals contain all required data
-                // req.session.meal = meals;
-                // req.session.save(err => {
-                //     if (err) {
-                //         console.error("Error saving session:", err);
-                //         res.status(500).json({ error: 'Failed to save session data' });
-                //     } else {
-                //         res.json(meals);
-                //     }
-                // });
-            } catch (error) {
-                console.error("Failed to retrieve meals from the database:", error);
-                res.status(500).json({ error: 'Failed to retrieve data' });
+                };
             }
-        }
-    } else {
-        // User is not logged in
-        res.status(401).json({ error: 'Unauthorized' });
+            acc[uniqueMealID].ingredients.push({
+                ingredientID,
+                foodName,
+                mealIngredientID,
+                quantity,
+                nutritionalValues: {
+                    cEnergyKj,
+                    cProtein,
+                    cFat,
+                    cFiber,
+                    cEnergyKcal,
+                    cWater,
+                    cDryMatter,
+                }
+            });
+
+            // Increment ingredient count
+            acc[uniqueMealID].ingredientCount++;
+
+            // Aggregate nutrient totals
+            acc[uniqueMealID].aggregatedNutrients.aEnergyKj += cEnergyKj;
+            acc[uniqueMealID].aggregatedNutrients.aProtein += cProtein;
+            acc[uniqueMealID].aggregatedNutrients.aFat += cFat;
+            acc[uniqueMealID].aggregatedNutrients.aFiber += cFiber;
+            acc[uniqueMealID].aggregatedNutrients.aEnergyKcal += cEnergyKcal;
+            acc[uniqueMealID].aggregatedNutrients.aWater += cWater;
+            acc[uniqueMealID].aggregatedNutrients.aDryMatter += cDryMatter;
+            acc[uniqueMealID].aggregatedNutrients.aQuanity += quantity;
+
+            return acc;
+        }, {});
+
+        const formattedMeals = Object.values(groupedMeals);
+
+        console.log(formattedMeals);
+
+        res.json(groupedMeals);
+
+        // // Assuming meals contain all required data
+        // req.session.meal = meals;
+        // req.session.save(err => {
+        //     if (err) {
+        //         console.error("Error saving session:", err);
+        //         res.status(500).json({ error: 'Failed to save session data' });
+        //     } else {
+        //         res.json(meals);
+        //     }
+        // });
+    } catch (error) {
+        console.error("Failed to retrieve meals from the database:", error);
+        res.status(500).json({ error: 'Failed to retrieve data' });
     }
 };
+
+
+export const deleteMeal = async (req, res) => {
+    // console.log("Back-end Modtaget: ",req.body.mealID);
+    const userID = req.session.user.userID
+    const mealID = req.body.mealID
+    console.log("Back-end Modtaget: ", userID, "&", mealID);
+    const deleteMeal = await index.connectedDatabase.deleteMeal(mealID, userID);
+    console.log(deleteMeal);
+}

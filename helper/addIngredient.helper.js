@@ -97,6 +97,8 @@ function selectItem(item) { // Here we can select the items from our API pull, w
     document.getElementById('selectedItem').textContent = `Selected Item: ${item.foodName}`;
     document.getElementById('searchResults').innerHTML = '';
 
+    // console.log("this: ", item);
+
     return selectedItemData = {
         foodName: item.foodName,
         ingredientID: item.ingredientID,
@@ -192,7 +194,10 @@ function addItemToList(item) {
 
     // Text content container
     const textContent = document.createElement('span');
-    textContent.textContent = `Ingredint: ${item.foodName}, Weight: ${item.weight}g`;
+     // Assume the default unit is grams and format the output
+     const weight = item.weight || item.quantity; // Default to quantity if weight is missing
+     const unit = item.weight ? 'g' : 'g'; 
+    textContent.textContent = `Ingredint: ${item.foodName}, Weight: ${weight}${unit} g`;
     listItem.appendChild(textContent);
 
     // Button container

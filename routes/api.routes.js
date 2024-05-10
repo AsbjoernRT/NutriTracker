@@ -5,7 +5,7 @@ import index from '../index.js';
 import { updateUser } from '../controller/user.js'
 import { deleteUser } from '../controller/user.js'
 import bodyParser from 'body-parser';
-import {mealcreator, getMeals} from '../controller/mealCreator.js'
+import { mealcreator, getMeals, deleteMeal } from '../controller/mealCreator.js'
 
 
 const router = express.Router();
@@ -20,26 +20,6 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
     login(req, res);
     // console.log("Register:",req.body);
-})
-
-router.get('/ingredient_search', async (req, res) => {
-    // console.log(req);
-    try {
-        const result = await index.connectedDatabase.searchIngredients(req.query.searchTerm)
-        // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
-        console.log(result);
-        res.json(result)
-    } catch (error) {
-        console.log(error);
-    }
-})
-
-router.post('/ingredients', async (req, res) => {
-
-    // console.log("Modtaget måltid: ", req.body);
-    // console.log("Person der logger: ", req.session.user.uersID);
-
-    mealcreator(req, req.session.user.userID, res)
 })
 
 router.post('/settings/update', (req, res) => {
@@ -106,8 +86,35 @@ router.post('/logout', (req, res) => {
 
 // });
 
-router.get('/recipes',(req,res) => {
-    getMeals(req,res)
+router.get('/ingredient_search', async (req, res) => {
+    // console.log(req);
+    try {
+        const result = await index.connectedDatabase.searchIngredients(req.query.searchTerm)
+        // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
+        console.log(result);
+        res.json(result)
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+router.post('/ingredients', async (req, res) => {
+
+    // console.log("Modtaget måltid: ", req.body);
+    // console.log("Person der logger: ", req.session.user.uersID);
+
+    mealcreator(req, req.session.user.userID, res)
+})
+
+router.post('/deleteMeal', async (req, res) => {
+    console.log(req);
+    deleteMeal(req, res)
+})
+
+
+
+router.get('/recipes', (req, res) => {
+    getMeals(req, res)
     // if (req.session.user && req.session.loggedin  && req.session.meal) {
     //     res.json({
     //         mealID: req.session.meal.mealId,
@@ -118,13 +125,13 @@ router.get('/recipes',(req,res) => {
     //         macrosPer100g: req.session.meal.macrosPer100g
     //     })
     // } else {
-        
+
     //     res.status(401).json({ error: 'Unauthorized' }); // User not logged in
     // }
 })
 
 
-router.get('/userinfo', async  (req, res) => {
+router.get('/userinfo', async (req, res) => {
     const userID = req.session.user.userID
 
     if (req.session.user && req.session.loggedin) {

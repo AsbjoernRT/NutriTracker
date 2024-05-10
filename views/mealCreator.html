@@ -87,6 +87,8 @@
                     </div>
                     <div id="recipeButtonContainer">
                         <button type="submit" id="addRecipe">Add Recipe</button>
+
+                        <button id="editRecipe">Edit Recipe</button>
                     </div>
                 </div>
             </form>
@@ -95,17 +97,26 @@
         </div>
     </modal>
 
-    <modal id="modal-wrapper" class="inspect-list hide">
+    <modal id="ingdredient-modal-wrapper" class="inspect-list hide">
         <div class="modal-content-wrapper">
             <div id="inspection-list-close-btn" class="modal-close-wrapper">
-                <button type="button" class="modal-close-btn">X</button>
+                <button type="button" class="modal-close-btn" onclick=toggleIngredientList()>X</button>
             </div>
 
             <div id="modal-content">
                 <table>
                     <thead id="mealInspectionListHead">
+                        <h2>Ingredients and Macros pr. 100g</h2>
                         <tr>
                             <th>Meal Name</th>
+                            <th>Weight (g)</th>
+                            <th>Dry Matter</th>
+                            <th>Energy (kcal)</th>
+                            <th>Energy (kJ)</th>
+                            <th>Fat</th>
+                            <th>Fiber</th>
+                            <th>Protein</th>
+                            <th>Water</th>
                         </tr>
                     </thead>
                     <tbody id="mealInspectionListBody"></tbody>

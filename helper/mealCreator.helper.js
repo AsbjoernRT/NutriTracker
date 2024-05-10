@@ -54,7 +54,16 @@ function displayRecipes(recipe) {
     const inspectButton = document.createElement('button');
     inspectButton.addEventListener('click', () => {
         console.log('inspecting', recipe);
-        document.getElementsByClassName('inspect-list')[0].classList.toggle('hide');
+        const modal = document.getElementsByClassName('inspect-list')[0];
+        const isHidden = modal.classList.toggle('hide');
+
+        modal.setAttribute('aria-hidden', isHidden);
+        if (!isHidden) {
+            modal.querySelector('button, input, select, textarea, a[href], area[href], iframe, object, embed, [tabindex="0"], [contenteditable]').focus();
+        } else {
+            inspectButton.focus();
+        }
+
 
         const inspectionListTable = document.getElementById('mealInspectionListBody');
 
@@ -64,37 +73,89 @@ function displayRecipes(recipe) {
 
             // Meal name
             const nameCell = document.createElement('td');
-            nameCell.textContent = ingredient.foodName;
+            nameCell.textContent = ingredient.foodName || 'No name provided';  // Provide a default value
             ingredientRow.appendChild(nameCell);
 
-            // Check if calculatedMacro exists and then iterate over it
-            if (ingredient && ingredient.calculatedMacro) {
-                Object.keys(ingredient.calculatedMacro).forEach(macroKey => {
+            // Meal name
+            const weightCell = document.createElement('td');
+            weightCell.textContent = ingredient.quantity ? `${ingredient.quantity} g` : 'No data';
+            ingredientRow.appendChild(weightCell);
+
+            // Check if nutritionalValues exists and is an object before iterating over it
+            if (ingredient && typeof ingredient.nutritionalValues === 'object' && ingredient.nutritionalValues !== null) {
+                const nutrientsOfInterest = ['cDryMatter', 'cEnergyKcal', 'cEnergyKj', 'cFat', 'cFiber', 'cProtein', 'cWater'];
+                nutrientsOfInterest.forEach(macroKey => {
                     const cell = document.createElement('td');
-                    cell.textContent = ingredient.calculatedMacro[macroKey].toPrecision(3);
+                    if (typeof ingredient.nutritionalValues[macroKey] === 'number') {
+                        cell.textContent = ingredient.nutritionalValues[macroKey].toFixed(2);
+                    } else {
+                        cell.textContent = 'N/A';  // Handling missing or non-numeric data
+                    }
                     ingredientRow.appendChild(cell);
                 });
+            } else {
+                // If nutritionalValues is missing or invalid, fill in cells with 'N/A'
+                const nutrientsOfInterest = ['cDryMatter', 'cEnergyKcal', 'cEnergyKj', 'cFat', 'cFiber', 'cProtein', 'cWater'];
+                nutrientsOfInterest.forEach(() => {
+                    const cell = document.createElement('td');
+                    cell.textContent = 'N/A';
+                    ingredientRow.appendChild(cell);
+                });
+
             }
 
+            // Append the completed row to the table body
             inspectionListTable.appendChild(ingredientRow);
         });
 
+        // Sum row for total nutrients
         const sumRow = document.createElement('tr');
-        //total name
-        const nameCell = document.createElement('td');
-        nameCell.innerHTML = '<b>Recipe Total<b/>'
-        sumRow.appendChild(nameCell);
+        sumRow.id = 'summaryRow';
+        const totalNameCell = document.createElement('td');
+        totalNameCell.innerHTML = '<b>Recipe Total</b>';  // Corrected closing tag
+        sumRow.appendChild(totalNameCell);
 
-        //add the summed macros for the 
-        Object.keys(recipe.totalMacros).forEach(macroKey => {
+        // Add the summed macros for the recipe
+        const nutrientsOfInterest = ['aQuanity', 'aDryMatter', 'aEnergyKcal', 'aEnergyKj', 'aFat', 'aFiber', 'aProtein', 'aWater'];
+        nutrientsOfInterest.forEach(macroKey => {
             const cell = document.createElement('td');
-            cell.innerHTML = '<b>' + recipe.totalMacros[macroKey].toPrecision(3) + '<b/>';
+            if (recipe.totalNutrients && typeof recipe.aggregatedNutrients[macroKey] === 'number') {
+                cell.innerHTML = `${recipe.aggregatedNutrients[macroKey].toFixed(2)}`;  // Corrected string formatting and closing tag
+            } else {
+                cell.innerHTML = '<b>N/A</b>';
+            }
             sumRow.appendChild(cell);
-        })
+        });
 
         inspectionListTable.appendChild(sumRow);
 
+
+        const table = document.getElementById('summaryRow');
+        // console.log(table);
+        const lastRow = table.getElementsByTagName('td')[1];  // Gets the last <tr> in the table
+        // console.log(lastRow);
+        // const Quantity = parseFloat(recipe.aggregatedNutrientst.aQuanity) || 0;
+        lastRow.innerHTML = `${recipe.aggregatedNutrients.aQuanity} g`
+
+
+
+        const closeButton = document.querySelector('.modal-close-btn');
+        closeButton.addEventListener('click', () => {
+            const modal = document.getElementsByClassName('inspect-list')[0];
+            modal.classList.add('hide');
+            modal.setAttribute('aria-hidden', true);
+            inspectButton.focus(); // Set focus back to the inspect button
+            // Clear the content of the table within the modal
+            clearModalTables();
+        });
+        function clearModalTables() {
+            const tables = document.querySelectorAll('.inspect-list table tbody');
+            tables.forEach(table => {
+                table.innerHTML = '';  // Clear the contents of each table body
+            });
+        }
     });
+
 
     inspectButton.textContent = 'Inspect';
     inspectButton.classList.add('inspect-button');
@@ -103,13 +164,15 @@ function displayRecipes(recipe) {
     row.appendChild(inspectCell);
 
 
-    // Create an edit button
+    //  Create an edit button
     const editCell = document.createElement('td');
     const editButton = document.createElement('button');
     editButton.addEventListener('click', () => {
         // Set modalType to 'edit'
         modalType = 'edit';
 
+        console.log(recipe);
+        localStorage.setItem('ingredients', JSON.stringify(recipe.ingredients));
         // populate modal with recipe
         document.getElementById("nameInput").value = recipe.name;
         document.getElementById("typeSelect").value = recipe.mealType;
@@ -142,6 +205,9 @@ function displayRecipes(recipe) {
     editCell.appendChild(editButton)
     row.appendChild(editCell);
 
+
+
+
     // Create a delete button
     const deleteCell = document.createElement('td');
     const deleteButton = document.createElement('button');
@@ -152,7 +218,7 @@ function displayRecipes(recipe) {
     deleteButton.addEventListener('click', function () {
         // Logic to handle recipe deletion
 
-        deleteRecipe(recipe.name);
+        deleteRecipe(recipe.mealID);
         row.remove();
     });
 
@@ -167,4 +233,50 @@ function addTableCell(row, text) {
     const cell = document.createElement('td');
     cell.textContent = text;
     row.appendChild(cell);
+}
+
+function deleteRecipe(mealID) {
+    console.log("Deleting meal with ID:", mealID);
+
+    const mealToDelete = JSON.stringify({ mealID });
+
+    fetch('/api/deleteMeal', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: mealToDelete
+    })
+        // fetch('/api/ingredients' + postData)
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch(error => console.error('Error:', error));
+    // try {
+    //     console.log("Deleting recipe:", mealID);
+    //     let recipes = JSON.parse(localStorage.getItem('recipes')) || [];
+    //     let recipeCounts = JSON.parse(localStorage.getItem('mealCounts')) || {};
+
+    //     // Find index of the recipe to be deleted
+    //     const recipeIndex = recipes.findIndex(recipe => recipe.name === recipeName);
+
+    //     // If found, update the counter and remove the recipe
+    //     if (recipeIndex > -1) {
+    //         let identifier = getRecipeIdentifier(recipes[recipeIndex]);
+    //         recipeCounts[identifier] = Math.max(0, (recipeCounts[identifier] || 0) - 1);
+
+    //         // Remove the recipe from the array
+    //         recipes.splice(recipeIndex, 1);
+
+
+    //     }
+
+    //     // Save the updated lists back to localStorage
+    //     localStorage.setItem('recipes', JSON.stringify(recipes));
+    //     localStorage.setItem('mealCounts', JSON.stringify(recipeCounts));
+
+    //     console.log("Updated recipes after deletion:", recipes);
+    //     refreshRecipeList();
+    // } catch (error) {
+    //     console.error("Error during recipe deletion:", error);
+    // }
 }

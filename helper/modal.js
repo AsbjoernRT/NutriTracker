@@ -4,13 +4,13 @@ function toggleModalVisibility() {
     localStorage.clear();
     console.log('toggleModalVisibility');
     const ingredientList = document.getElementById('ingredientList');
-    // const editRecipe = document.getElementById('editRecipe');
+    const editRecipe = document.getElementById('editRecipe');
     const addRecipe = document.getElementById('addRecipe');
     const modalWrapper = document.getElementById('modal-wrapper');
 
     if (ingredientList && addRecipe && modalWrapper) {
         ingredientList.innerHTML = '';
-        // editRecipe.classList.add('hide');
+        editRecipe.classList.add('hide');
         addRecipe.classList.remove('hide');
         modalWrapper.classList.toggle('hide');
     } else {
@@ -24,6 +24,16 @@ function toggleModalVisibilitySettings() {
     if (modalWrapper) {
         modalWrapper.classList.toggle('hide');
         showUserInfo()
+    }
+}
+
+function toggleIngredientList(){
+    const modalWrapper = document.getElementById('ingdredient-modal-wrapper');
+
+    if(modalWrapper){
+        modalWrapper.classList.toggle('hide');
+    }else {
+        console.error('One or more elements are missing in the DOM');
     }
 }
 
