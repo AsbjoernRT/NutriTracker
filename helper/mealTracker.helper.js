@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     fetchMeals();  // Call fetchMeals when the DOM is fully loaded
 });
 
@@ -13,29 +13,74 @@ function fetchMeals() {
             // Update your UI accordingly
             const mealListElement = document.getElementById('meal-item')
             mealData.forEach(meal => { // Looper mealData objektet
-                const row = document.createElement('tr'); // Laver en ny række
-                const nameCell = document.createElement('td');
-                const mealSource = document.createElement('td');
-                const weightEnergy = document.createElement('td'); // Laver en TD
-                const addedOn = document.createElement('td');
-                const dailyCons = document.createElement('td');
+                const row = document.createElement('div');
+                row.className = 'meal-row';  // Tilføjer en klasse til rækken
+
+                const nameCell = document.createElement('div');
+                nameCell.className = 'meal-column';  // Ensartet styling med header
+                const mealSource = document.createElement('div');
+                mealSource.className = 'meal-column';
+                const weightEnergyCell = document.createElement('div');
+                weightEnergyCell.className = 'meal-column weight-energy';
+                const weight = document.createElement('div');
+                const energy = document.createElement('div');
+
+                weight.textContent = meal.quantity + 'g'
+                energy.textContent = meal.mTEnergyKcal + 'kcal'
+
+                weightEnergyCell.appendChild(weight);
+                weightEnergyCell.appendChild(energy);
+
+                weight.className = 'meal-column';
+
+                const geoLocation = document.createElement('div');
+                geoLocation.className = 'meal-column';
+
+                const addedOn = document.createElement('div');
+                addedOn.className = 'meal-column';
 
 
-            nameCell.textContent = meal.name // displayer tekst
-            mealSource.textContent = meal.source
-            weightEnergy.textContent = meal.mTEnergy
-            addedOn.textContent = meal.date
-            dailyCons.textContent = meal.mTFat
+                const dailyCons = document.createElement('div');
+                dailyCons.className = 'meal-column daily-cons-grid';
+                const dailyConsEnergy = document.createElement('div');
+                const dailyConsprotein = document.createElement('div');
+                const dailyConsfat = document.createElement('div');
+                const dailyConsfiber = document.createElement('div');
+
+                dailyConsEnergy.textContent = meal.mTEnergyKj + 'kj'
+                dailyConsprotein.textContent = meal.mTProtein + 'g'
+                dailyConsfat.textContent = meal.mTFat + 'g'
+                dailyConsfiber.textContent = meal.mTFiber + 'g'
+
+                dailyCons.appendChild(dailyConsEnergy);
+                dailyCons.appendChild(dailyConsprotein);
+                dailyCons.appendChild(dailyConsfat);
+                dailyCons.appendChild(dailyConsfiber);
+
+                
+                const buttonCell = document.createElement('div');
+                buttonCell.className = 'button-column';
 
 
-            mealListElement.appendChild(row);
-            row.appendChild(nameCell); // displayer elementet i frontend
-            row.appendChild(mealSource);
-            row.appendChild(weightEnergy);
-            row.appendChild(addedOn);
-            row.appendChild(dailyCons);
+                nameCell.textContent = meal.name // displayer tekst
+                mealSource.textContent = meal.source
+                geoLocation.textContent = meal.geoLocation
 
-         }) 
+                let date = showDate(meal.date)
+
+                addedOn.textContent = date
+
+
+
+                mealListElement.appendChild(row);
+                row.appendChild(nameCell); // displayer elementet i frontend
+                row.appendChild(mealSource);
+                row.appendChild(weightEnergyCell);
+                row.appendChild(geoLocation);
+                row.appendChild(addedOn);
+                row.appendChild(dailyCons);
+
+            })
         })
 }
 
@@ -68,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// ?searchTerm=" + searchTerm
 
 function displayResults(items) {
     const resultsContainer = document.getElementById('searchResults');
@@ -76,15 +122,15 @@ function displayResults(items) {
     items.forEach(item => {
         const resultItem = document.createElement('div');
         resultItem.classList.add('result-item');
-        resultItem.textContent = mealData.name;
+        resultItem.textContent = item.name;
         resultItem.onclick = function () { selectItem(item); };
         resultsContainer.appendChild(resultItem);
     });
 }
 
 function selectItem(item) { // Here we can select the items from our API pull, which we are displaying in our html file. 
-    document.getElementById('searchInput').value = item.foodName;
-    document.getElementById('selectedItem').textContent = `Selected Item: ${item.foodName}`;
+    document.getElementById('searchInput').value = item.name;
+    document.getElementById('selectedItem').textContent = `Selected Item: ${item.name}`;
     document.getElementById('searchResults').innerHTML = '';
 
     return selectedItemData = {
