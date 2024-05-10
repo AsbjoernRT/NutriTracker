@@ -223,7 +223,7 @@ export default class Database {
   }
 }
 
-async getAllUserMeals(userID) {
+async getAllUserRecipes(userID) {
   try {
     await this.connect();
     const request = this.poolconnection.request();

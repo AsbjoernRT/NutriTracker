@@ -54,7 +54,8 @@ let debounceTimerId;
 
 
 // //Food Search
-document.addEventListener('DOMContentLoaded', function () {
+// document.addEventListener('DOMContentLoaded', function () {
+    function IngredientSearch() {
     var inputElement = document.getElementById('searchInput');
     var resultsDiv = document.getElementById('searchResults');
     var debounceTimerId;
@@ -75,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }, 200);
     });
-});
+};
 
 
 function displayResults(items) {

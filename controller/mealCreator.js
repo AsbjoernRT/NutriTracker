@@ -66,12 +66,12 @@ export const mealcreator = async (req, id, res) => {
         console.log(macrosPer100g.dryMatterPer100g);
 
         // Call the SQL function to update macro totals in the database
-        const macroResult = await index.connectedDatabase.postCmacroMeal(mealID, 
-            macrosPer100g.energyKjPer100g, 
-            macrosPer100g.proteinPer100g, 
-            macrosPer100g.fatPer100g, 
-            macrosPer100g.fiberPer100g, 
-            macrosPer100g.energyKcalPer100g, 
+        const macroResult = await index.connectedDatabase.postCmacroMeal(mealID,
+            macrosPer100g.energyKjPer100g,
+            macrosPer100g.proteinPer100g,
+            macrosPer100g.fatPer100g,
+            macrosPer100g.fiberPer100g,
+            macrosPer100g.energyKcalPer100g,
             macrosPer100g.waterPer100g,
             macrosPer100g.dryMatterPer100g);
 
@@ -98,12 +98,12 @@ export const mealcreator = async (req, id, res) => {
     }
 };
 
-export const getMeals = async (req,res) => {
+export const getMeals = async (req, res) => {
     // Check if user is logged in
     if (req.session.user && req.session.loggedin) {
         // Check if meal data is available in the session
         if (req.session.meal) {
-            console.log("Using cached meal data from session: ",req.session.meal );
+            console.log("Using cached meal data from session: ", req.session.meal);
             res.json(req.session.meal, {
                 mealID: req.session.meal.mealId,
                 mealName: req.session.meal.mealName,
@@ -113,24 +113,88 @@ export const getMeals = async (req,res) => {
                 macrosPer100g: req.session.meal.macrosPer100g
             });
 
-            
+
         } else {
             // Meal data is not in session, fetch it from the database
             try {
                 const userID = req.session.user.userID;
-                const meals = await index.connectedDatabase.getAllUserMeals(userID);
+                const meals = await index.connectedDatabase.getAllUserRecipes(userID);
+
+
                 console.log("Meals retrieved from the database:", meals);
 
-                // Assuming meals contain all required data
-                req.session.meal = meals;
-                req.session.save(err => {
-                    if (err) {
-                        console.error("Error saving session:", err);
-                        res.status(500).json({ error: 'Failed to save session data' });
-                    } else {
-                        res.json(meals);
+                const groupedMeals = meals.reduce((acc, item) => {
+                    const { mealID, name, userID, mealType, source, mealCategory, ingredientID, mealIngredientID, quantity, tEnergyKj,
+                        tProtein,
+                        tFat,
+                        tFiber,
+                        tEnergyKcal,
+                        tWater,
+                        tDryMatter,
+                        ...otherNutrients
+                      } = item;
+
+                    // Check if mealID is an array and take the first element, or use it as is if it's not
+                    const uniqueMealID = Array.isArray(mealID) ? mealID[0] : mealID;
+
+                    if (!acc[uniqueMealID]) {
+                        acc[uniqueMealID] = {
+                            mealID: uniqueMealID, // Assign mealID directly as an integer
+                            name,
+                            userID,
+                            mealType,
+                            source,
+                            mealCategory,
+                            ingredients: [],
+                            ingredientCount: 0,  // Initialize the counter
+                            totalNutrients: {
+                                tEnergyKj,
+                                tProtein,
+                                tFat,
+                                tFiber,
+                                tEnergyKcal,
+                                tWater,
+                                tDryMatter,
+                              }
+                        };
                     }
-                });
+                    acc[uniqueMealID].ingredients.push({
+                        ingredientID,
+                        mealIngredientID,
+                        quantity,
+                        nutritionalValues: {
+                            tEnergyKj,
+                            tProtein,
+                            tFat,
+                            tFiber,
+                            tEnergyKcal,
+                            tWater,
+                            tDryMatter,
+                            ...otherNutrients
+                          }
+                    });
+
+                    acc[uniqueMealID].ingredientCount++;
+
+                    return acc;
+                }, {});
+
+                const formattedMeals = Object.values(groupedMeals);
+
+                console.log(formattedMeals);
+
+                res.json(groupedMeals);
+
+                // // Assuming meals contain all required data
+                // req.session.meal = meals;
+                // req.session.save(err => {
+                //     if (err) {
+                //         console.error("Error saving session:", err);
+                //         res.status(500).json({ error: 'Failed to save session data' });
+                //     } else {
+                //         res.json(meals);
+                //     }
+                // });
             } catch (error) {
                 console.error("Failed to retrieve meals from the database:", error);
                 res.status(500).json({ error: 'Failed to retrieve data' });

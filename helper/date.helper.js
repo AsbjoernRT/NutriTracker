@@ -25,7 +25,7 @@ function showDate(currentDate) {
     const day = currentDate.getDate();
     const month = monthNames[currentDate.getMonth()]; // Get the month name
     const year = currentDate.getFullYear();
-
+    console.log(day);
     // Create the formatted date string
     const formattedDate = `${currentDate.toDateString().substr(0, 3)} ${month} ${day} ${year}`;
 

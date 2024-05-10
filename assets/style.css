@@ -300,6 +300,8 @@ main {
     padding-right: 150px;
 }
 
+/* //Table// */
+/* 
 table {
     width: 100%;
     border-collapse: separate;
@@ -318,7 +320,7 @@ thead th {
 /* Apply this to all elements to prevent padding and border from affecting width */
 * {
     box-sizing: border-box;
-}
+} */
 
 /* Dashboard CSS */
 
@@ -592,7 +594,7 @@ select {
 
 
 
-/* modal styling start*/
+/* Table styling start*/
 #modal-wrapper {
     display: flex;
     flex-direction: column;
@@ -739,9 +741,57 @@ select {
 
 
 
+/* ---Table Styling start--- */
+table {
+    width: 100%;
+    border-collapse: separate;
+    overflow-x: auto;
+    border-spacing: 0 10px;
+    background-color: transparent;
+    border-radius: 0.75em;
+}
 
+thead th {
+    padding: 15px;
+    text-align: center;
+    color: #757575;
+}
 
+tbody tr {
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
+tbody td {
+    padding: 15px;
+    text-align: center;
+}
+
+td.meal-name {
+    width: 30%;
+    padding-right: 150px;
+}
+
+/* General padding and alignment for all table headers and cells */
+table td, table th {
+    padding: 10px;
+    text-align: center;
+    border: none;
+}
+
+/* Specific padding for the last three header and data cells */
+thead th:last-child, thead th:nth-last-child(2), thead th:nth-last-child(3),
+tbody td:last-child, tbody td:nth-last-child(2), tbody td:nth-last-child(3) {
+    padding-right: 2px;
+    padding-left: 2px;
+}
+
+/* Rounded corners for the first and last cells in each row */
+.recipe-row td:first-child div, .recipe-row td:last-child div {
+    border-radius: 50px;
+}
+
+/* ---Table Styling slut--- */
 
 
 
