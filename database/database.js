@@ -168,6 +168,25 @@ async deleteMeal(mealID, userID) {
   }
 }
 
+async updateMeal(mealID, userID, name, mealType, source, mealCateogry) {
+  try {
+    await this.connect();
+    const request = this.poolconnection.request();
+    const result = await request
+    .input('userID', sql.Int, userID)
+    .input('mealID', sql.Int, mealID)
+    .input('name', sql.NVarChar, name)
+    .input('mealType', sql.NVarChar, mealType)
+    .input('source', sql.NVarChar, source)
+    .input('mealCategory', sql.NVarChar, mealCateogry)
+    .query('UPDATE [NutriDB].[meal] SET [NutriDB].[meal].name = @name,[NutriDB].[meal].mealType = @mealType, [NutriDB].[meal].source = @source, [NutriDB].[meal].mealCategory = @mealCategory WHERE mealID = @mealID AND userID = @userID;')
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved opdatering af brugerens måltid i [NutriDB].[meal] :', error);
+    throw error;
+  }
+}
+
 
 
 
@@ -283,43 +302,6 @@ async deleteMeal(mealID, userID) {
       throw error;
     }
   }
-
-
-// Delete tracked meal
-async deleteTrackedMeal(mealID, userID) {
-  try {
-    await this.connect();
-    const request = this.poolconnection.request();
-    const result = await request
-    .input('userID', sql.Int, userID)
-    .input('mealID', sql.Int, mealID)
-    .query('DELETE FROM [NutriDB].[mealTracker] WHERE mealID = @mealID AND userID = @userID;')
-    return result.recordset;
-  } catch (error) {
-    console.error('Fejl ved sletning af brugerens måltid i [NutriDB].[mealTracker]: ', error);
-    throw error;
-  }
-}
-
-
-
-async updateTrackedMeal(mealID, userID, quantity) {
-  try {
-    await this.connect();
-    const request = this.poolconnection.request();
-    const result = await request
-    .input('userID', sql.Int, userID)
-    .input('mealID', sql.Int, mealID)
-    .input('quantity', sql.Int, quantity)
-    .query('UPDATE [NutriDB].[mealTracker] SET [NutriDB].[mealTracker].quantity = @quantity WHERE mealID = @mealID AND userID = @userID;')
-    return result.recordset;
-  } catch (error) {
-    console.error('Fejl ved sletning af brugerens måltid i [NutriDB].[mealTracker]: ', error);
-    throw error;
-  }
-}
-
-
 
 
 
@@ -458,7 +440,38 @@ async updateTrackedMeal(mealID, userID, quantity) {
 
 
 
+// Delete tracked meal
+async deleteTrackedMeal(mealID, userID) {
+  try {
+    await this.connect();
+    const request = this.poolconnection.request();
+    const result = await request
+    .input('userID', sql.Int, userID)
+    .input('mealID', sql.Int, mealID)
+    .query('DELETE FROM [NutriDB].[mealTracker] WHERE mealID = @mealID AND userID = @userID;')
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved sletning af brugerens måltid i [NutriDB].[mealTracker]: ', error);
+    throw error;
+  }
+}
 
+
+async updateTrackedMeal(mealID, userID, quantity) {
+  try {
+    await this.connect();
+    const request = this.poolconnection.request();
+    const result = await request
+    .input('userID', sql.Int, userID)
+    .input('mealID', sql.Int, mealID)
+    .input('quantity', sql.Int, quantity)
+    .query('UPDATE [NutriDB].[mealTracker] SET [NutriDB].[mealTracker].quantity = @quantity WHERE mealID = @mealID AND userID = @userID;')
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved sletning af brugerens måltid i [NutriDB].[mealTracker]: ', error);
+    throw error;
+  }
+}
 
 
 
