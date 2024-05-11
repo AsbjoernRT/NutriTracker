@@ -1,18 +1,24 @@
 let modalType; // Declare at the top of your script if this needs to be accessed globally.
 
-function toggleModalVisibility() {
-    localStorage.clear();
-    console.log('toggleModalVisibility');
-    const ingredientList = document.getElementById('ingredientList');
-    const editRecipe = document.getElementById('editRecipe');
-    const addRecipe = document.getElementById('addRecipe');
+function toggleModalVisibility(isEditMode) {
+    console.log('toggleModalVisibility', isEditMode ? "Edit Mode" : "Add Mode");
     const modalWrapper = document.getElementById('modal-wrapper');
+    const addRecipe = document.getElementById('addRecipe');
+    const editRecipe = document.getElementById('editRecipe');
+    const ingredientList = document.getElementById('ingredientList');
 
-    if (ingredientList && addRecipe && modalWrapper) {
-        ingredientList.innerHTML = '';
-        // editRecipe.classList.add('hide');
-        addRecipe.classList.remove('hide');
-        modalWrapper.classList.toggle('hide');
+    if (modalWrapper && addRecipe && editRecipe && ingredientList) {
+        ingredientList.innerHTML = ''; // Ryd tidligere ingredienser
+        
+        if (isEditMode) {
+            addRecipe.classList.add('hide'); // Skjul 'Add Recipe' knappen
+            editRecipe.classList.remove('hide'); // Vis 'Edit Recipe' knappen
+        } else {
+            addRecipe.classList.remove('hide'); // Vis 'Add Recipe' knappen
+            editRecipe.classList.add('hide'); // Skjul 'Edit Recipe' knappen
+        }
+
+        modalWrapper.classList.toggle('hide'); // Skift synligheden af modalen
     } else {
         console.error('One or more elements are missing in the DOM');
     }
@@ -51,10 +57,13 @@ function toggleMealTrackerModal(){
 }
 
 
-
 document.getElementById('add-recipe-btn').addEventListener('click', function () {
     modalType = 'food';
-    toggleModalVisibility();
+    toggleModalVisibility(false);
+});
+
+document.getElementById('editRecipe').addEventListener('click', function () {
+    toggleModalVisibility(true); // Åbner modalen i rediger tilstand
 });
 
 document.getElementById('add-meal-btn').addEventListener('click', function () {
@@ -75,7 +84,10 @@ document.getElementById('updateUserInSettings-Btn').addEventListener('click', fu
 });
 
 
-
+document.querySelectorAll('.edit-recipe-btn').addEventListener('click', function () {
+        modalType = 'edit';
+        toggleEditRecipeModal();
+    });
 
 //Close Modal
 // document.getElementById('close-create-btn').addEventListener('click', toggleModalVisibility);
