@@ -2,8 +2,8 @@ import express from 'express';
 import { register } from '../controller/register.js';
 import { login } from '../controller/login.js';
 import index from '../index.js';
-import { updateUser } from '../controller/user.js'
-import { deleteUser } from '../controller/user.js'
+import { updateUser,deleteUser ,getMealAndActivity } from '../controller/user.js'
+// import { deleteUser } from '../controller/user.js'
 import bodyParser from 'body-parser';
 import { mealcreator, getMeals, deleteMeal } from '../controller/mealCreator.js'
 import { trackActivity } from '../controller/acticityTracker.js';
@@ -217,9 +217,15 @@ router.get('/activity_search', async (req, res) => {
     }
 })
 
-router.get('/MealAndActivity', async (req, res) => {
+router.post('/activity',async (req, res) => {
     console.log("Router Modtaget: ",req);
     trackActivity(req,res)
+})
+
+router.get('/MealAndActivity', async (req, res) => {
+    console.log("Router Modtaget: ",req.session);
+    getMealAndActivity(req,res)
+    console.log("UD: ", res);
     //     const result = await index.connectedDatabase.searchActivity(req.query.searchTerm)
     //     // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
     //     console.log(result);

@@ -3,7 +3,7 @@ import index from '../index.js'
 import moment from 'moment'
 
 export const trackActivity = async (req, res) => {
-    console.log("TIL DB: ", req.body);
+    console.log("Modtaget til DB: ", req.body);
     const { activityName, activityHours, activityMinutes, activityKcals, activityID } = req.body
 
     const totalminutes = activityHours * 60 + activityMinutes

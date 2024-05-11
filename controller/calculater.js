@@ -41,4 +41,8 @@ export function calculateMetabolism(age, gender, weight) {
     return basalMetabolism;
 }
 
+export function calculateBurnedKcal(activites){
+    console.log(activites);
+}
+
 // console.log(calculateMetabolism(23,"male", 94));

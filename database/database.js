@@ -83,17 +83,17 @@ export default class Database {
   };
 
   // Finder alle oprettede måltider på baggrund af et userID og samler tabellerne meal, mealingredient og ingredients for at få et overblik over måltiderne
-  async getAllUserMeal(userID) {
+  async getAllUserTrackedMeal(userID) {
     try {
       await this.connect();
       const request = this.poolconnection.request();
       console.log(`Attempting to fetch meals for userID: ${userID}`);
       const result = await request
-
+      .input('userID',sql.Int,userID )
         .query(`
         SELECT * FROM [NutriDB].[meal]
         JOIN [NutriDB].[mealTracker] ON [NutriDB].[meal].mealID = [NutriDB].[mealTracker].mealID
-        WHERE [NutriDB].[meal].userID = 42`);
+        WHERE [NutriDB].[meal].userID = @userID`);
 
       return result.recordset;
     } catch (error) {
@@ -392,7 +392,8 @@ export default class Database {
 
   async getMealAndActivity(userID) {
     await this.connect();
-    const request = this.poolConnection.request();
+
+    const request = this.poolconnection.request();
     const result = await request
       .input('userID', sql.Int, userID)
       .query(`SELECT * FROM [NutriDB].[mealTracker]
@@ -400,6 +401,17 @@ export default class Database {
       WHERE [NutriDB].[mealTracker].userID = @userID`);
     return result.recordset;
   }
+
+  // Henter alt data om aktiviteter udført af én bruger
+async getActivity(userID) {
+  console.log("SQL: ", userID);
+  await this.connect();
+  const request = this.poolconnection.request();
+  const result = await request
+    .input('userID', sql.Int, userID)
+    .query(`SELECT * FROM [NutriDB].[activityTracker] WHERE activityTracker.userID = @userID`);
+  return result.recordset;
+}
   // // Søgning af ingredienser (lav input felt og tilddel det variablen searchTerm)
   // async searchIngredients(searchTerm) {
   //   try {
