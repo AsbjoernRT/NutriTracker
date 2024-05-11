@@ -15,23 +15,32 @@ document.addEventListener('DOMContentLoaded', function () {
         AcvtivitySeach()
     }
 
-    if (path === '/dailyNutri') {
+    if (path == '/dailyNutri') {
         console.log("Current page:", path);
-        getMealAndActivity()
-        function getMealAndActivity() {
-
-            fetch("/api/MealAndActivity")
-                .then(response => response.json())
-                .then(data => console.log('Success:', data))
-                .catch(error => console.error('Error:', error));
-        }
+    }
+    if (path === '/dashboard') {
+        console.log("Current page:", path);
+        showMealAndActivity()
+    }
+});
 
 
-        // } else if (path.startsWith('/category/')) {
-        //     // Execute code specific to any category page
-        //     modifyCategoryDOM();
 
-    }});
+// In the file where getMealAndActivity is defined
+function getMealAndActivity() {
+    return fetch("/api/MealAndActivity")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Error during fetch:', error);
+            throw error;  // Allow the caller to handle the error
+        });
+}
+
 
 //     // Update user name
 //     const nameDisplay = document.getElementById("");

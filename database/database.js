@@ -24,7 +24,7 @@ export default class Database {
     console.log(`Database: config: ${JSON.stringify(config)}`);
   }
 
-// Connecte til databasen
+  // Connecte til databasen
   async connect() {
     try {
       console.log(`Database connecting...${this.connected}`);
@@ -39,7 +39,7 @@ export default class Database {
       console.error(`Error connecting to database: ${JSON.stringify(error)}`);
     }
   }
-// disconnecte fra databasen
+  // disconnecte fra databasen
   async disconnect() {
     try {
       this.poolconnection.close();
@@ -58,8 +58,8 @@ export default class Database {
 
 
 
-/*_______________________________________________________________________________________________________________________________________*/
-/*_____________________________________________________________BRUGERSTYRING_____________________________________________________________*/
+  /*_______________________________________________________________________________________________________________________________________*/
+  /*_____________________________________________________________BRUGERSTYRING_____________________________________________________________*/
 
 
   // Opret en bruger [NutriDB].[users]
@@ -77,8 +77,8 @@ export default class Database {
     return result.recordsets[0];
   }
 
-// Slet en bruger og de tilhørende data der ligger i de andre tabeller som en bruger kan have information gemt i
-// [NutriDB].[activityTracker], [NutriDB].[mealTracker], [NutriDB].[meal], [NutriDB].[totalNutrientsForCreateMeal], [NutriDB].[users]
+  // Slet en bruger og de tilhørende data der ligger i de andre tabeller som en bruger kan have information gemt i
+  // [NutriDB].[activityTracker], [NutriDB].[mealTracker], [NutriDB].[meal], [NutriDB].[totalNutrientsForCreateMeal], [NutriDB].[users]
   async deleteUserId(id) {
     try {
       await this.connect();
@@ -112,12 +112,12 @@ export default class Database {
       return result.rowsAffected[0];
     } catch (error) {
       console.error('Failed to delete user:', error);
-      throw error; 
+      throw error;
     }
   }
 
 
-// Opdatering af en bruger (Mulighed for at opdatere email, alder, vægt, køn) [NutriDB].[users]
+  // Opdatering af en bruger (Mulighed for at opdatere email, alder, vægt, køn) [NutriDB].[users]
   async updateUser(email, age, weight, gender, metabolism) {
     await this.connect();
     try {
@@ -160,13 +160,13 @@ export default class Database {
 
 
 
- 
-  
 
 
-/*______________________________________________________________________________________________________________________________________*/
-/*_____________________________________________________________MEAL CREATOR_____________________________________________________________*/
-  
+
+
+  /*______________________________________________________________________________________________________________________________________*/
+  /*_____________________________________________________________MEAL CREATOR_____________________________________________________________*/
+
   // Søgning af ingredienser via et inputfelt som får værdien searchTerm [NutriDB].[ingredient]
   async searchIngredients(searchTerm) {
     try {
@@ -183,91 +183,91 @@ export default class Database {
   }
 
 
-/* 1: Indsætter et måltid via Meal Creator (Denne er todelt, da den først skal oprette måltidsnavnet og derefter ingredienser
-for at få mealID med over i mealIngredient)*/
-// [NutriDB].[meal]
-async postIntoDbMeal(name, userID, mealType, source) {
-  try {
-    await this.connect();
-    const request = this.poolconnection.request();
+  /* 1: Indsætter et måltid via Meal Creator (Denne er todelt, da den først skal oprette måltidsnavnet og derefter ingredienser
+  for at få mealID med over i mealIngredient)*/
+  // [NutriDB].[meal]
+  async postIntoDbMeal(name, userID, mealType, source) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
 
-    request.input('name', sql.NVarChar, name);
-    request.input('UserID', sql.Int, userID);
-    request.input('mealType', sql.NVarChar, mealType);
-    request.input('source', sql.NVarChar, source);
-    const result = await request.query(`INSERT INTO [NutriDB].[meal] (name, userID, mealType, source) OUTPUT INSERTED.mealID VALUES (@name, @UserID, @mealType, @source)`);
-    return result.recordset[0].mealID;
-  } catch (error) {
-    console.error('Fejl af indsætning af måltidsnavn i [NutriDB].[meal] :', error);
-    throw error;
+      request.input('name', sql.NVarChar, name);
+      request.input('UserID', sql.Int, userID);
+      request.input('mealType', sql.NVarChar, mealType);
+      request.input('source', sql.NVarChar, source);
+      const result = await request.query(`INSERT INTO [NutriDB].[meal] (name, userID, mealType, source) OUTPUT INSERTED.mealID VALUES (@name, @UserID, @mealType, @source)`);
+      return result.recordset[0].mealID;
+    } catch (error) {
+      console.error('Fejl af indsætning af måltidsnavn i [NutriDB].[meal] :', error);
+      throw error;
 
+    }
   }
-}
 
-/* 2: Indsætter de ingredienser et måltid består af (bemærk at ernæringsværdierne skal være udregnet før de lægges herind). 
-mealID skal hentes fra det netop oprettet måltidsnavn*/
-//[NutriDB].[mealIngredient]
-async postIntoDbMealIngredient(mealID, ingredientID, quantity, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDryMatter) {
-  try {
-    await this.connect();
-    const request = this.poolconnection.request();
-    const result = await request
-      .input('mealID', sql.Int, mealID)
-      .input('ingredientID', sql.Int, ingredientID)
-      .input('quantity', sql.Int, quantity)
-      .input('cEnergyKj', sql.Int, cEnergyKj)
-      .input('cProtein', sql.Int, cProtein)
-      .input('cFat', sql.Int, cFat)
-      .input('cFiber', sql.Int, cFiber)
-      .input('cEnergyKcal', sql.Int, cEnergyKcal)
-      .input('cWater', sql.Int, cWater)
-      .input('cDryMatter', sql.Int, cDryMatter)
-      .query(' INSERT INTO [NutriDB].[mealIngredient] (mealID, ingredientID, quantity, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDrymatter) VALUES (@mealID, @ingredientID, @quantity, @cEnergyKj, @cProtein, @cFat, @cFiber, @cEnergyKcal, @cWater, @cDrymatter)')
-    // Bemærk at denne kode kun vil indsætte én ingrediens. Måske kan man lave en løkke der kører funktionen indtil alle ingredienser er kørt igennem??? 
-    return result.recordset;
-  } catch (error) {
-    console.error('Fejl ved indsætning af brugerens ingredienser i [NutriDB].[mealIngredient]:', error);
-    throw error;
+  /* 2: Indsætter de ingredienser et måltid består af (bemærk at ernæringsværdierne skal være udregnet før de lægges herind). 
+  mealID skal hentes fra det netop oprettet måltidsnavn*/
+  //[NutriDB].[mealIngredient]
+  async postIntoDbMealIngredient(mealID, ingredientID, quantity, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDryMatter) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request
+        .input('mealID', sql.Int, mealID)
+        .input('ingredientID', sql.Int, ingredientID)
+        .input('quantity', sql.Int, quantity)
+        .input('cEnergyKj', sql.Int, cEnergyKj)
+        .input('cProtein', sql.Int, cProtein)
+        .input('cFat', sql.Int, cFat)
+        .input('cFiber', sql.Int, cFiber)
+        .input('cEnergyKcal', sql.Int, cEnergyKcal)
+        .input('cWater', sql.Int, cWater)
+        .input('cDryMatter', sql.Int, cDryMatter)
+        .query(' INSERT INTO [NutriDB].[mealIngredient] (mealID, ingredientID, quantity, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDrymatter) VALUES (@mealID, @ingredientID, @quantity, @cEnergyKj, @cProtein, @cFat, @cFiber, @cEnergyKcal, @cWater, @cDrymatter)')
+      // Bemærk at denne kode kun vil indsætte én ingrediens. Måske kan man lave en løkke der kører funktionen indtil alle ingredienser er kørt igennem??? 
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved indsætning af brugerens ingredienser i [NutriDB].[mealIngredient]:', error);
+      throw error;
+    }
   }
-}
 
-// Indsætter de totale udregnende værdier for et måltid bestående af ét eller flere ingredienser
-async postCmacroMeal(mealID, tEnergyKj, tProtein, tFat, tFiber, tEnergyKcal, tWater, tDryMatter) {
-  try {
-    await this.connect();
-    const request = this.poolconnection.request();
-    const result = await request
-      .input('mealID', sql.Int, mealID)
-      .input('tEnergyKj', sql.Int, tEnergyKj)
-      .input('tProtein', sql.Int, tProtein)
-      .input('tFat', sql.Int, tFat)
-      .input('tFiber', sql.Int, tFiber)
-      .input('tEnergyKcal', sql.Int, tEnergyKcal)
-      .input('tWater', sql.Int, tWater)
-      .input('tDryMatter', sql.Int, tDryMatter)
-      .query(' INSERT INTO [NutriDB].[totalNutrientsForCreateMeal] (mealID, tEnergyKj, tProtein, tFat, tFiber, tEnergyKcal, tWater, tDryMatter) VALUES (@mealID, @tEnergyKj, @tProtein, @tFat, @tFiber, @tEnergyKcal, @tWater, @tDryMatter)')
-    return result.recordset;
-  } catch (error) {
-    console.error('Fejl ved indsætning af måltidets totale ernæringsindhold i [NutriDB].[totalNutrientsForCreateMeal]:', error);
-    throw error;
+  // Indsætter de totale udregnende værdier for et måltid bestående af ét eller flere ingredienser
+  async postCmacroMeal(mealID, tEnergyKj, tProtein, tFat, tFiber, tEnergyKcal, tWater, tDryMatter) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request
+        .input('mealID', sql.Int, mealID)
+        .input('tEnergyKj', sql.Int, tEnergyKj)
+        .input('tProtein', sql.Int, tProtein)
+        .input('tFat', sql.Int, tFat)
+        .input('tFiber', sql.Int, tFiber)
+        .input('tEnergyKcal', sql.Int, tEnergyKcal)
+        .input('tWater', sql.Int, tWater)
+        .input('tDryMatter', sql.Int, tDryMatter)
+        .query(' INSERT INTO [NutriDB].[totalNutrientsForCreateMeal] (mealID, tEnergyKj, tProtein, tFat, tFiber, tEnergyKcal, tWater, tDryMatter) VALUES (@mealID, @tEnergyKj, @tProtein, @tFat, @tFiber, @tEnergyKcal, @tWater, @tDryMatter)')
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved indsætning af måltidets totale ernæringsindhold i [NutriDB].[totalNutrientsForCreateMeal]:', error);
+      throw error;
+    }
   }
-}
 
-// Samler alt information om diverse måltider oprettet af en bruger, herunder måltidsnavn, vægt, ingrediensnavne og makroer
-async getAllUserRecipes(userID) {
-  try {
-    await this.connect();
-    const request = this.poolconnection.request();
-    const result = await request
-      .input('userID', sql.Int, userID)
-      .query('SELECT M.*, MI.*, TN.*, I.foodName FROM NutriDB.meal AS M JOIN NutriDB.mealIngredient AS MI ON M.mealID = MI.mealID JOIN NutriDB.ingredient AS I ON MI.ingredientID = I.ingredientID LEFT JOIN NutriDB.totalNutrientsForCreateMeal AS TN ON M.mealID = TN.mealID WHERE M.userID = @userID;')
+  // Samler alt information om diverse måltider oprettet af en bruger, herunder måltidsnavn, vægt, ingrediensnavne og makroer
+  async getAllUserRecipes(userID) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request
+        .input('userID', sql.Int, userID)
+        .query('SELECT M.*, MI.*, TN.*, I.foodName FROM NutriDB.meal AS M JOIN NutriDB.mealIngredient AS MI ON M.mealID = MI.mealID JOIN NutriDB.ingredient AS I ON MI.ingredientID = I.ingredientID LEFT JOIN NutriDB.totalNutrientsForCreateMeal AS TN ON M.mealID = TN.mealID WHERE M.userID = @userID;')
 
-    return result.recordset;
-  } catch (error) {
-    console.error('Fejl ved hentning af brugerens måltider:', error);
-    throw error;
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved hentning af brugerens måltider:', error);
+      throw error;
+    }
   }
-}
 
 
 
@@ -282,47 +282,47 @@ async getAllUserRecipes(userID) {
 
 
 
-/*______________________________________________________________________________________________________________________________________*/
-/*_____________________________________________________________MEAL TRACKER_____________________________________________________________*/
+  /*______________________________________________________________________________________________________________________________________*/
+  /*_____________________________________________________________MEAL TRACKER_____________________________________________________________*/
 
-// Finder alle meals der er oprettet i mealTracker via et JOIN-statement for også at få navne på måltider
-// [NutriDB].[meal], [NutriDB].[mealTracker]
-async getTrackedMeals(userID) {
-  try {
-    await this.connect();
-    const request = this.poolconnection.request();
-    const result = await request.query
-      ('SELECT M.*, MT.* FROM NutriDB.meal AS M JOIN NutriDB.mealTracker AS MT ON M.mealID = MT.mealID WHERE M.userID = @userID', {
-        userID: userID
-      });
-    return result.recordset;
-  } catch (error) {
-    console.error('Fejl ved hentning af brugerens måltider:', error);
-    throw error;
+  // Finder alle meals der er oprettet i mealTracker via et JOIN-statement for også at få navne på måltider
+  // [NutriDB].[meal], [NutriDB].[mealTracker]
+  async getTrackedMeals(userID) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request.query
+        ('SELECT M.*, MT.* FROM NutriDB.meal AS M JOIN NutriDB.mealTracker AS MT ON M.mealID = MT.mealID WHERE M.userID = @userID', {
+          userID: userID
+        });
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved hentning af brugerens måltider:', error);
+      throw error;
+    }
   }
-}
 
-// Finder alle oprettede måltider på baggrund af et userID og samler tabellerne meal, mealingredient og ingredients for at få et overblik over måltiderne
-// [NutriDB].[meal], [NutriDB].[mealTracker]
-async getAllUserMeals(userID) {
-  try {
-    await this.connect();
-    const request = this.poolconnection.request();
-    console.log(`Attempting to fetch meals for userID: ${userID}`);
-    const result = await request
 
-    .input('userID', sql.Int, userID)      
-    .query(`
+  // Finder alle oprettede måltider på baggrund af et userID og samler tabellerne meal, mealingredient og ingredients for at få et overblik over måltiderne
+  // [NutriDB].[meal], [NutriDB].[mealTracker]
+  async getAllUserMeal(userID) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      console.log(`Attempting to fetch meals for userID: ${userID}`);
+      const result = await request
+        .input('userID', sql.Int, userID)
+        .query(`
       SELECT * FROM [NutriDB].[meal]
       JOIN [NutriDB].[mealTracker] ON [NutriDB].[meal].mealID = [NutriDB].[mealTracker].mealID
       WHERE [NutriDB].[meal].userID = @userID`);
 
-    return result.recordset;
-  } catch (error) {
-    console.error('Fejl ved hentning af brugerens måltider:', error);
-    throw error;
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved hentning af brugerens måltider:', error);
+      throw error;
+    }
   }
-}
 
 
   // Funktion til at søge efter oprettede måltider fra mealCreator.
@@ -342,7 +342,7 @@ async getAllUserMeals(userID) {
     }
   };
 
-  
+
   // Finder informationer om ét måltid som en unik bruger har oprettet via userID og mealID
   // [NutriDB].[mealIngredient], [NutriDB].[meal], [NutriDB].[ingredient]
   async getMealIngredients(userID, mealID) {
@@ -399,41 +399,41 @@ async getAllUserMeals(userID) {
 
 
 
-/*___________________________________________________________________________________________________________________________________________*/
-/*_____________________________________________________________ACTIVITY TRACKER_____________________________________________________________*/
+  /*___________________________________________________________________________________________________________________________________________*/
+  /*_____________________________________________________________ACTIVITY TRACKER_____________________________________________________________*/
 
 
 
- // Søgefunktion til at søge efter aktiviteter. Den henter activityID, activityName og calouries pr time
- async searchActivity(searchTerm) {
-  console.log("Before DB: ", searchTerm);
-  try {
-    await this.connect();
-    const request = this.poolconnection.request();
-    const result = await request
-      .input('searchTerm', sql.NVarChar, `%${searchTerm}%`)
-      .query(`SELECT * FROM NutriDB.activity WHERE activityName LIKE @searchTerm`);
-    return result.recordset;
-  } catch (error) {
-    console.error('Fejl ved søgning efter aktiviteter:', error);
-    throw error;
+  // Søgefunktion til at søge efter aktiviteter. Den henter activityID, activityName og calouries pr time
+  async searchActivity(searchTerm) {
+    console.log("Before DB: ", searchTerm);
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request
+        .input('searchTerm', sql.NVarChar, `%${searchTerm}%`)
+        .query(`SELECT * FROM NutriDB.activity WHERE activityName LIKE @searchTerm`);
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved søgning efter aktiviteter:', error);
+      throw error;
+    }
   }
-}
 
-// Poster aktivitetsdata ind for en pågældende bruger
-// Queryen laver også UTC om til GMT+2
-async postActivity(date, regtime, calories, userID, activityID, timeSpendt) {
-  try {
-    await this.connect();
-    const request = this.poolconnection.request();
-    const result = await request
-      .input('date', sql.Date, date)
-      .input('regTime', sql.NVarChar, regtime)
-      .input('caloriesBurned', sql.Int, calories)
-      .input('userID', sql.Int, userID)
-      .input('activityID', sql.Int, activityID)
-      .input('timeSpent', sql.Int, timeSpendt)
-      .query(`
+  // Poster aktivitetsdata ind for en pågældende bruger
+  // Queryen laver også UTC om til GMT+2
+  async postActivity(date, regtime, calories, userID, activityID, timeSpendt) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request
+        .input('date', sql.Date, date)
+        .input('regTime', sql.NVarChar, regtime)
+        .input('caloriesBurned', sql.Int, calories)
+        .input('userID', sql.Int, userID)
+        .input('activityID', sql.Int, activityID)
+        .input('timeSpent', sql.Int, timeSpendt)
+        .query(`
         DECLARE @CopenhagenTime AS datetimeoffset;
         SET @CopenhagenTime = SWITCHOFFSET(CAST(@regTime AS datetimeoffset), '+00:00');
 
@@ -441,32 +441,32 @@ async postActivity(date, regtime, calories, userID, activityID, timeSpendt) {
         VALUES (@date, @CopenhagenTime, @caloriesBurned, @userID, @activityID, @timeSpent)
       `);
 
-    return result.recordset;
-  } catch (error) {
-    console.error('Fejl ved indsætning af måltidets totale ernæringsindhold i [NutriDB].[totalNutrientsForCreateMeal]:', error);
-    throw error;
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved indsætning af måltidets totale ernæringsindhold i [NutriDB].[totalNutrientsForCreateMeal]:', error);
+      throw error;
+    }
   }
-}
-  
 
- // Funktion til at søge efter aktiviteter som en bruger har udført
- async searchTrackedActivity(userID) {
-  try {
-    await this.connect();
-    const request = this.poolconnection.request();
-    console.log(`Attempting to fetch activities for userID: ${userID}`);
-    const result = await request
-      .input('userID', sql.NVarChar, userID)
-      .query(`
+
+  // Funktion til at søge efter aktiviteter som en bruger har udført
+  async searchTrackedActivity(userID) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      console.log(`Attempting to fetch activities for userID: ${userID}`);
+      const result = await request
+        .input('userID', sql.NVarChar, userID)
+        .query(`
       SELECT * FROM [NutriDB].[activityTracker]
       WHERE userID = @userID`);
 
-    return result.recordset;
-  } catch (error) {
-    console.error('Fejl ved hentning af brugerens aktiviteter :', error);
-    throw error;
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved hentning af brugerens aktiviteter :', error);
+      throw error;
+    }
   }
-}
 
 
 
@@ -477,19 +477,19 @@ async postActivity(date, regtime, calories, userID, activityID, timeSpendt) {
 
 
 
-/*______________________________________________________________________________________________________________________________________*/
-/*_____________________________________________________________DAILY NUTRI_____________________________________________________________*/
+  /*______________________________________________________________________________________________________________________________________*/
+  /*_____________________________________________________________DAILY NUTRI_____________________________________________________________*/
 
-// Henter alle aktivitet som en bruger udført til display i Daily Nutri
-async getActivity(userID) {
-  await this.connect();
-  const request = this.poolconnection.request();
-  const result = await request
-    .input('userID', sql.Int, userID)
-    .query(`SELECT * FROM [NutriDB].[activityTracker] WHERE userID = @userID  
+  // Henter alle aktivitet som en bruger udført til display i Daily Nutri
+  async getActivity(userID) {
+    await this.connect();
+    const request = this.poolconnection.request();
+    const result = await request
+      .input('userID', sql.Int, userID)
+      .query(`SELECT * FROM [NutriDB].[activityTracker] WHERE userID = @userID  
     `);
-  return result.recordset;
-}
+    return result.recordset;
+  }
 }
 
 // Tracked meals bliver kaldt i funktionen getTrackedMeals(userID)

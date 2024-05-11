@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/style.css">
     <script src="/sidebar.js"></script>
     <script src="/user.js"></script>
+    <script src="/dom.helper.js"></script>
     <!-- <base href="/"> -->
 
 </head>
@@ -18,7 +19,6 @@
     <main>
         <section id="dashboard" aria-label="User dashboard">
             <h1>Dashboard</h1>
-            <h3 id="date"></h3>
             <div id="meals-today" class="dashboard-item">
                 <h2>Meals Today</h2>
                 <p id="mealsToday">Number of meals consumed today.</p>
@@ -39,7 +39,7 @@
                 <h2>Kcals Burned Today</h2>
                 <p id="kcalsToday">Kcals Burned Today</p>
             </div>
-            <div id="KcalsLeft-today" class="dashboard-item">
+            <div id="kcalsLeft-today" class="dashboard-item">
                 <h2>Kcals Left Today</h2>
                 <p id="kcalsLeftToday">Kcals Left today.</p>
             </div>
@@ -51,6 +51,7 @@
     <!-- JavaScript to load header -->
     <script src="/date.helper.js"></script>
     <script src="/partials.helper.js"></script>
+    <script src="/dashboard.helper.js"></script>
 </body>
 
 </html>
