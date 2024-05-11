@@ -31,7 +31,7 @@ function updateTodaysSummary(dailySummaries) {
 
     // Update the UI elements if today's summary exists
     if (summary) {
-        document.getElementById('mealsToday').textContent = `Number of meals consumed today: ${summary.numberOfMeals.toFixed(2)}`;
+        document.getElementById('mealsToday').textContent = `Number of meals consumed today: ${summary.numberOfMeals}`;
         document.getElementById('energyToday').textContent = `Calories consumed today: ${summary.mTEnergyKcal.toFixed(2)} kcal`;
         document.getElementById('waterToday').textContent = `Liters of water drunk today: ${summary.mTWater.toFixed(2)} L`;
         document.getElementById('proteinsToday').textContent = `Grams of protein consumed today: ${summary.mTProtein} g`;
