@@ -29,14 +29,15 @@ export const deleteUser = async (req, res) => {
 export const getMealAndActivity = async (req, res) => {
 
     const userID = req.session.user.userID;
-    const basicMetablosim = req.session.user.metabolism;
+    const basicMetabolism = calculateRemainingCalories(req)
+
 
     console.log("User ID: ", userID);
 
-    const getMeals = await index.connectedDatabase.getAllUserTrackedMeal(userID)
+    const getMeals = await index.connectedDatabase.getAllUserMeal(userID)
     const getActivites = await index.connectedDatabase.getActivity(userID)
 
-    console.log("Meals: ", getMeals, "&", getActivites);
+    // console.log("Meals: ", getMeals, "&", getActivites);
 
     // console.log(categorizeByDate(getActivites))
     // console.log(categorizeByDate(getMeals))
@@ -46,7 +47,7 @@ export const getMealAndActivity = async (req, res) => {
     const categorizedMeals = categorizeMealDate(getMeals)
     console.log(categorizedMeals);
 
-    const dailySummaries = createDailySummaries(categorizedActivity, categorizedMeals, basicMetablosim);
+    const dailySummaries = createDailySummaries(categorizedActivity, categorizedMeals, basicMetabolism);
     console.log(dailySummaries);
 
     // const result = {dailySummaries}
@@ -61,14 +62,35 @@ export const getMealAndActivity = async (req, res) => {
 
     res.json(response);
 
-    
+
 
     // res.json(dailySummaries)
     // console.log(createSummaryObject(categorizedActivity,categorizedMeals));
     // console.log(sumCalories());
 }
 
+function calculateRemainingCalories(req) {
+
+    const metabolism = req.session.user.metabolism; // from user session
+    const metabolismPerHour = metabolism / 24;
+
+    const now = new Date();
+    const currentHour = now.getHours(); // Current hour (0-23)
+    console.log(currentHour);
+
+    const usedMetabolism = metabolismPerHour * currentHour;
+    console.log(usedMetabolism);
+    // const totalCaloriesBurned = req.someDataSource.totalCaloriesBurnedToday;
+    // const totalCaloriesConsumed = req.someDataSource.totalCaloriesConsumedToday;
+
+    // const kcalsLeft = (usedMetabolism + totalCaloriesBurned) - totalCaloriesConsumed;
+
+    return usedMetabolism;
+}
+
+
 function categorizeActiviityDate(entries) {
+
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Reset time part to compare only date parts
 
@@ -148,7 +170,7 @@ function categorizeMealDate(entries) {
         category.mTFat += entry.mTFat;
         category.mTFiber += entry.mTFiber;
         category.mTEnergyKcal += entry.mTEnergyKcal;
-        category.mTWater += entry.mTWater/1000;
+        category.mTWater += entry.mTWater / 1000;
         category.mTDryMatter += entry.mTDryMatter;
         category.numberOfMeals++;
     });
@@ -164,6 +186,7 @@ function createDailySummaries(activityData, mealData, basicMetabolism) {
         const meals = mealData.otherDates[date] || {
             mTEnergyKcal: 0,
             mTWater: 0,
+            mTProtein: 0,
             numberOfMeals: 0
         };
         const activities = activityData.otherDates[date] || {
@@ -175,8 +198,10 @@ function createDailySummaries(activityData, mealData, basicMetabolism) {
             numberOfMeals: meals.numberOfMeals,
             mTWater: meals.mTWater,
             mTEnergyKcal: meals.mTEnergyKcal,
-            totalCalories: activities.totalCalories,
-            kcalsLeft: basicMetabolism + activities.totalCalories - meals.mTEnergyKcal
+            mTProtein: meals.mTProtein,
+            totalCalories: activities.totalCalories + basicMetabolism,
+            kcalsLeft: basicMetabolism + activities.totalCalories - meals.mTEnergyKcal,
+            basicMetabolism: basicMetabolism
         };
 
         return acc;
@@ -188,8 +213,10 @@ function createDailySummaries(activityData, mealData, basicMetabolism) {
         numberOfMeals: mealData.today.numberOfMeals,
         mTWater: mealData.today.mTWater,
         mTEnergyKcal: mealData.today.mTEnergyKcal,
-        totalCalories: activityData.today.totalCalories,
-        kcalsLeft: basicMetabolism + activityData.today.totalCalories - mealData.today.mTEnergyKcal
+        mTProtein: mealData.today.mTProtein,
+        totalCalories: activityData.today.totalCalories + basicMetabolism,
+        kcalsLeft: basicMetabolism + activityData.today.totalCalories - mealData.today.mTEnergyKcal,
+        basicMetabolism: basicMetabolism
     };
 
     return dailySummaries;

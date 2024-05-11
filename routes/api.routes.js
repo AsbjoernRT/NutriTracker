@@ -223,7 +223,7 @@ router.post('/activity',async (req, res) => {
 })
 
 router.get('/MealAndActivity', async (req, res) => {
-    console.log("Router Modtaget: ",req.session);
+    // console.log("Router Modtaget: ",req.session);
     getMealAndActivity(req,res)
     console.log("UD: ", res);
     //     const result = await index.connectedDatabase.searchActivity(req.query.searchTerm)
