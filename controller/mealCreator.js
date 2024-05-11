@@ -235,5 +235,4 @@ export const deleteMeal = async (req, res) => {
     const mealID = req.body.mealID
     console.log("Back-end Modtaget: ", userID, "&", mealID);
     const deleteMeal = await index.connectedDatabase.deleteMeal(mealID, userID);
-    console.log(deleteMeal);
 }

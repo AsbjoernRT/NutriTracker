@@ -19,5 +19,4 @@ export const trackActivity = async (req, res) => {
 
     console.log(mysqlTimestamp);
     const postActivity = await index.connectedDatabase.postActivity(date, mysqlTimestamp, kcalsBurned, userID, activityID, totalminutes)
-    console.log(postActivity);
 }

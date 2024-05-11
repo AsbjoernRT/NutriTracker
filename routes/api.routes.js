@@ -7,7 +7,7 @@ import { updateUser, deleteUser, getMealAndActivity } from '../controller/user.j
 import bodyParser from 'body-parser';
 import { mealcreator, getMeals, deleteMeal } from '../controller/mealCreator.js'
 import { trackActivity } from '../controller/acticityTracker.js';
-import {sendLocationToServer,addWeightToMeal} from '../controller/mealTracker.js'
+import {sendLocationToServer,addWeightToMeal, deleteTrackedMeal} from '../controller/mealTracker.js'
 
 
 const router = express.Router();
@@ -109,11 +109,13 @@ router.post('/ingredients', async (req, res) => {
 })
 
 router.post('/deleteMeal', async (req, res) => {
-    console.log(req);
     deleteMeal(req, res)
 })
 
 
+router.post('/deleteTrackedMeal', async (req, res) => {
+    deleteTrackedMeal(req, res)
+})
 
 router.get('/recipes', (req, res) => {
     getMeals(req, res)

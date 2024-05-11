@@ -37,6 +37,19 @@ function toggleIngredientList(){
     }
 }
 
+function toggleMealTrackerModal(){
+    const modalWrapper = document.getElementById('modal-wrapper');
+
+    if(modalWrapper){
+        modalWrapper.classList.toggle('hide');
+        setTimeout(function() {
+            window.location.reload()
+        }, 1000); // 1000 milliseconds = 1 second
+    }else {
+        console.error('One or more elements are missing in the DOM');
+    }
+}
+
 
 
 document.getElementById('add-recipe-btn').addEventListener('click', function () {

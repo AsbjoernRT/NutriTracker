@@ -90,9 +90,18 @@ function appendNewRow(row, meal) {
 
     // Create an Inspect button
     const inspectCell = document.createElement('div');
-    const inspectButton = document.createElement('button');
+    const editButton = document.createElement('button');
+    inspectCell.appendChild(editButton)
+    editButton.classList.add('edit-button');
 
+    editButton.textContent = "Inspekt"
 
+    const deleteCell = document.createElement('div');
+    const deleteButton = document.createElement('button');
+    deleteCell.appendChild(deleteButton)
+    deleteButton.classList.add('delete-button');
+
+    deleteButton.textContent = "Delete"
 
     row.appendChild(nameCell);
     row.appendChild(mealSource);
@@ -100,10 +109,53 @@ function appendNewRow(row, meal) {
     row.appendChild(geoLocation);
     row.appendChild(addedOn);
     row.appendChild(dailyCons);
-    row.appendChild(inspectCell)
-    row.appendChild(inspectButton)
+    row.appendChild(editButton)
+    row.appendChild(deleteCell)
 
+
+    deleteButton.addEventListener('click', function () {
+        // Logic to handle recipe deletion
+        console.log("hej");
+
+        deleteTrackedMeal(meal.mealID[0]);
+        row.remove();
+    });
+
+    editButton.addEventListener('click', () => {
+        // Set modalType to 'edit'
+        modalType = 'edit';
+
+        console.log(recipe);
+        localStorage.setItem('ingredients', JSON.stringify(recipe.ingredients));
+        // populate modal with recipe
+        document.getElementById("nameInput").value = recipe.name;
+        document.getElementById("typeSelect").value = recipe.mealType;
+        document.getElementById("sourceInput").value = recipe.source;
+        console.log('edit');
+        //hide add button
+        document.getElementById("addRecipe").classList.add('hide');
+        document.getElementById("editRecipe").classList.remove('hide');
+
+        recipe.ingredients.forEach((ingredient) => addItemToList(ingredient));
+        document.getElementById('editRecipe').addEventListener('click', () => {
+            let recipes = JSON.parse(localStorage.getItem('recipes')) || [];
+            // Edit the recipe and set in local storage
+            recipes.forEach(r => {
+                if (r.name === recipe.name) {
+                    r.name = document.getElementById("nameInput").value;
+                    r.mealType = document.getElementById("typeSelect").value;
+                    r.source = document.getElementById("sourceInput").value;
+                }
+            });
+
+            localStorage.setItem('recipes', JSON.stringify(recipes));
+        });
+
+        document.getElementById('modal-wrapper').classList.toggle('hide');
+    });
 }
+
+
 
 
 // Viser resultaterne for søge funktionen, så der er en drop down funktion.
@@ -111,16 +163,19 @@ function appendNewRow(row, meal) {
 function displayResults(items) {
     const resultsContainer = document.getElementById('searchResults');
     resultsContainer.innerHTML = '';
+    console.log(resultsContainer);
 
     items.forEach(item => {
         const resultItem = document.createElement('div');
         resultItem.classList.add('result-item');
         resultItem.textContent = item.name;
+        console.log(item.name);
         resultItem.onclick = function () { selectItem(item); };
-        document.getElementById('selectedItem').dataset.mealId = resultItem.mealID; // Store mealID in data attribute
+    //    document.getElementById('selectedItem').dataset.mealId = resultItem.mealID; // Store mealID in data attribute
         resultsContainer.appendChild(resultItem);
     });
 }
+
 
 // Denne hjælper med at vælge det givene item, og her laved et objekt der kan anvendes til senere at sende data til backenden.
 
@@ -173,6 +228,24 @@ document.getElementById('mealTrackerForm').addEventListener('submit', function (
     }).then(response => response.json())
         .then(data => console.log('Success:', data))
         .catch(error => console.error('Error:', error))
-
-    window.location.reload();
 })
+
+function deleteTrackedMeal(mealID) {
+    console.log("Deleting meal with ID:", mealID);
+
+    const mealToDelete = JSON.stringify({ mealID });
+
+    fetch('/api/deleteTrackedMeal', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: mealToDelete
+    })
+        // fetch('/api/ingredients' + postData)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data)
+        })
+        .catch(error => console.error('Error:', error));
+}
