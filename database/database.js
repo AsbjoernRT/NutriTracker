@@ -1,3 +1,4 @@
+import { query } from 'express';
 import sql from 'mssql';
 
 /*
@@ -151,7 +152,21 @@ export default class Database {
   }
 
 
-
+// Sletter et måltid i både meal og mealIngredient (der skal bruges mealID og UserID for at slette. Bemærk begin og commit transaction gør, at hvis én af disse slettefunktioner slår fejl, vil den ikke slette noget (for at sikre at alt er relationelt))
+async deleteMeal(mealID, userID) {
+  try {
+    await this.connect();
+    const request = this.poolconnection.request();
+    const result = await request
+    .input('mealID', sql.Int, mealID)
+    .input('userID', sql.Int, userID)
+    .query('BEGIN TRANSACTION DELETE FROM [NutriDB].[totalNutrientsForCreateMeal] WHERE mealID = @mealID DELETE FROM [NutriDB].[mealTracker] WHERE mealID = @mealID DELETE FROM [NutriDB].[mealIngredient] WHERE mealID = @mealID DELETE FROM [NutriDB].[meal] WHERE mealID = @mealID COMMIT TRANSACTION')
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved sletning af brugerens måltid i enten [NutriDB].[meal] eller [NutriDB].[mealIngredient] :', error);
+    throw error;
+  }
+}
 
 
 
@@ -270,9 +285,39 @@ export default class Database {
   }
 
 
+// Delete tracked meal
+async deleteTrackedMeal(mealID, userID) {
+  try {
+    await this.connect();
+    const request = this.poolconnection.request();
+    const result = await request
+    .input('userID', sql.Int, userID)
+    .input('mealID', sql.Int, mealID)
+    .query('DELETE FROM [NutriDB].[mealTracker] WHERE mealID = @mealID AND userID = @userID;')
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved sletning af brugerens måltid i [NutriDB].[mealTracker]: ', error);
+    throw error;
+  }
+}
 
 
 
+async updateTrackedMeal(mealID, userID, quantity) {
+  try {
+    await this.connect();
+    const request = this.poolconnection.request();
+    const result = await request
+    .input('userID', sql.Int, userID)
+    .input('mealID', sql.Int, mealID)
+    .input('quantity', sql.Int, quantity)
+    .query('UPDATE [NutriDB].[mealTracker] SET [NutriDB].[mealTracker].quantity = @quantity WHERE mealID = @mealID AND userID = @userID;')
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved sletning af brugerens måltid i [NutriDB].[mealTracker]: ', error);
+    throw error;
+  }
+}
 
 
 
@@ -335,6 +380,7 @@ export default class Database {
         .input('searchTerm', sql.NVarChar, `%${searchTerm}%`)
         .input('userID', sql.Int, userID)
         .query('SELECT * FROM NutriDB.meal WHERE userID = @userID  AND name LIKE @searchTerm;');
+        console.log(query);
       return result.recordset;
     } catch (error) {
       console.error('Fejl ved søgning efter måltider:', error);

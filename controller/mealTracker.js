@@ -93,3 +93,11 @@ export const addWeightToMeal = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+export const deleteTrackedMeal = async (req, res) => {
+    // console.log("Back-end Modtaget: ",req.body.mealID);
+    const userID = req.session.user.userID
+    const mealID = req.body.mealID
+    console.log("Back-end Modtaget: ", userID, "&", mealID);
+    const deleteMeal = await index.connectedDatabase.deleteTrackedMeal(mealID, userID);
+}
