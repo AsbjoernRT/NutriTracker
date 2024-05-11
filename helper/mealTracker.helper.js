@@ -88,6 +88,10 @@ function appendNewRow(row, meal) {
     dailyCons.appendChild(dailyConsFat);
     dailyCons.appendChild(dailyConsFiber);
 
+    // Create an Inspect button
+    const inspectCell = document.createElement('div');
+    const inspectButton = document.createElement('button');
+
 
 
     row.appendChild(nameCell);
@@ -96,6 +100,8 @@ function appendNewRow(row, meal) {
     row.appendChild(geoLocation);
     row.appendChild(addedOn);
     row.appendChild(dailyCons);
+    row.appendChild(inspectCell)
+    row.appendChild(inspectButton)
 
 }
 
