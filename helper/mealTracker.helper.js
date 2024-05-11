@@ -115,7 +115,6 @@ function appendNewRow(row, meal) {
 
     deleteButton.addEventListener('click', function () {
         // Logic to handle recipe deletion
-        console.log("hej");
 
         deleteTrackedMeal(meal.mealID[0]);
         row.remove();

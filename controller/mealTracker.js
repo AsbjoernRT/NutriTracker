@@ -39,8 +39,6 @@ export const addWeightToMeal = async (req, res) => {
 
     const getMacro = await index.connectedDatabase.getTotalNutriens(mealID)
 
-    console.log(getMacro);
-
 
     const getTotalEnergyKj = (quantity / 100) * getMacro[0].tEnergyKj
     const getTotalProtein = (quantity / 100) * getMacro[0].tProtein
@@ -54,27 +52,10 @@ export const addWeightToMeal = async (req, res) => {
 
     const regTime = new Date()
 
-    console.log(getTotalEnergyKj);
-
-
 
 
 
     try {
-        // Create the meal first and get the meal ID
-        console.log("userID", userID);
-        console.log("Meal Created with ID:", mealID);
-        console.log("Meal Created with recipeName:", recipeName);
-        console.log("quantity:", quantity);
-        console.log("regTime:", regTime);
-        console.log("geoCityFromLocation:", getCityFromLocation);
-        console.log("getTotalEnergyKj:", getTotalEnergyKj);
-        console.log("getTotalProtein:", getTotalProtein);
-        console.log("getTotalFat:", getTotalFat);
-        console.log("getTotalFiber:", getTotalFiber);
-        console.log("getTotalEnergyKcal:", getTotalEnergyKcal);
-        console.log("getTotalWater:", getTotalWater);
-        console.log("getTotalDryMatter:", getTotalDryMatter);
 
 
      const mealTracked = await index.connectedDatabase.postIntoDbMealTracker(userID, mealID, quantity, regTime, getCityFromLocation, getTotalEnergyKj, getTotalProtein, getTotalFat, getTotalFiber, getTotalEnergyKcal, getTotalWater, getTotalDryMatter);
