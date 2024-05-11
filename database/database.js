@@ -302,6 +302,7 @@ export default class Database {
     }
   }
 
+
   // Finder alle oprettede måltider på baggrund af et userID og samler tabellerne meal, mealingredient og ingredients for at få et overblik over måltiderne
   // [NutriDB].[meal], [NutriDB].[mealTracker]
   async getAllUserMeal(userID) {

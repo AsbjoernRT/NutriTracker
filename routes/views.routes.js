@@ -1,5 +1,4 @@
 import express from 'express';
-import { renderLogin } from '../controller/login.js';  // Adjust the path as necessary
 import { authenticator } from '../controller/login.js';
 
 // import path from 'path';
@@ -8,7 +7,10 @@ import { authenticator } from '../controller/login.js';
 const router = express.Router();
 
 // Then use it directly in your router setup
-router.get('/login', renderLogin);
+router.get('/login', async (req, res) => {
+    const { renderLogin } = await import('../controller/login.js');
+    renderLogin(req, res);
+});
 // router.get('/', renderLogin);
 
 
