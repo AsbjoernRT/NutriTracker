@@ -304,14 +304,15 @@ async getTrackedMeals(userID) {
 
 // Finder alle oprettede måltider på baggrund af et userID og samler tabellerne meal, mealingredient og ingredients for at få et overblik over måltiderne
 // [NutriDB].[meal], [NutriDB].[mealTracker]
-async getAllUserMeal(userID) {
+async getAllUserMeals(userID) {
   try {
     await this.connect();
     const request = this.poolconnection.request();
     console.log(`Attempting to fetch meals for userID: ${userID}`);
     const result = await request
 
-      .query(`
+    .input('userID', sql.Int, userID)      
+    .query(`
       SELECT * FROM [NutriDB].[meal]
       JOIN [NutriDB].[mealTracker] ON [NutriDB].[meal].mealID = [NutriDB].[mealTracker].mealID
       WHERE [NutriDB].[meal].userID = @userID`);
