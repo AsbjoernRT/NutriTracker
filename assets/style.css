@@ -940,10 +940,10 @@ tbody td:nth-last-child(3) {
     border-bottom-right-radius: 10px;
 }
 
-.nutrition-table th {
+/* .nutrition-table th {
     background-color: #f29A8A;
     color: rgb(0, 0, 0);
-}
+} */
 
 
 /* Style for view-selector container */
@@ -1013,4 +1013,32 @@ tbody td:nth-last-child(3) {
     /* Afstand mellem grid-elementer */
     align-items: center;
     /* Centrerer elementerne vertikalt */
+}
+
+
+/* Acitivity Tracker */
+#selected-activity {
+    border: 1px solid #ccc;        /* Light grey border, like inputs */
+    padding: 8px 12px;             /* Padding similar to text inputs */
+    margin-top: 5px;               /* Margin for spacing */
+    border-radius: 4px;            /* Slightly rounded corners */
+    display: block;                /* Block display to fill container width */
+    width: calc(100% - 24px);      /* Full width minus padding */
+    background-color: #fff;        /* White background */
+    color: #333;                   /* Dark text for readability */
+    font-size: 16px;               /* Standard font size */
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075); /* Slight inner shadow for depth */
+    height: 38px;                  /* Fixed height similar to typical inputs */
+    line-height: 20px;             /* Line height to vertically center text */
+}
+
+#selected-activity[placeholder]:before {
+    content: attr(placeholder);
+    color: #aaa;                   /* Light grey color for placeholder text */
+}
+
+#selected-activity:focus {
+    outline: none;
+    border-color: #66afe9;         /* Highlight color when focused */
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6); /* Focus shadow */
 }

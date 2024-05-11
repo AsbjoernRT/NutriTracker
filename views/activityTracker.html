@@ -9,8 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="/user.js"></script>
     <!-- <script src="/models/activityFilter.js"></script> -->
-    <script src="/search.helper.js"></script>
-    <script src="/activities.js"></script>
+    <script src="/dom.helper.js"></script>
 
 </head>
 
@@ -18,35 +17,33 @@
     <div id="headerContainer"></div> <!-- Container for the header -->
     <div class="registration-form">
         <h1>Activity Tracker</h1>
-        <form id="userForm">
+        <form id="activityForm" target="_self">
             <div class="form-group">
-                <label for="activitys">Søg aktivitet:</label>
-                <input type="text" id="activity-search" placeholder="Indtast aktivitet">
-                <div id="searchResult"></div>
+                <label for="activitys">Find your activity</label>
+                <input type="text" id="searchInput" placeholder="Search activities..." autocomplete="off">
+                <div id="searchResults"></div>
                 <!-- <ul id="activity-list" class="activity-options"></ul> -->
                 <div class="form-group">
-                    <label>Varighed:</label>
-                    <input type="number" id="hours" name="hours" min="0" step="1" pattern="[0-9]*" placeholder="Timer">
-                    <input type="number" id="minutes" name="minutes" min="0" max="59" placeholder="Minutter">
+                    <label>Duration:</label>
+                    <input type="number" id="hours" name="hours" min="0" step="1" pattern="[0-9]*" placeholder="Hours">
+                    <input type="number" id="minutes" name="minutes" min="0" placeholder="Minues">
                 </div>
-                <input type="hidden" id="selected-activity-kcal" name="kcal">
-                <div id="selected-activity">
-                <p id="activity-display"></p>
+                <label for="selected-activity">Kcals Burned</label>
+                <div id="selected-activity" tabindex="0" aria-live="polite" role="textbox" style="user-select: none;"></div>
+
             </div>
-            </div>
+            <button type="submit" class="btn-submit">Add activity</button>
+        </form>
     </div>
-    
-    <button type="submit" class="btn-submit" onclick="calculateCalories();">Beregn Forbrænding og
-        Basalstofskift</button>
-    </form>
+
     <div id="result"></div>
     <section id="calories-section">
         <h2>Calories Burned Today</h2>
         <div id="calories-info"></div>
     </section>
 
-    <div id="btn-button"><button onclick="window.location.href='./'" class="nav-btn btn-blue">Back to Home
-        </button></div>
+    <!-- <div id="btn-button"><button onclick="window.location.href='./'" class="nav-btn btn-blue">Back to Home
+        </button></div> -->
 
 
     <!-- <script type="module" src="Activity.js"></script> -->
@@ -57,6 +54,7 @@
     <script type="module" src="/date.helper.js"></script>
     <script src="/partials.helper.js"></script>
     <script type="module" src="/sidebar.js"></script>
+    <script src="/activityTracker.helper.js"></script>
 </body>
 
 </html>

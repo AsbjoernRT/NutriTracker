@@ -6,6 +6,7 @@ import { updateUser } from '../controller/user.js'
 import { deleteUser } from '../controller/user.js'
 import bodyParser from 'body-parser';
 import { mealcreator, getMeals, deleteMeal } from '../controller/mealCreator.js'
+import { trackActivity } from '../controller/acticityTracker.js';
 
 
 const router = express.Router();
@@ -204,6 +205,29 @@ router.get('/addWeightToMeal', async (req, res) => {
 //     }
 
 
+router.get('/activity_search', async (req, res) => {
+    console.log("Router Modtaget: ",req.query.searchTerm);
+    try {
+        const result = await index.connectedDatabase.searchActivity(req.query.searchTerm)
+        // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
+        console.log(result);
+        res.json(result)
+    } catch (error) {
+        console.log("Route error:", error);
+    }
+})
+
+router.post('/activity', async (req, res) => {
+    console.log("Router Modtaget: ",req.body);
+    trackActivity(req,res)
+    //     const result = await index.connectedDatabase.searchActivity(req.query.searchTerm)
+    //     // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
+    //     console.log(result);
+    //     res.json(result)
+    // } catch (error) {
+    //     console.log("Route error:", error);
+    // }
+})
 
 
 

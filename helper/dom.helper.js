@@ -9,11 +9,35 @@ document.addEventListener('DOMContentLoaded', function () {
         IngredientSearch()
         showRecipes()
     }
-    // } else if (path.startsWith('/category/')) {
-    //     // Execute code specific to any category page
-    //     modifyCategoryDOM();
 
-});
+    if (path === '/activityTracker') {
+        console.log("Current page:", path);
+        AcvtivitySeach()
+    }
+
+    if (path === '/dailyNutri') {
+        console.log("Current page:", path);
+        getMealAndActivity()
+        function getMealAndActivity() {
+
+            fetch("/api/MealAndActivity",{
+            method: 'POST',
+                headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+                // fetch('/api/ingredients' + postData)
+                .then(response => response.json())
+                .then(data => console.log('Success:', data))
+                .catch(error => console.error('Error:', error));
+        }
+
+
+        // } else if (path.startsWith('/category/')) {
+        //     // Execute code specific to any category page
+        //     modifyCategoryDOM();
+
+    }});
 
 //     // Update user name
 //     const nameDisplay = document.getElementById("");

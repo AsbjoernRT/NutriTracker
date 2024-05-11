@@ -25,3 +25,12 @@ export const deleteUser = async (req, res) =>{
 
     console.log("User to delete: ", deleteUser);
 }
+
+export const getUserNutriInfo = async (req, res)=>{
+
+    const userID = req.session.user.userID
+
+    console.log(userID);
+
+    const NutriInfo = await index.connectedDatabase.getMealAndActivity(userID)
+}

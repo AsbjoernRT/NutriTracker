@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nutrition Data Overview</title>
     <link rel="stylesheet" href="/style.css">
+    <script src="/dom.helper.js"></script>
+
 </head>
+
 <body>
     <div id="headerContainer">
         <!-- Presumably, this is filled by /partials.helper.js or another script -->
     </div>
 
-    <!-- View Selector Buttons -->
-    <div class="view-selector">
-        <button onclick="showView('dailyView')">View Last 24 Hours</button>
-        <button onclick="showView('monthlyView')">View Last Month</button>
-    </div>
-
     <!-- Wrapper for both tables -->
     <main>
-        <!-- Section for daily view -->
+        <!-- View Selector Buttons -->
+        <div class="view-selector">
+            <button onclick="showView('dailyView')">View Last 24 Hours</button>
+            <button onclick="showView('monthlyView')">View Last Month</button>
+        </div>
         <section id="dailyView" class="view-section">
             <div class="box">
                 <h2>Daily View</h2>
@@ -30,7 +32,9 @@
                             <th>Time</th>
                             <th>Meals</th>
                             <th>Water (liters)</th>
-                            <th>kcal Consumed</th>
+                            <th>Kcals Consumed</th>
+                            <th>Kcals Burned</th>
+                            <th>Kcals Left</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,10 +51,12 @@
                 <table id="monthlyNutritionTable" class="nutrition-table">
                     <thead>
                         <tr>
-                            <th>Time</th>
+                            <th>Date</th>
                             <th>Meals</th>
-                            <th>Water (liters)</th>
-                            <th>kcal Consumed</th>
+                            <th>Water (liters)</th>                    
+                            <th>Kcals Consumed</th>
+                            <th>Kcals Burned</th>
+                            <th>Kcals Left</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -85,4 +91,5 @@
         }
     </script>
 </body>
+
 </html>

@@ -326,6 +326,95 @@ export default class Database {
     }
   }
 
+  // Søgefunktion til at søge efter aktiviteter. Den henter activityID, activityName og calouries pr time
+  async searchActivity(searchTerm) {
+    console.log("Before DB: ", searchTerm);
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request
+        .input('searchTerm', sql.NVarChar, `%${searchTerm}%`)
+        .query(`SELECT * FROM NutriDB.activity WHERE activityName LIKE @searchTerm`);
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved søgning efter activiteter:', error);
+      throw error;
+    }
+  }
+
+
+  async postActivity(date, regtime, calories, userID, activityID, timeSpendt) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+  
+      const result = await request
+        .input('date', sql.Date, date)
+        .input('regTime', sql.NVarChar, regtime) // Pass regtime as a string
+        .input('caloriesBurned', sql.Int, calories)
+        .input('userID', sql.Int, userID)
+        .input('activityID', sql.Int, activityID)
+        .input('timeSpent', sql.Int, timeSpendt)
+        .query(`
+          DECLARE @CopenhagenTime AS datetimeoffset;
+          SET @CopenhagenTime = SWITCHOFFSET(CAST(@regTime AS datetimeoffset), '+00:00');
+  
+          INSERT INTO [NutriDB].[activityTracker] (date, regTime, caloriesBurned, userID, activityID, timeSpent)
+          VALUES (@date, @CopenhagenTime, @caloriesBurned, @userID, @activityID, @timeSpent)
+        `);
+  
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved indsætning af måltidets totale ernæringsindhold i [NutriDB].[totalNutrientsForCreateMeal]:', error);
+      throw error;
+    }
+  }
+
+  // Funktion til at søge efter måltider. searchTerm og UserID er dynamiske
+  async searchTrackedActivity(userID) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      console.log(`Attempting to fetch meals for userID: ${userID}`);
+      const result = await request
+        .input('userID', sql.NVarChar, userID)
+        .query(`
+        SELECT * FROM [NutriDB].[activityTracker]
+        WHERE userID = @userID`);
+
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved hentning af brugerens activiteter måltider:', error);
+      throw error;
+    }
+  }
+
+
+  async getMealAndActivity(userID) {
+    await this.connect();
+    const request = this.poolConnection.request();
+    const result = await request
+      .input('userID', sql.Int, userID)
+      .query(`SELECT * FROM [NutriDB].[mealTracker]
+      JOIN [NutriDB].[activityTracker] ON [NutriDB].[mealTracker].userID = [NutriDB].[activityTracker].userID
+      WHERE [NutriDB].[mealTracker].userID = @userID`);
+    return result.recordset;
+  }
+  // // Søgning af ingredienser (lav input felt og tilddel det variablen searchTerm)
+  // async searchIngredients(searchTerm) {
+  //   try {
+  //     await this.connect();
+  //     const request = this.poolconnection.request();
+  //     const result = await request
+  //       .input('searchTerm', sql.NVarChar, `%${searchTerm}%`)
+  //       .query(`SELECT * FROM NutriDB.ingredient WHERE foodName LIKE @searchTerm`);
+  //     return result.recordset;
+  //   } catch (error) {
+  //     console.error('Fejl ved søgning efter ingredienser:', error);
+  //     throw error;
+  //   }
+  // }
+
 
 
   // async update(id, data) {
