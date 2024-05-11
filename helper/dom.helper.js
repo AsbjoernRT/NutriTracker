@@ -9,14 +9,18 @@ document.addEventListener('DOMContentLoaded', function () {
         IngredientSearch()
         showRecipes()
     }
+    if (path === '/mealTracker') {
 
+        getLocation()
+        handleLocation()
+    }
     if (path === '/activityTracker') {
         console.log("Current page:", path);
         AcvtivitySeach()
     }
-
     if (path == '/dailyNutri') {
         console.log("Current page:", path);
+        showDailyNutri()
     }
     if (path === '/dashboard') {
         console.log("Current page:", path);

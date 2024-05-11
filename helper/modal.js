@@ -10,7 +10,7 @@ function toggleModalVisibility() {
 
     if (ingredientList && addRecipe && modalWrapper) {
         ingredientList.innerHTML = '';
-        editRecipe.classList.add('hide');
+        // editRecipe.classList.add('hide');
         addRecipe.classList.remove('hide');
         modalWrapper.classList.toggle('hide');
     } else {
@@ -43,6 +43,13 @@ document.getElementById('add-recipe-btn').addEventListener('click', function () 
     modalType = 'food';
     toggleModalVisibility();
 });
+
+document.getElementById('add-meal-btn').addEventListener('click', function () {
+    modalType = 'food';
+    console.log("Hey");
+    toggleModalVisibility();
+});
+
 
 document.getElementById('add-liquid-btn').addEventListener('click', function () {
     modalType = 'beverage';

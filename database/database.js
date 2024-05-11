@@ -362,25 +362,49 @@ export default class Database {
     } catch (error) {
       console.error('Fejl ved hentning af måltidsingredienser:', error);
       throw error;
-    } finally {
-      sql.close();
+    }
+  }
+
+  async getTotalNutriens(mealID) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request
+      .input('mealID', sql.Int, mealID)
+      .query('SELECT * FROM [NutriDB].[totalNutrientsForCreateMeal] WHERE mealID = @mealID')
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved hentning af brugerens måltider:', error);
+      throw error;
     }
   }
 
   // Indsætning af måltid i mealtracker 
-  async postIntoDbMealTracker(mealID, userID, date, quantity) {
+  async postIntoDbMealTracker(userID, mealID, quantity, regTime, getCityFromLocation, getTotalEnergyKj, getTotalProtein, getTotalFat, getTotalFiber, getTotalEnergyKcal, getTotalWater, getTotalDryMatter) {
     try {
-      await sql.connect(config);
-      const result = await sql.query`
-    INSERT INTO [NutriDB].[mealTracker] (mealID, userID, date, quantity)
-    VALUES (${mealID}, ${userID}, ${date}, ${quantity})`;
-
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request
+      .input('userID', sql.Int, userID)
+      .input('mealID', sql.Int, mealID)
+      .input('quantity', sql.Int, quantity)
+      .input('regTime', sql.Time, regTime)
+      .input('date', sql.Date, regTime)
+      .input('geoLocation', sql.NVarChar, getCityFromLocation)
+      .input('mTenergyKj', sql.Int, getTotalEnergyKj)
+      .input('mTProtein', sql.Int, getTotalProtein)
+      .input('mTFat', sql.Int, getTotalFat)
+      .input('mTFiber', sql.Int, getTotalFiber)
+      .input('mTEnergyKcal', sql.Int, getTotalEnergyKcal)
+      .input('mTWater', sql.Int, getTotalWater)
+      .input('mTDryMatter', sql.Int, getTotalDryMatter)
+      .query`
+    INSERT INTO [NutriDB].[mealTracker] (userID, mealID, quantity, regTime, date, geoLocation, mTenergyKj, mTProtein, mTFat,mTFiber, mTEnergyKcal, mTWater, mTDryMatter)
+    VALUES (@userID, @mealID, @quantity, @regTime, @date, @geoLocation, @mTenergyKj, @mTProtein, @mTFat, @mTFiber, @mTEnergyKcal, @mTWater, @mTDryMatter)`;
       return result.recordset;
     } catch (error) {
       console.error('Fejl ved indsætning af brugerens måltid tracker i [NutriDB].[mealTracker]:', error);
       throw error;
-    } finally {
-      sql.close();
     }
   }
 
@@ -442,7 +466,7 @@ export default class Database {
 
       return result.recordset;
     } catch (error) {
-      console.error('Fejl ved indsætning af måltidets totale ernæringsindhold i [NutriDB].[totalNutrientsForCreateMeal]:', error);
+      console.error('Fejl:', error);
       throw error;
     }
   }

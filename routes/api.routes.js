@@ -2,11 +2,12 @@ import express from 'express';
 import { register } from '../controller/register.js';
 import { login } from '../controller/login.js';
 import index from '../index.js';
-import { updateUser,deleteUser ,getMealAndActivity } from '../controller/user.js'
+import { updateUser, deleteUser, getMealAndActivity } from '../controller/user.js'
 // import { deleteUser } from '../controller/user.js'
 import bodyParser from 'body-parser';
 import { mealcreator, getMeals, deleteMeal } from '../controller/mealCreator.js'
 import { trackActivity } from '../controller/acticityTracker.js';
+import {sendLocationToServer,addWeightToMeal} from '../controller/mealTracker.js'
 
 
 const router = express.Router();
@@ -158,12 +159,12 @@ router.get('/userinfo', async (req, res) => {
 router.get('/mealTracker', async (req, res) => {
 
     console.log("Received userID:", req.session.userID);  // Check what's received
-    console.log(req);
+    // console.log(req);
     //const userID = req.session.user.userID;
-    const userID = 42
+    const userID = req.session.user.userID
 
     if (userID) {
-        const result = await index.connectedDatabase.getAllUserMeals(userID)
+        const result = await index.connectedDatabase.getAllUserMeal(userID)
         // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
         console.log("succes", result)
         res.json(result)
@@ -177,11 +178,11 @@ router.get('/mealTracker', async (req, res) => {
 
 
 
-router.get('/addWeightToMeal', async (req, res) => {
+router.get('/trackedMealSearch', async (req, res) => {
 
-    console.log(req)
+    // console.log(req)
     const searchTerm = req.query.searchTerm
-    const userID = 42
+    const userID = req.session.user.userID
 
     if (userID) {
         const result = await index.connectedDatabase.searchMeals(searchTerm, userID)
@@ -195,6 +196,16 @@ router.get('/addWeightToMeal', async (req, res) => {
     }
 
 })
+
+
+router.post('/addWeightToRecepie', (req, res) => {
+    console.log("Request Modtaget");
+    addWeightToMeal(req, res)
+})
+
+router.post('/getCityNameOfLocation', (req, res) => {
+    sendLocationToServer(req, res)
+})
 //     try {
 //         const result = await index.connectedDatabase.searchMeals(searchTerm, userID)
 //         // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
@@ -206,25 +217,25 @@ router.get('/addWeightToMeal', async (req, res) => {
 
 
 router.get('/activity_search', async (req, res) => {
-    console.log("Router Modtaget: ",req.query.searchTerm);
+    console.log("Router Modtaget: ", req.query.searchTerm);
     try {
         const result = await index.connectedDatabase.searchActivity(req.query.searchTerm)
         // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
-        console.log(result);
+        // console.log(result);
         res.json(result)
     } catch (error) {
         console.log("Route error:", error);
     }
 })
 
-router.post('/activity',async (req, res) => {
-    console.log("Router Modtaget: ",req);
-    trackActivity(req,res)
+router.post('/activity', async (req, res) => {
+    console.log("Router Modtaget: ", req);
+    trackActivity(req, res)
 })
 
 router.get('/MealAndActivity', async (req, res) => {
     // console.log("Router Modtaget: ",req.session);
-    getMealAndActivity(req,res)
+    getMealAndActivity(req, res)
     console.log("UD: ", res);
     //     const result = await index.connectedDatabase.searchActivity(req.query.searchTerm)
     //     // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
