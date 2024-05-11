@@ -8,7 +8,9 @@
     <title>Meal Tracker</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/sidebar.js"></script>
+    <script src="/dom.js"></script>
     <script src="/user.js"></script>
+
     <!-- <base href="/"> -->
 
 </head>
@@ -49,7 +51,7 @@
                 <button type="button" class="modal-close-btn" onclick=toggleModalVisibility()>X</button>
             </div>
 
-            <form id="recipeForm">
+            <form id="mealTrackerForm">
                 <div id="modal-content">
                     <h3>Find your meal</h3>
                     <input type="text" id="searchInput" placeholder="Search meal to add..." autocomplete="off">
@@ -58,13 +60,13 @@
                         <p id="selectedItem">Selected Meal: None</p>
                         <p>Weight in grams:</p>
                         <input type="number" id="itemWeight" placeholder="Weight (g)" value="1" required>
-                        <button type="button" id="addIngredient">Add meal</button>
+                        <button type="button" id="addIngredient">Add ingredient</button>®
                     </div>
                     <div id="selectedIngredientsList">
                         <ul id="ingredientList"></ul>
                     </div>
                     <div id="recipeButtonContainer">
-                        <button type="submit" id="addRecipe">Save</button>
+                        <button type="submit" id="addRecipe" onclick="toggleModalVisibility()">Save</button>
                     </div>
                 </div>
             </form>
@@ -105,6 +107,8 @@
             <script src="/mealTracker.helper.js"></script>
             <script src="/partials.helper.js"></script>
             <script src="/modal.js"></script>
+            <script src="/geo.helper.js"></script>
+            
 
 </body>
 

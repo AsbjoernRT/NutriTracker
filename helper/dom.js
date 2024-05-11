@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
     // Check the current URL or a part of it
     const path = window.location.pathname;
@@ -7,6 +8,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Execute code specific to '/specific-page'
         console.log("Current page:", path);
         showRecipes()
+     }
+
+     if (path === '/mealTracker') {
+
+        getLocation()
+        handleLocation()
+      
+        
      }
     // } else if (path.startsWith('/category/')) {
     //     // Execute code specific to any category page

@@ -1,94 +1,13 @@
-document.addEventListener('DOMContentLoaded', function () {
-    fetchMeals();  // Call fetchMeals when the DOM is fully loaded
-});
-
-
-function fetchMeals() {
-    fetch("/api/mealTracker")
-
-        .then(response => response.json())
-        .then(mealData => {
-            console.log(mealData[0].name)
-            console.log(mealData)   // Process and display meal data
-            // Update your UI accordingly
-            const mealListElement = document.getElementById('meal-item')
-            mealData.forEach(meal => { // Looper mealData objektet
-                const row = document.createElement('div');
-                row.className = 'meal-row';  // Tilføjer en klasse til rækken
-
-                const nameCell = document.createElement('div');
-                nameCell.className = 'meal-column';  // Ensartet styling med header
-                const mealSource = document.createElement('div');
-                mealSource.className = 'meal-column';
-                const weightEnergyCell = document.createElement('div');
-                weightEnergyCell.className = 'meal-column weight-energy';
-                const weight = document.createElement('div');
-                const energy = document.createElement('div');
-
-                weight.textContent = meal.quantity + 'g'
-                energy.textContent = meal.mTEnergyKcal + 'kcal'
-
-                weightEnergyCell.appendChild(weight);
-                weightEnergyCell.appendChild(energy);
-
-                weight.className = 'meal-column';
-
-                const geoLocation = document.createElement('div');
-                geoLocation.className = 'meal-column';
-
-                const addedOn = document.createElement('div');
-                addedOn.className = 'meal-column';
-
-
-                const dailyCons = document.createElement('div');
-                dailyCons.className = 'meal-column daily-cons-grid';
-                const dailyConsEnergy = document.createElement('div');
-                const dailyConsprotein = document.createElement('div');
-                const dailyConsfat = document.createElement('div');
-                const dailyConsfiber = document.createElement('div');
-
-                dailyConsEnergy.textContent = meal.mTEnergyKj + 'kj'
-                dailyConsprotein.textContent = meal.mTProtein + 'g'
-                dailyConsfat.textContent = meal.mTFat + 'g'
-                dailyConsfiber.textContent = meal.mTFiber + 'g'
-
-                dailyCons.appendChild(dailyConsEnergy);
-                dailyCons.appendChild(dailyConsprotein);
-                dailyCons.appendChild(dailyConsfat);
-                dailyCons.appendChild(dailyConsfiber);
-
-                
-                const buttonCell = document.createElement('div');
-                buttonCell.className = 'button-column';
-
-
-                nameCell.textContent = meal.name // displayer tekst
-                mealSource.textContent = meal.source
-                geoLocation.textContent = meal.geoLocation
-
-                addedOn.textContent = meal.date
-
-
-
-                mealListElement.appendChild(row);
-                row.appendChild(nameCell); // displayer elementet i frontend
-                row.appendChild(mealSource);
-                row.appendChild(weightEnergyCell);
-                row.appendChild(geoLocation);
-                row.appendChild(addedOn);
-                row.appendChild(dailyCons);
-
-            })
-        })
-}
-
-
-
 let debounceTimerId;
+
+
+
+
 
 
 // //Food Search
 document.addEventListener('DOMContentLoaded', function () {
+    fetchMeals();  // Call fetchMeals when the DOM is fully loaded
     var inputElement = document.getElementById('searchInput');
     var resultsDiv = document.getElementById('searchResults');
     var debounceTimerId;
@@ -101,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 fetch("/api/addWeightToMeal?searchTerm=" + searchTerm)
                     .then(res => res.json())
                     .then((res) => {
-                        console.log(res);
+                        console.log("Response from search: ", res);
                         displayResults(res)
                     });
             } else {
@@ -110,6 +29,161 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 200);
     });
 });
+
+
+// Laver en post request når man trykker på submit knap i mealTrackerformular
+
+document.getElementById('mealTrackerForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    const recipeName = document.getElementById('searchInput').value;
+    const quantity = document.getElementById('itemWeight').value;
+    const mealID = selectedMeal.mealID;
+    const userID = selectedMeal.userID;
+    const timesEaten = selectedMeal.timesEaten;
+
+
+
+    const postData = {
+        userID,
+        mealID,
+        recipeName,
+        quantity,
+        timesEaten,
+        cityName
+    };
+
+    // Log postData to ensure it's correct
+    console.log(cityName);
+
+    // Call submitData function and handle it with then/catch
+    submitData(postData).then(() => {
+        alert('Data submitted successfully');
+        window.location.reload();
+
+
+    }).catch(error => {
+        console.error('Submission failed:', error);
+        alert('Failed to submit data');
+    });
+
+}).catch(error => {
+    console.error('Failed to get geolocation:', error);
+    alert('Geolocation is required for this submission, please allow access and try again.');
+    // Optionally, handle submission without geolocation or inform the user more specifically
+});
+
+function submitData(postData) {
+    return fetch('api/addWeightToRecepie', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    }).then(data => {
+        if (!data.success) {
+            throw new Error(data.message);
+        }
+        return data;  // Optionally, handle more data processing here
+    });
+}
+
+
+
+function fetchMeals() {
+    fetch("/api/mealTracker")
+        .then(response => response.json())
+        .then(mealData => {
+            const mealListElement = document.getElementById('meal-item');
+            console.log(mealData)
+
+            mealData.forEach(meal => {
+                // Hvis måltidet ikke findes laver vi en ny række
+                const row = document.createElement('div');
+                row.className = 'meal-row';
+                appendNewRow(row, meal);
+                mealListElement.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error fetching meals:', error));
+}
+
+function appendNewRow(row, meal) {
+    const nameCell = document.createElement('div');
+    nameCell.className = 'meal-column';
+    nameCell.textContent = meal.name;
+
+    const mealSource = document.createElement('div');
+    mealSource.className = 'meal-column';
+    mealSource.textContent = meal.source;
+
+    const weightEnergyCell = document.createElement('div');
+    weightEnergyCell.className = 'meal-column weight-energy';
+    const weight = document.createElement('div');
+    weight.textContent = meal.quantity + 'g';
+    const energy = document.createElement('div');
+    energy.textContent = meal.mTEnergyKcal + 'kcal';
+    weightEnergyCell.appendChild(weight);
+    weightEnergyCell.appendChild(energy);
+
+    const geoLocation = document.createElement('div');
+    geoLocation.className = 'meal-column';
+    geoLocation.textContent = meal.geoLocation;
+
+    const addedOn = document.createElement('div');
+    addedOn.className = 'meal-column';
+    addedOn.textContent = meal.date.split('T')[0];
+
+    const dailyCons = document.createElement('div');
+    dailyCons.className = 'meal-column daily-cons-grid';
+    const dailyConsEnergy = document.createElement('div');
+    dailyConsEnergy.textContent = meal.mTEnergyKj + ' kj';
+    const dailyConsProtein = document.createElement('div');
+    dailyConsProtein.textContent = meal.mTProtein + ' g';
+    const dailyConsFat = document.createElement('div');
+    dailyConsFat.textContent = meal.mTFat + ' g';
+    const dailyConsFiber = document.createElement('div');
+    dailyConsFiber.textContent = meal.mTFiber + ' g';
+    dailyCons.appendChild(dailyConsEnergy);
+    dailyCons.appendChild(dailyConsProtein);
+    dailyCons.appendChild(dailyConsFat);
+    dailyCons.appendChild(dailyConsFiber);
+
+
+
+    row.appendChild(nameCell);
+    row.appendChild(mealSource);
+    row.appendChild(weightEnergyCell);
+    row.appendChild(geoLocation);
+    row.appendChild(addedOn);
+    row.appendChild(dailyCons);
+
+}
+
+function updateExistingRow(row, meal) {
+    // Denne funktion skal håndtere opdatering af en eksisterende række
+    const weightCell = row.querySelector('.weight-column');
+    const energyCell = row.querySelector('.energy-column');
+    const dailyConsEnergyCell = row.querySelector('.daily-cons-energy-column');
+
+    let currentWeight = parseInt(weightCell.textContent.replace('g', ''));
+    let currentEnergy = parseInt(energyCell.textContent.replace('kcal', ''));
+    let currentConsEnergy = parseInt(dailyConsEnergyCell.textContent.replace(' kj', ''));
+
+    currentWeight += parseInt(meal.quantity);
+    currentEnergy += parseInt(meal.mTEnergyKcal);
+    currentConsEnergy += parseInt(meal.mTEnergyKj);
+
+    weightCell.textContent = currentWeight + 'g';
+    energyCell.textContent = currentEnergy + 'kcal';
+    dailyConsEnergyCell.textContent = currentConsEnergy + ' kj';
+}
+
 
 // ?searchTerm=" + searchTerm
 
@@ -122,6 +196,7 @@ function displayResults(items) {
         resultItem.classList.add('result-item');
         resultItem.textContent = item.name;
         resultItem.onclick = function () { selectItem(item); };
+        document.getElementById('selectedItem').dataset.mealId = resultItem.mealID; // Store mealID in data attribute
         resultsContainer.appendChild(resultItem);
     });
 }
@@ -131,168 +206,16 @@ function selectItem(item) { // Here we can select the items from our API pull, w
     document.getElementById('selectedItem').textContent = `Selected Item: ${item.name}`;
     document.getElementById('searchResults').innerHTML = '';
 
-    return selectedItemData = {
-        foodName: item.foodName,
-        ingredientID: item.ingredientID,
-        energyKj: item.energyKj,
-        protein: item.protein,
-        fat: item.fat,
-        fiber: item.fiber,
-        energyKcal: item.energyKcal,
-        water: item.water,
-        dryMatter: item.dryMatter,
-        weight: null
+    console.log("Ting", item);
+
+    return selectedMeal = {
+        userID: item.userID,
+        mealName: item.name,
+        mealID: item.mealID,
+        source: item.source,
+
     };
 }
-
-// Registrerer vi "addIngredient" klik
-document.getElementById('addIngredient').addEventListener('click', function () {
-    const weight = parseFloat(document.getElementById('itemWeight').value);
-    if (isNaN(weight)) {
-        console.error('Invalid weight entered');
-        return;
-    }
-
-    // Assuming selectedItemData is defined elsewhere and has the proper structure
-    selectedItemData.weight = weight;
-    const properties = ['energyKj', 'protein', 'fat', 'fiber', 'energyKcal', 'water', 'dryMatter'];
-    properties.forEach(prop => {
-        selectedItemData['c' + prop.charAt(0).toUpperCase() + prop.slice(1)] = (selectedItemData[prop] / 100) * weight;
-    });
-
-    // // Retrieve saved ingredients from localStorage and validate
-    // let savedIngredients = JSON.parse(localStorage.getItem('ingredients')) || [];
-    // if (!Array.isArray(savedIngredients)) {
-    //     console.error('savedIngredients is not an array:', savedIngredients);
-    //     savedIngredients = [];
-    // }
-
-    let savedIngredients = JSON.parse(localStorage.getItem('ingredients')) || [];
-
-    let ingredientAlreadyExists = false;
-
-    savedIngredients = savedIngredients.map(ingredient => {
-        if (ingredient.foodID === selectedItemData.foodID) {
-            ingredient.weight += weight; // Sum up the weights if already exists
-            ingredientAlreadyExists = true;
-            updateListItem(ingredient); // Assuming this function updates the UI
-        }
-        return ingredient;
-    });
-
-    if (!ingredientAlreadyExists) {
-        savedIngredients.push(selectedItemData);
-        addItemToList(selectedItemData); // Assuming this function updates the UI
-    }
-
-    // Save updated ingredient list to localStorage
-    localStorage.setItem('ingredients', JSON.stringify(savedIngredients));
-    console.log('Updated selectedItemData with macros:', selectedItemData);
-});
-
-
-function addItemToList(item) {
-    const list = document.getElementById('ingredientList');
-    const listItem = document.createElement('li');
-    listItem.classList.add('ingredient-item');
-    listItem.classList.add(`ingredient_${item.foodID}`);
-    listItem.style.display = 'flex';
-    listItem.style.justifyContent = 'space-between';
-    listItem.style.alignItems = 'center';
-
-    // Text content container
-    const textContent = document.createElement('span');
-    textContent.textContent = `Ingredint: ${item.foodName}, Weight: ${item.weight}g`;
-    listItem.appendChild(textContent);
-
-    // Button container
-    const buttonContainer = document.createElement('div');
-
-    // Create an Inspect button
-    const inspectButton = document.createElement('button');
-    inspectButton.textContent = 'Inspect';
-    inspectButton.classList.add('inspect-button');
-    // Add future functionality here
-    buttonContainer.appendChild(inspectButton);
-
-
-    // Create a Delete button
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Delete';
-    deleteButton.classList.add('delete-button');
-    deleteButton.onclick = function () {
-        console.log("Deleting item with ID:", item.foodID);
-        list.removeChild(listItem);
-        removeItemFromLocalStorage(item.foodID);
-    };
-
-    buttonContainer.appendChild(deleteButton);
-
-    // Add the button container to the list item
-    listItem.appendChild(buttonContainer);
-
-    // Add the list item to the list
-    list.appendChild(listItem);
-
-    inspectButton.addEventListener('click', function () {
-        localStorage.setItem('selectedIngredientId', item.foodID);
-        window.location.href = 'foodInspect.html';
-    });
-}
-
-function updateListItem(ingedient) {
-    const listItems = document.getElementsByClassName(`ingredient_${ingedient.foodID}`);
-
-    // dårlig kode 
-    for (const listItem of listItems) {
-        listItem.remove();
-        addItemToList(ingedient);
-    }
-}
-
-
-function removeItemFromLocalStorage(itemId) {
-    // Retrieve the array of ingredients from local storage, or initialize an empty array if none exists
-    let ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
-
-    // Filter the array, keeping only the ingredients whose id does NOT match the provided itemId
-    //ingredients = ingredients.filter(ingredient => ingredient.foodID !== itemId);
-
-    // Update the local storage with the new array of ingredients
-    localStorage.setItem('ingredients', JSON.stringify(ingredients));
-}
-
-document.getElementById('recipeForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent the default form submission behavior
-
-    // Collecting the form data
-    const recipeName = document.getElementById('nameInput').value;
-    const mealType = document.getElementById('typeSelect').value;
-    const source = document.getElementById('sourceInput').value;
-
-    // Retrieve ingredients from local storage
-    const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
-
-    // Combine all data into one object
-    const postData = {
-        recipeName,
-        mealType,
-        source,
-        ingredients
-    };
-
-    // Send the data using fetch API
-    fetch('/api/ingredients', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postData)
-    })
-        .then(response => response.json())
-        .then(data => console.log('Success:', data))
-        .catch(error => console.error('Error:', error));
-});
 
 
 
@@ -302,4 +225,13 @@ document.getElementById('recipeForm').addEventListener('submit', function (event
 //         fetchMeals().then(mealData => {
 
 //     })
-// })
+
+
+getGeolocation().then(position => {
+    const geoLocation = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+    }
+    return geoLocation
+}
+);

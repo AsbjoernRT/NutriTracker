@@ -5,6 +5,8 @@ import index from '../index.js';
 import { updateUser } from '../controller/user.js'
 import { deleteUser } from '../controller/user.js'
 import {mealcreator, getMeals} from '../controller/mealCreator.js'
+import { addWeightToMeal } from '../controller/mealTracker.js'
+import { sendLocationToServer } from '../controller/mealTracker.js'
 
 
 const router = express.Router();
@@ -92,18 +94,20 @@ router.post('/logout', (req, res) => {
         res.end('No session to log out');
     }
 });
-// router.post('/updateUser', (req, res) => {
-//     const { age, weight, gender } = req.body
 
-//     req.session.user ={
-//         age: age,
-//         weigth: weight,
-//         gender: gender
-//     }
 
-//     res.send("User Update")
+router.post('/addWeightToRecepie', (req, res) => {
+    addWeightToMeal(req, res)
+})
 
-// });
+router.post('/getCityNameOfLocation', (req, res) => {
+    sendLocationToServer(req,res)
+})
+
+
+// router.get('/tMacros',(req,res) => {
+//     getTotalMacros(req,res)
+// })
 
 router.get('/recipes',(req,res) => {
     getMeals(req,res)
@@ -173,6 +177,7 @@ router.get('/addWeightToMeal', async (req, res) => {
     }
 
 })
+
 //     try {
 //         const result = await index.connectedDatabase.searchMeals(searchTerm, userID)
 //         // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
