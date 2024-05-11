@@ -20,12 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         getMealAndActivity()
         function getMealAndActivity() {
 
-            fetch("/api/MealAndActivity",{
-            method: 'POST',
-                headers: {
-                'Content-Type': 'application/json'
-            },
-        })
+            fetch("/api/MealAndActivity")
                 // fetch('/api/ingredients' + postData)
                 .then(response => response.json())
                 .then(data => console.log('Success:', data))

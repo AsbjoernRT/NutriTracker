@@ -217,8 +217,8 @@ router.get('/activity_search', async (req, res) => {
     }
 })
 
-router.post('/activity', async (req, res) => {
-    console.log("Router Modtaget: ",req.body);
+router.get('/MealAndActivity', async (req, res) => {
+    console.log("Router Modtaget: ",req);
     trackActivity(req,res)
     //     const result = await index.connectedDatabase.searchActivity(req.query.searchTerm)
     //     // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
