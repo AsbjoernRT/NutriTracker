@@ -2,5 +2,5 @@ Velkommen til eksamensprojektet i Programmering og udvikling af små systemer sa
 
 Nutritracker kan tilgås via flg. link https://lobster-app-4yk6q.ondigitalocean.app/
 Der er oprettet et login med i forvejen indsatte måltider og aktiviteter.
-E-mail: review@cbs.dk
+E-mail: forelæser@review.dk
 Password: Nutritracker4321
