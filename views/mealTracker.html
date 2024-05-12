@@ -25,7 +25,7 @@
             <div class="btn-container">
                 <!-- Submit button -->
                 <button id="add-liquid-btn" type="btn" class="btn-plus btn-blue" aria-label="Add new liquid" >+</button>
-                <button id="add-meal-btn" type="btn" class="btn-plus btn-green" aria-label="Add new meal" onclick="toggleModalVisibility()">+</button>
+                <button id="add-meal-btn" type="btn" class="btn-plus btn-green" aria-label="Add new meal" onclick="toggleModalVisibilityTracker()">+</button>
             </div>
         </section>
         <!-- Table to display tracked meals -->
@@ -50,7 +50,7 @@
     <modal id="modal-wrapper" class="hide">
         <div id="modal-content-wrapper">
             <div id="close-create-btn" class="modal-close-wrapper">
-                <button type="button" class="modal-close-btn" onclick=toggleModalVisibility()>X</button>
+                <button type="button" class="modal-close-btn" onclick=toggleModalVisibilityTracker()>X</button>
             </div>
 
             <form id="mealTrackerForm">

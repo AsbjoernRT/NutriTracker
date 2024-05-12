@@ -24,6 +24,19 @@ function toggleModalVisibility(isEditMode) {
     }
 }
 
+function toggleModalVisibilityTracker() {
+    const modalWrapper = document.getElementById('modal-wrapper');
+
+    if (modalWrapper && addRecipe) {
+        ingredientList.innerHTML = ''; // Ryd tidligere ingredienser
+
+        modalWrapper.classList.toggle('hide'); // Skift synligheden af modalen
+    } else {
+        console.error('One or more elements are missing in the DOM');
+    }
+}
+
+
 function toggleModalVisibilitySettings() {
 
     const modalWrapper = document.getElementById('modal-wrapper');
