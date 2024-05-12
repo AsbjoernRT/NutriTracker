@@ -1,5 +1,3 @@
-
-
 function displayDailyNutri() {
 
     const hour = new Date().getHours();
@@ -14,7 +12,7 @@ function displayDailyNutri() {
         })
         .catch(error => {
             console.error("Failed to fetch meal and activity data:", error);
-            // Handle the error, such as showing an error message to the user
+            // Håndter fejlen, for eksempel ved at vise en fejlmeddelelse til brugeren
         });
 
 
