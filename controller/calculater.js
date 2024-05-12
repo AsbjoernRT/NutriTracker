@@ -46,3 +46,157 @@ export function calculateBurnedKcal(activites){
 }
 
 // console.log(calculateMetabolism(23,"male", 94));
+
+export function calculateRemainingCalories(req) {
+    console.log(req.session.user.metabolism);
+
+    const metabolism = req.session.user.metabolism; // from user session
+    const metabolismPerHour = metabolism / 24;
+
+    const now = new Date();
+    const currentHour = now.getHours(); // Current hour (0-23)
+    console.log(currentHour);
+
+    const usedMetabolism = metabolismPerHour * currentHour;
+    console.log(usedMetabolism);
+    // const totalCaloriesBurned = req.someDataSource.totalCaloriesBurnedToday;
+    // const totalCaloriesConsumed = req.someDataSource.totalCaloriesConsumedToday;
+
+    // const kcalsLeft = (usedMetabolism + totalCaloriesBurned) - totalCaloriesConsumed;
+
+    return usedMetabolism;
+}
+
+
+export function categorizeActiviityDate(entries) {
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time part to compare only date parts
+
+    const results = {
+        today: {
+            activities: [],
+            totalCalories: 0,
+            numberOfActivies: 0
+        },
+        otherDates: {}
+    };
+
+    entries.forEach(entry => {
+        const entryDate = new Date(entry.date);
+        entryDate.setHours(0, 0, 0, 0); // Normalize time part for accurate comparison
+
+        const dateKey = entryDate.toISOString().split('T')[0]; // Create a date key in YYYY-MM-DD format
+        const isToday = entryDate.getTime() === today.getTime();
+        const category = isToday ? results.today : (
+            results.otherDates[dateKey] || (results.otherDates[dateKey] = {
+                activities: [],
+                totalCalories: 0,
+                numberOfActivies: 0
+            })
+        );
+        category.activities.push(entry);
+        category.totalCalories += entry.caloriesBurned;
+        category.numberOfActivies++;
+    });
+
+    return results;
+}
+
+export function categorizeMealDate(entries) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);  // Reset time part to compare only date parts
+
+    const results = {
+        today: {
+            meals: [],
+            mTEnergyKj: 0,
+            mTProtein: 0,
+            mTFat: 0,
+            mTFiber: 0,
+            mTEnergyKcal: 0,
+            mTWater: 0,
+            mTDryMatter: 0,
+            numberOfMeals: 0,
+        },
+        otherDates: {}
+    };
+
+    entries.forEach(entry => {
+        const entryDate = new Date(entry.date);
+        entryDate.setHours(0, 0, 0, 0);  // Normalize time part for accurate comparison
+
+        const dateKey = entryDate.toISOString().split('T')[0]; // Create a date key in YYYY-MM-DD format
+        const isToday = entryDate.getTime() === today.getTime();
+        const category = isToday ? results.today : (
+            results.otherDates[dateKey] || (results.otherDates[dateKey] = {
+                meals: [],
+                mTEnergyKj: 0,
+                mTProtein: 0,
+                mTFat: 0,
+                mTFiber: 0,
+                mTEnergyKcal: 0,
+                mTWater: 0,
+                mTDryMatter: 0,
+                numberOfMeals: 0,
+            })
+        );
+
+        // Aggregate the data
+        category.meals.push(entry);
+        category.mTEnergyKj += entry.mTEnergyKj;
+        category.mTProtein += entry.mTProtein;
+        category.mTFat += entry.mTFat;
+        category.mTFiber += entry.mTFiber;
+        category.mTEnergyKcal += entry.mTEnergyKcal;
+        category.mTWater += entry.mTWater / 1000;
+        category.mTDryMatter += entry.mTDryMatter;
+        category.numberOfMeals++;
+    });
+
+    return results;
+}
+
+export function createDailySummaries(activityData, mealData, basicMetabolism) {
+    const allDates = { ...mealData.otherDates, ...activityData.otherDates };
+    const allDatesKeys = Object.keys(allDates);
+
+    const dailySummaries = allDatesKeys.reduce((acc, date) => {
+        const meals = mealData.otherDates[date] || {
+            mTEnergyKcal: 0,
+            mTWater: 0,
+            mTProtein: 0,
+            numberOfMeals: 0
+        };
+        const activities = activityData.otherDates[date] || {
+            totalCalories: 0
+        };
+
+        acc[date] = {
+            Date: date,
+            numberOfMeals: meals.numberOfMeals,
+            mTWater: meals.mTWater,
+            mTEnergyKcal: meals.mTEnergyKcal,
+            mTProtein: meals.mTProtein,
+            totalCalories: activities.totalCalories + basicMetabolism,
+            kcalsLeft: basicMetabolism + activities.totalCalories - meals.mTEnergyKcal,
+            basicMetabolism: basicMetabolism
+        };
+
+        return acc;
+    }, {});
+
+    // Include today's data
+    dailySummaries[new Date().toISOString().split('T')[0]] = {
+        Date: new Date().toISOString().split('T')[0],
+        numberOfMeals: mealData.today.numberOfMeals,
+        mTWater: mealData.today.mTWater,
+        mTEnergyKcal: mealData.today.mTEnergyKcal,
+        mTProtein: mealData.today.mTProtein,
+        totalCalories: activityData.today.totalCalories + basicMetabolism,
+        kcalsLeft: basicMetabolism + activityData.today.totalCalories - mealData.today.mTEnergyKcal,
+        basicMetabolism: basicMetabolism
+    };
+
+    return dailySummaries;
+}

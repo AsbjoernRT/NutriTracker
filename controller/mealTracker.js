@@ -38,8 +38,6 @@ export const addWeightToMeal = async (req, res) => {
     console.log("Meal ID: ", mealID, "geolokation", req.body.cityName);
 
     const getMacro = await index.connectedDatabase.getTotalNutriens(mealID)
-
-
     const getTotalEnergyKj = (quantity / 100) * getMacro[0].tEnergyKj
     const getTotalProtein = (quantity / 100) * getMacro[0].tProtein
     const getTotalFat = (quantity / 100) * getMacro[0].tFat
