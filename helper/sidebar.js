@@ -1,9 +1,11 @@
+// Funktion til at åbne/lukke sidebar
 function toggleSidebar() {
     var sidebar = document.getElementById("profileSidebar");
+        // Kontrollerer bredden af sidebar-elementet for at afgøre om den skal åbnes eller lukkes
     if (sidebar.style.width === '250px') {
-        sidebar.style.width = '0';
+        sidebar.style.width = '0'; // Luk sidebar
     } else {
-        sidebar.style.width = '250px';
+        sidebar.style.width = '250px'; // Åbn sidebar
     }
 }
 
@@ -33,43 +35,46 @@ document.addEventListener('click', function(event) {
 //     }
 // });
 
+// Funktion til at logge ud
 function logout() {
+        // Udfører en POST-anmodning til /logout-endepunktet for at logge brugeren ud
     fetch('/logout', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        credentials: 'include' // Necessary if using cookies to manage session
+        credentials: 'include'  // Nødvendigt hvis cookies bruges til at håndtere session
     })
         .then(response => {
             if (response.ok) {
-                console.log('Logged out successfully');
-                window.location.href = '/login';
+                console.log('Logged out successfully'); // Hvis logud-anmodningen lykkes
+                window.location.href = '/login'; // Omdirigerer brugeren til login-siden
             } else {
-                throw new Error('Logout failed');
+                throw new Error('Logout failed'); // Hvis logud-anmodningen mislykkes
             }
         })
         .catch(error => console.error('Error:', error));
 }
-
+// Funktion til at vise brugerens navn i sidebar
 function showNameSidebar() {
-    // Attempt to find the element by ID
+    // Forsøger at finde elementet med id'et "userName"
     const nameDisplay = document.getElementById("userName");
 
-    // Check if the element exists
+    // Kontrollerer om elementet blev fundet
     if (nameDisplay) {
+                // Udfører en GET-anmodning til /api/userinfo-endepunktet for at få brugerens oplysninger
         fetch('/api/userinfo')
         .then(response => {
             if (response.ok) {
-                return response.json();
+                return response.json(); // Konverterer svaret til JSON-format
             }
             throw new Error('Network response was not ok.');
         })
         .then(data => {
-            // Check again in case the DOM has changed
+            //check igen just in case at DOM er ændret
             if (nameDisplay) {
-                console.log(nameDisplay);  // This log will confirm that the element is still present
-                nameDisplay.textContent = data.name;  // Update the text content with the user's name
+                console.log(nameDisplay);  
+                nameDisplay.textContent = data.name;  
             }
         })
         .catch(error => {
