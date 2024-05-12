@@ -20,10 +20,12 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Current page:", path);
         AcvtivitySeach()
     }
-    if (path == '/dailyNutri') {
+
+    if (path === '/dailyNutri') {
 // Kode specifik for 'dailyNutri' siden
+
         console.log("Current page:", path);
-        showDailyNutri()
+        displayDailyNutri()
     }
     if (path === '/dashboard') {
 // Kode specifik for 'dashboard' siden

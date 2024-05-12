@@ -2,7 +2,7 @@ import express from 'express';
 import { register } from '../controller/register.js';
 import { login } from '../controller/login.js';
 import index from '../index.js';
-import { updateUser, deleteUser, getMealAndActivity } from '../controller/user.js'
+import { updateUser, deleteUser, getMealAndActivity,getUserInfo } from '../controller/user.js'
 // import { deleteUser } from '../controller/user.js'
 import bodyParser from 'body-parser';
 import { mealcreator, getMeals, deleteMeal } from '../controller/mealCreator.js'
@@ -136,25 +136,8 @@ router.get('/recipes', (req, res) => {
 
 
 router.get('/userinfo', async (req, res) => {
-    const userID = req.session.user.userID
-
-    if (req.session.user && req.session.loggedin) {
-        // getting the user info from session.
-        res.json(
-            {
-                name: req.session.user.name,
-                age: req.session.user.age,
-                weight: req.session.user.weight,
-                gender: req.session.user.gender
-            });
-    } else {
-        const result = await index.connectedDatabase.getAllUserMeals(userID)
-        // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
-        console.log("succes", result)
-        res.json(result)
-        // res.status(401).json({ error: 'Unauthorized' }); // User not logged in
-    }
-
+    
+    getUserInfo(req,res)
 });
 
 

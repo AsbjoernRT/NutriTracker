@@ -475,6 +475,40 @@ input[type="number"] {
     /* Afstand til toppen */
 }
 
+.delete-submit {
+    width: 100%;
+    /* Fylder hele bredden af sin container */
+    padding: 15px;
+    /* Indre afstand */
+    background-color: #cc0000;
+    /* Baggrundsfarve */
+    border: 2px solid #cc0000;
+    /* Kanten af knappen */
+    color: white;
+    /* Tekstfarve */
+    border-radius: 4px;
+    /* Afrundede hjørner på knappen */
+    cursor: pointer;
+    /* Cursor ændres til en hånd når man hover */
+    font-size: 16px;
+    /* Skriftstørrelse */
+    font-weight: 700;
+    /* Fed tekst */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    /* Overgangseffekt */
+    margin-top: 20px;
+    /* Afstand til toppen */
+}
+
+.delete-submit:hover {
+    background-color: transparent;
+    /* Gør baggrunden transparent */
+    color: #cc0000;
+    /* Tekstfarve */
+    border-color: #cc0000;
+    /* Kanten af knappen */
+}
+
 /* Styling af knappen når musen er over */
 .btn-submit:hover {
     background-color: transparent;
@@ -595,27 +629,27 @@ section#dashboard h1 {
     font-weight: 700;
     /* Fed skriftvægt */
     color: #424242;
-    /* Sort farve */ 
+    /* Black color scale */ 
     display: flex;
     padding-left: 70px;
 }
 
 /* Dashboard sektion styling */
 #dashboard {
-    width: 90%; 
-    max-width: 1200px; /*  Maksimal bredde af dashboard */
+    width: 90%; /* Adjust width as necessary */
+    max-width: 1200px; /* Maximum width of the dashboard */
     background: white;
     padding: 20px;
     border-radius: 8px;
     margin-top: 20px;
     display: flex;
-    flex-wrap: wrap; /* Tillader elementer at ombryde efter behov */
+    flex-wrap: wrap; /* Allows items to wrap as needed */
 }
 
 #dashboard h1 {
-    color: #91c789; /* Lys grøn */
+    color: #91c789; /* Light green */
     font-size: 24px;
-    width: 100%; /* Gør h1 fuld bredde */
+    width: 100%; /* Make the h1 take full width */
 }
 
 #dashboard h3 {
@@ -623,7 +657,7 @@ section#dashboard h1 {
     color: #666;
     margin-top: 5px;
     margin-bottom: 20px;
-    width: 100%; /* Gør h3 fuld bredde */
+    width: 100%; /* Make the h3 take full width */
 }
 
 /* Styling for individuelle dashboard elementer */
@@ -631,14 +665,14 @@ section#dashboard h1 {
     background: #ffffff;
     padding: 15px;
     margin: 10px;
-    flex: 1 1 45%; /* Hvert element kan vokse og skrumpe, men starter med 45% bredde */
-    border: 1px solid #e4e4e4; /* Blød grå kant */
+    flex: 1 1 45%; /* Each item can grow and shrink but initially takes 45% width */
+    border: 1px solid #e4e4e4; /* Soft gray border */
     border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .dashboard-item h2 {
-    color: #91c789; /* Lys grøn */
+    color: #91c789; /* Light green */
     font-size: 18px;
     margin-top: 0;
 }
@@ -653,7 +687,8 @@ section#dashboard h1 {
 
 /* Table styling start*/
 #modal-wrapper,
-#ingdredient-modal-wrapper,#edit-recipe-modal {
+#ingdredient-modal-wrapper,
+#edit-recipe-modal {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -688,7 +723,8 @@ section#dashboard h1 {
 }
 
 #modal-wrapper.hide,
-#ingdredient-modal-wrapper.hide, .hide {
+#ingdredient-modal-wrapper.hide,
+.hide {
     display: none;
 }
 
@@ -1039,62 +1075,62 @@ tbody td:nth-last-child(3) {
 
 /* Acitivity Tracker */
 #selected-activity {
-    border: 1px solid #ccc;         /* Lys grå kant, som indtastningsfelter */
-    padding: 8px 12px;             /* padding svarende til tekstindtastningsfelter */
-    margin-top: 5px;              /* Margin for afstand */
-    border-radius: 4px;            /* Let afrundede hjørner */
-    display: block;                 /* Blokvisning for at fylde containerens bredde */
-    width: calc(100% - 24px);      /* Fuld bredde minus polstring */
-    background-color: #fff;            /* Hvid baggrund */
-    color: #333;                   /* Mørk tekst for læsbarhed */
-    font-size: 16px;              /* Standard skriftstørrelse */
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075); /* indre skygge for dybde */
-    height: 38px;          /* Fast højde svarende til typiske indtastningsfelter */
-    line-height: 20px;    /* Linjehøjde for at centrere tekst vertikalt */
+    border: 1px solid #ccc;        /* Light grey border, like inputs */
+    padding: 8px 12px;             /* Padding similar to text inputs */
+    margin-top: 5px;               /* Margin for spacing */
+    border-radius: 4px;            /* Slightly rounded corners */
+    display: block;                /* Block display to fill container width */
+    width: calc(100% - 24px);      /* Full width minus padding */
+    background-color: #fff;        /* White background */
+    color: #333;                   /* Dark text for readability */
+    font-size: 16px;               /* Standard font size */
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075); /* Slight inner shadow for depth */
+    height: 38px;                  /* Fixed height similar to typical inputs */
+    line-height: 20px;             /* Line height to vertically center text */
 }
 
 #selected-activity[placeholder]:before {
     content: attr(placeholder);
-    color: #aaa;       /* Lys grå farve for pladsholdertekst */
+    color: #aaa;                   /* Light grey color for placeholder text */
 }
 
 #selected-activity:focus {
     outline: none;
-    border-color: #66afe9;  /* Fremhæv farve når fokuseret */
-    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6); /* Fokus skygge */
+    border-color: #66afe9;         /* Highlight color when focused */
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6); /* Focus shadow */
 }
 
 .meal-row {
-    background-color: #caf6bd; /*  Lys grøn baggrundsfarve  */
-    border-radius: 20px; /* Afrundede hjørner, justeret til mere almindelig værdi */
-    margin-bottom: 10px; /* Afstand mellem rækker */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Valgfrit: tilføjer skygge for dybde */
-    padding: 10px; /* Tilføjer polstring indeni hver række for bedre tekstjustering */
+    background-color: #caf6bd; /* Light green background color */
+    border-radius: 20px; /* Rounded corners, adjusted to more common value */
+    margin-bottom: 10px; /* Space between rows */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds shadow for depth */
+    padding: 10px; /* Adds padding inside each row for better text alignment */
 
 }
 
 .daily-cons-grid div:nth-child(1) {
-    background-color: #49a6e9; /* Blå baggrund for Energi */
+    background-color: #49a6e9; /* Blue background for Energy */
     border-radius: 50%;
     color: white;
 }
 
 .daily-cons-grid div:nth-child(2) {
-    background-color: #ffcb77; /* Orange baggrund for Protein */
+    background-color: #ffcb77; /* Orange background for Protein */
     border-radius: 50%;
     color: white;
 
 }
 
 .daily-cons-grid div:nth-child(3) {
-    background-color: #ff968a; /* Lys rød baggrund for Fedt */
+    background-color: #ff968a; /* Light red background for Fat */
     border-radius: 50%;
     color: white;
 
 }
 
 .daily-cons-grid div:nth-child(4) {
-    background-color: #4dccc6; /* Turkis baggrund for Fiber */
+    background-color: #4dccc6; /* Teal background for Fiber */
     border-radius: 50%;
     color: white;
 

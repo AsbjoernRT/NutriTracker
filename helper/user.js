@@ -42,6 +42,14 @@ function showUserInfo() {
             } else {
                 console.log('Element with ID "gender" not found in the document.');
             }
+            const metabolismDisplay = document.getElementById("metabolism");
+            if (metabolismDisplay) {
+                metabolismDisplay.textContent = data.metabolism;
+            } else {
+                console.log('Element with ID "metabolism" not found in the document.');
+            }
+
+
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
