@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Current page:", path);
         AcvtivitySeach()
     }
-    if (path == '/dailyNutri') {
+    if (path === '/dailyNutri') {
         console.log("Current page:", path);
-        showDailyNutri()
+        displayDailyNutri()
     }
     if (path === '/dashboard') {
         console.log("Current page:", path);

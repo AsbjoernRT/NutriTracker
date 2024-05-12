@@ -55,7 +55,7 @@ let debounceTimerId;
 
 // //Food Search
 // document.addEventListener('DOMContentLoaded', function () {
-    function IngredientSearch() {
+function IngredientSearch() {
     var inputElement = document.getElementById('searchInput');
     var resultsDiv = document.getElementById('searchResults');
     var debounceTimerId;
@@ -109,23 +109,23 @@ function selectItem(item) { // Here we can select the items from our API pull, w
         energyKcal: item.energyKcal,
         water: item.water,
         dryMatter: item.dryMatter,
-        weight: null
+        quantity: null
     };
 }
 
 // Registrerer vi "addIngredient" klik
 document.getElementById('addIngredient').addEventListener('click', function () {
-    const weight = parseFloat(document.getElementById('itemWeight').value);
-    if (isNaN(weight)) {
+    const quantity = parseFloat(document.getElementById('itemWeight').value);
+    if (isNaN(quantity)) {
         console.error('Invalid weight entered');
         return;
     }
-
+    console.log("Click på update");
     // Assuming selectedItemData is defined elsewhere and has the proper structure
-    selectedItemData.weight = weight;
+    selectedItemData.quantity = quantity;
     const properties = ['energyKj', 'protein', 'fat', 'fiber', 'energyKcal', 'water', 'dryMatter'];
     properties.forEach(prop => {
-        selectedItemData['c' + prop.charAt(0).toUpperCase() + prop.slice(1)] = (selectedItemData[prop] / 100) * weight;
+        selectedItemData['c' + prop.charAt(0).toUpperCase() + prop.slice(1)] = (selectedItemData[prop] / 100) * quantity;
     });
 
     // // Retrieve saved ingredients from localStorage and validate
@@ -141,8 +141,9 @@ document.getElementById('addIngredient').addEventListener('click', function () {
     savedIngredients.forEach(ingredient => {
         if (ingredient.ingredientID === selectedItemData.ingredientID) {
             console.log("Updating existing ingredient:", ingredient.foodName);
-            ingredient.weight += weight;
+            ingredient.quantity += quantity;
             ingredientAlreadyExists = true;
+            console.log("Needs to update");
             updateListItem(ingredient);
         }
     });
@@ -160,7 +161,7 @@ document.getElementById('addIngredient').addEventListener('click', function () {
 
     // savedIngredients = savedIngredients.map(ingredient => {
     //     if (ingredient.foodID === selectedItemData.foodID) {
-    //         ingredient.weight += weight; // Sum up the weights if already exists
+    //         ingredient.quantity += quantity; // Sum up the weights if already exists
     //         ingredientAlreadyExists = true;
     //         updateListItem(ingredient); // Assuming this function updates the UI
     //     }
@@ -194,10 +195,10 @@ function addItemToList(item) {
 
     // Text content container
     const textContent = document.createElement('span');
-     // Assume the default unit is grams and format the output
-     const weight = item.weight || item.quantity; // Default to quantity if weight is missing
-     const unit = item.weight ? 'g' : 'g'; 
-    textContent.textContent = `Ingredint: ${item.foodName}, Weight: ${weight}${unit} g`;
+    // Assume the default unit is grams and format the output
+    const quantity = item.quantity || item.quantity; // Default to quantity if weight is missing
+    // const unit = item.quantity ? 'g' : 'g';
+    textContent.textContent = `Ingredint: ${item.foodName}, Weight: ${quantity} g`;
     listItem.appendChild(textContent);
 
     // Button container

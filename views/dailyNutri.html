@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nutrition Data Overview</title>
     <link rel="stylesheet" href="/style.css">
+    <script src="/user.js"></script>
+    <script src="/sidebar.js"></script>
     <script src="/dom.helper.js"></script>
 
 </head>
@@ -53,7 +55,7 @@
                         <tr>
                             <th>Date</th>
                             <th>Meals</th>
-                            <th>Water (liters)</th>                    
+                            <th>Water (liters)</th>
                             <th>Kcals Consumed</th>
                             <th>Kcals Burned</th>
                             <th>Kcals Left</th>
@@ -72,12 +74,7 @@
     </div>
 
     <!-- Scripts for functionality and interactivity -->
-    <script src="/sidebar.js"></script>
-    <script src="/user.js"></script>
-    <script src="/date.helper.js"></script>
-    <script src="/partials.helper.js"></script>
-    <script src="/nutrition.js"></script> <!-- Script to handle nutrition data loading -->
-    <script src="/dailyNutri.helper.js"></script> 
+
 
     <script>
         function showView(viewId) {
@@ -91,6 +88,10 @@
             });
         }
     </script>
+
+    <script src="/date.helper.js"></script>
+    <script src="/partials.helper.js"></script>
+    <script src="/dailyNutri.helper.js"></script>
 </body>
 
 </html>

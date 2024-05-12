@@ -25,6 +25,8 @@
         <div id="weight">Weight</div>
         <label>Gender of profil</label>
         <div id="gender">Gender</div>
+        <label>Metabolism of profil</label>
+        <div id="metabolism">Gender</div>
 
         <div>
             <button id="updateUserInSettings-Btn" class="btn-submit" onclick=toggleModalVisibilitySettings()> Update
@@ -34,7 +36,7 @@
 
                 <form id="deleteForm" action="/api/delete" method="POST" target="_self">
                     <input type="hidden" name="csrf_token" value="your_csrf_token_here"> <!-- Optional: CSRF token -->
-                    <button id="deleteForm" type="submit" class="btn-submit">Delete User</button>
+                    <button id="deleteForm" type="submit" class="delete-submit">Delete User</button>
                 </form>
         </div>
 

@@ -70,12 +70,14 @@ export const getMealAndActivity = async (req, res) => {
     };
 
     res.json(response);
+}
 
+export const getUserInfo = async (req, res) => {
 
+    const user = await index.connectedDatabase.getUserByMail(req.session.user.email)
+    
 
-    // res.json(dailySummaries)
-    // console.log(createSummaryObject(categorizedActivity,categorizedMeals));
-    // console.log(sumCalories());
+    res.json(user);
 }
 
 
