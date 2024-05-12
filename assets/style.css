@@ -5,7 +5,7 @@ body {
     margin: 0;
     padding: 0;
     background: url("layered-waves-haikei.svg");
-    /* Updated path to image file */
+    /* Opdateret sti til billedfil */
     background-size: cover;
     height: 100vh;
 }
@@ -15,11 +15,11 @@ body {
 header {
     display: flex;
     justify-content: space-between;
-    /* Aligns children (logo-container and profile-container) on opposite ends */
+    /* Justerer børneelementer til hver sin side */
     align-items: center;
-    /* Centers children vertically */
+    /* Centrerer børneelementer vertikalt */
     padding: 10px 20px;
-    /* Add padding for breathing room */
+        /* Tilføjer padding for luft */
 
 }
 
@@ -43,13 +43,13 @@ footer {
 
 .profile-pic {
     width: 20px;
-    /* Set profile picture size */
+   /* Sæt profilbillede størrelse */
     height: 20px;
-    /* Maintain aspect ratio */
+    /* Bevar aspektforhold */
     border-radius: 50%;
-    /* Make the image round */
+    /* Gør billedet rundt */
     margin-right: 10px;
-    /* Space between picture and username */
+      /* Mellemrum mellem billede og brugernavn */
 }
 
 .profile-name {
@@ -61,27 +61,27 @@ footer {
 /* Sidebar styling */
 .profile-sidebar {
     height: 100%;
-    /* Full-height */
+     /* Fuld højde */
     width: 0;
-    /* 0 width - change this with JavaScript */
+    /* Startbredde - ændres med JavaScript */
     position: fixed;
     /* Fixed Position */
     z-index: 1;
-    /* Stay on top */
+    /* hold øverst */
     top: 0;
-    /* Stay at the top */
+    /* hold øverst */
     right: 0;
-    /* Start from the right side */
+    /* Starter fra højre side*/
     background-color: white;
-    /* Changed background color to white */
+       /* Baggrundsfarve ændres til hvid */
     overflow-x: hidden;
-    /* Disable horizontal scroll */
+  /* Deaktiver vandret rulning */
     transition: 0.5s;
     /* Transition effect */
     padding-top: 60px;
-    /* Some padding */
+    /*  padding */
     color: black;
-    /* Ensure text elements are black */
+  /* Sørg for at tekstelementer er sorte */
 }
 
 .profile-sidebar a {
@@ -90,14 +90,14 @@ footer {
     text-align: center;
     font-size: 25px;
     color: black;
-    /* Text color set to black */
+     /* Tekstfarve sort */
     display: block;
     transition: 0.3s;
 }
 
 .profile-sidebar a:hover {
     color: #555;
-    /* A darker shade of grey for hover */
+    /*  /* En mørkere gråfarve ved hover */
 }
 
 .sidebar-profile-pic {
@@ -110,7 +110,7 @@ footer {
 
 .sidebar-username {
     width: 100%;
-    /* Ensure all children take full width */
+   /* Sørg for at alle "children" tager fuld bredde */
     text-align: center;
     margin-bottom: 20px;
 }
@@ -121,10 +121,10 @@ footer {
 
 .logo {
     height: 20px;
-    /* Adjust as needed */
+    /* Juster efter behov */
     width: 10px;
     margin-right: 10px;
-    /* Space between logo and title */
+     /* Mellemrum mellem logo og titel */
 }
 
 .logo-text {
@@ -133,7 +133,7 @@ footer {
     font-weight: bold;
     color: #91c789;
     margin-right: 10px;
-    /* Space between text and logo */
+     /* Mellemrum mellem tekst og logo */
 }
 
 nav ul {
@@ -156,11 +156,11 @@ nav a {
     text-decoration: none;
     padding: 0 20px;
     font-size: 1rem;
-    /* Paragraph 1 size */
+  /* Størrelse på skrift i afsnit */
     font-weight: 400;
-    /* Regular font weight */
+      /* Normal font skriftvægt */
     color: #424242;
-    /* Dark grey color from palette */
+  /* Mørkegrå farve fra paletten */
 }
 
 
@@ -177,13 +177,13 @@ nav a {
 .navigation-header {
     font-family: 'Nunito', sans-serif;
     color: #424242;
-    /* Dark grey color from your palette */
+   /* Mørkegrå farve */
     font-size: 2rem;
-    /* Large, readable size */
+   /* Stor, læsbar størrelse */
     font-weight: 700;
-    /* Bold weight for prominence */
+    /* Fed skrift for fremtrædelse */
     margin-bottom: 20px;
-    /* Spacing between header and btns */
+    /* Mellemrum mellem header og knapper */
 }
 
 .center-navigation {
@@ -197,15 +197,15 @@ nav a {
 
 .nav-btn {
     font-size: 18px;
-    /* Match btn text size */
+      /* Match knap tekst størrelse */
     background-color: #76a06f;
     font-weight: bold;
     color: white;
-    /* Text color */
+    /* Tekstfarve */
     padding: 10px 20px;
     border: none;
     border-radius: 10px;
-    /* Rounded corners */
+   /* Afrundede hjørner */
     cursor: pointer;
     /* Pointer on hover */
     transition: background-color 0.3s;
@@ -217,7 +217,7 @@ nav a {
 .nav-btn.btn-green:hover,
 .nav-btn.btn-green:focus {
     background-color: #407ba7;
-    /* Darker blue on hover/focus */
+    /* mørke blå på hover/focus */
 }
 
 
@@ -241,22 +241,22 @@ nav a {
     flex-direction: column;
 }
 
-/* Main HTML content: Tables */
+/* Hoved HTML indhold: Tabeller */
 main {
     width: 100%;
-    /* or 100% if you want it full width */
+  /* eller 100% hvis du ønsker det fuld bredde */
     margin: 2em auto;
-    /* Top and bottom margin */
+    /* Top og bottom margin */
     padding: 20px;
-    /* Padding inside the main container */
+    /* Padding i main container */
     background: #ffffff;
-    /* Background color */
+    /* baggrundsfarve */
     border-radius: 10px;
-    /* Optional: rounds the corners */
+    /*Valgfrit: afrunder hjørnerne */ 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Optional: adds shadow for depth */
+    /* tilføjer skygge for dybde */
     max-width: 1140px;
-    /* Maximum width of the main container, adjust as necessary */
+    /* Maksimal bredde på hovedcontaineren*/
     margin-top: 5%;
 }
 
@@ -269,23 +269,22 @@ main {
 
 .btn-plus {
     font-size: 24px;
-    /* Adjust size as needed */
     font-weight: bold;
     color: white;
-    /* Plus sign color */
+    /* Plus tegn farve */
     width: 50px;
-    /* Square dimensions */
+    /* Kvadratiske dimensioner */
     height: 50px;
     line-height: 50px;
-    /* Center the plus sign vertically */
+    /* Centrer plus tegnet vertikalt */
     margin-left: 10px;
-    /* Space between btns */
+    /* Mellemrum mellem knapper */
     border-radius: 50%;
-    /* Makes the btn round */
+    /* Gør knappen rund */
     border: none;
-    /* Removes border */
+    /* Fjerner kant */
     cursor: pointer;
-    /* Changes cursor to pointer on hover */
+    /* Ændrer markør til pegefinger ved hover */
 }
 
 .btn-blue {
@@ -346,9 +345,9 @@ thead th {
 .text-btn-container {
     display: flex;
     align-items: center;
-    /* Vertical centering */
+    /* Lodret centrering */
     justify-content: center;
-    /* Horizontal centering */
+    /* Vandret centrering */
 }
 
 
@@ -377,9 +376,9 @@ thead th {
 
 #result {
     text-align: center;
-    /* Center the text horizontally */
+    /* Centrerer teksten vandret */
     margin-top: 20px;
-    /* Add some top margin for spacing */
+    /* Tilføjer lidt øvre margin for afstand */
 }
 
 #hours,
@@ -388,7 +387,7 @@ thead th {
     width: 48%;
 }
 
-/* register User Styling */
+/* Registrering af bruger styling */
 .registration-form,
 .login-form {
     background: white;
@@ -561,7 +560,7 @@ select {
     border-radius: 4px;
     cursor: pointer;
     flex-shrink: 0;
-    /* Prevents the button from shrinking */
+    /* Forhindrer knappen i at skrumpe */
 }
 
 .inspect-button {
@@ -626,36 +625,31 @@ select {
 /* Dashboard Styling Start */
 section#dashboard h1 {
     font-size: 30px;
-    /* Heading 1 size */
+    /* Størrelse på overskrift 1 */
     font-weight: 700;
-    /* Bold font weight */
+    /* Fed skriftvægt */
     color: #424242;
-    /* Black color scale */
+    /* Black color scale */ 
     display: flex;
     padding-left: 70px;
 }
 
-/* Dashboard section styling */
+/* Dashboard sektion styling */
 #dashboard {
-    width: 90%;
-    /* Adjust width as necessary */
-    max-width: 1200px;
-    /* Maximum width of the dashboard */
+    width: 90%; /* Adjust width as necessary */
+    max-width: 1200px; /* Maximum width of the dashboard */
     background: white;
     padding: 20px;
     border-radius: 8px;
     margin-top: 20px;
     display: flex;
-    flex-wrap: wrap;
-    /* Allows items to wrap as needed */
+    flex-wrap: wrap; /* Allows items to wrap as needed */
 }
 
 #dashboard h1 {
-    color: #91c789;
-    /* Light green */
+    color: #91c789; /* Light green */
     font-size: 24px;
-    width: 100%;
-    /* Make the h1 take full width */
+    width: 100%; /* Make the h1 take full width */
 }
 
 #dashboard h3 {
@@ -663,26 +657,22 @@ section#dashboard h1 {
     color: #666;
     margin-top: 5px;
     margin-bottom: 20px;
-    width: 100%;
-    /* Make the h3 take full width */
+    width: 100%; /* Make the h3 take full width */
 }
 
-/* Styling for individual dashboard items */
+/* Styling for individuelle dashboard elementer */
 .dashboard-item {
     background: #ffffff;
     padding: 15px;
     margin: 10px;
-    flex: 1 1 45%;
-    /* Each item can grow and shrink but initially takes 45% width */
-    border: 1px solid #e4e4e4;
-    /* Soft gray border */
+    flex: 1 1 45%; /* Each item can grow and shrink but initially takes 45% width */
+    border: 1px solid #e4e4e4; /* Soft gray border */
     border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .dashboard-item h2 {
-    color: #91c789;
-    /* Light green */
+    color: #91c789; /* Light green */
     font-size: 18px;
     margin-top: 0;
 }
@@ -693,10 +683,6 @@ section#dashboard h1 {
 }
 
 /* Dashboard styling slut */
-
-
-
-
 
 
 /* Table styling start*/
@@ -761,7 +747,7 @@ section#dashboard h1 {
     font-size: 16px;
     margin-bottom: 10px;
     box-sizing: border-box;
-    /* Include padding and border in the width */
+    /* Inkluderer polstring og kant i bredden */
 }
 
 #nameInput {
@@ -793,21 +779,21 @@ section#dashboard h1 {
     align-items: center;
     gap: 10px;
     width: 100%;
-    /* Ensure full width within container */
+    /* Sikrer fuld bredde indenfor container */
     box-sizing: border-box;
-    /* Include padding and border in width */
+    /* Include padding og border i bredden  */
     margin-bottom: 10px;
-    /* Space below the selection area */
+    /* Mellemrum under valgområdet */
 }
 
 #selectedItem {
     margin: 0;
-    /* Remove default margin */
+    /* Fjerner standard margin */
 }
 
 #itemWeight {
     width: 100px;
-    /* Adjust width as needed */
+    /* Justerer bredde efter behov */
 }
 
 #mainContainer {
@@ -815,7 +801,7 @@ section#dashboard h1 {
     padding: 20px;
     position: relative;
     max-width: 1200px;
-    /* Adjust as per your layout */
+    /* Juster efter dit layout */
     margin: auto;
     box-sizing: border-box;
 }
@@ -828,15 +814,15 @@ section#dashboard h1 {
 
 #selectedIngredientsList {
     margin-top: 20px;
-    /* Space above the list */
+    /* Mellemrum over listen */
 }
 
 #ingredientList {
     list-style-type: none;
     padding-left: 0;
-    /* Remove default padding */
+    /* fjern default padding */
     margin-top: 10px;
-    /* Space above the list */
+    /* Mellemrum over listen */
 }
 
 #ingredientList li {
@@ -881,7 +867,7 @@ td.meal-name {
     padding-right: 150px;
 }
 
-/* General padding and alignment for all table headers and cells */
+/* Generel polstring og justering for alle tabelhoveder og celler */
 table td,
 table th {
     padding: 10px;
@@ -889,7 +875,7 @@ table th {
     border: none;
 }
 
-/* Specific padding for the last three header and data cells */
+/* Specifik polstring for de sidste tre hoveder og dataceller */
 thead th:last-child,
 thead th:nth-last-child(2),
 thead th:nth-last-child(3),
@@ -900,47 +886,13 @@ tbody td:nth-last-child(3) {
     padding-left: 2px;
 }
 
-/* Rounded corners for the first and last cells in each row */
+/* Afrundede hjørner for den første og sidste celle i hver række */
 .recipe-row td:first-child div,
 .recipe-row td:last-child div {
     border-radius: 50px;
 }
 
 /* ---Table Styling slut--- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #calories-section {
     display: flex;
     justify-content: center;
@@ -1123,86 +1075,62 @@ tbody td:nth-last-child(3) {
 
 /* Acitivity Tracker */
 #selected-activity {
-    border: 1px solid #ccc;
-    /* Light grey border, like inputs */
-    padding: 8px 12px;
-    /* Padding similar to text inputs */
-    margin-top: 5px;
-    /* Margin for spacing */
-    border-radius: 4px;
-    /* Slightly rounded corners */
-    display: block;
-    /* Block display to fill container width */
-    width: calc(100% - 24px);
-    /* Full width minus padding */
-    background-color: #fff;
-    /* White background */
-    color: #333;
-    /* Dark text for readability */
-    font-size: 16px;
-    /* Standard font size */
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
-    /* Slight inner shadow for depth */
-    height: 38px;
-    /* Fixed height similar to typical inputs */
-    line-height: 20px;
-    /* Line height to vertically center text */
+    border: 1px solid #ccc;        /* Light grey border, like inputs */
+    padding: 8px 12px;             /* Padding similar to text inputs */
+    margin-top: 5px;               /* Margin for spacing */
+    border-radius: 4px;            /* Slightly rounded corners */
+    display: block;                /* Block display to fill container width */
+    width: calc(100% - 24px);      /* Full width minus padding */
+    background-color: #fff;        /* White background */
+    color: #333;                   /* Dark text for readability */
+    font-size: 16px;               /* Standard font size */
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075); /* Slight inner shadow for depth */
+    height: 38px;                  /* Fixed height similar to typical inputs */
+    line-height: 20px;             /* Line height to vertically center text */
 }
 
 #selected-activity[placeholder]:before {
     content: attr(placeholder);
-    color: #aaa;
-    /* Light grey color for placeholder text */
+    color: #aaa;                   /* Light grey color for placeholder text */
 }
 
 #selected-activity:focus {
     outline: none;
-    border-color: #66afe9;
-    /* Highlight color when focused */
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
-    /* Focus shadow */
+    border-color: #66afe9;         /* Highlight color when focused */
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6); /* Focus shadow */
 }
 
 .meal-row {
-    background-color: #caf6bd;
-    /* Light green background color */
-    border-radius: 20px;
-    /* Rounded corners, adjusted to more common value */
-    margin-bottom: 10px;
-    /* Space between rows */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* Optional: adds shadow for depth */
-    padding: 10px;
-    /* Adds padding inside each row for better text alignment */
+    background-color: #caf6bd; /* Light green background color */
+    border-radius: 20px; /* Rounded corners, adjusted to more common value */
+    margin-bottom: 10px; /* Space between rows */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds shadow for depth */
+    padding: 10px; /* Adds padding inside each row for better text alignment */
 
 }
 
 .daily-cons-grid div:nth-child(1) {
-    background-color: #49a6e9;
-    /* Blue background for Energy */
+    background-color: #49a6e9; /* Blue background for Energy */
     border-radius: 50%;
     color: white;
 }
 
 .daily-cons-grid div:nth-child(2) {
-    background-color: #ffcb77;
-    /* Orange background for Protein */
+    background-color: #ffcb77; /* Orange background for Protein */
     border-radius: 50%;
     color: white;
 
 }
 
 .daily-cons-grid div:nth-child(3) {
-    background-color: #ff968a;
-    /* Light red background for Fat */
+    background-color: #ff968a; /* Light red background for Fat */
     border-radius: 50%;
     color: white;
 
 }
 
 .daily-cons-grid div:nth-child(4) {
-    background-color: #4dccc6;
-    /* Teal background for Fiber */
+    background-color: #4dccc6; /* Teal background for Fiber */
     border-radius: 50%;
     color: white;
 
