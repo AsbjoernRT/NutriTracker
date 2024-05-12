@@ -1,36 +1,40 @@
+// Tilføjer en 'DOMContentLoaded' hændelseslytter til dokumentet for at sikre, at hele HTML er indlæst
 document.addEventListener('DOMContentLoaded', function () {
-    // Check the current URL or a part of it
+    // Tjek den aktuelle URL eller en del af den
     const path = window.location.pathname;
 
-    // Conditionally execute code based on the current path
+    // Betinget udfør kode baseret på den aktuelle sti
     if (path === '/mealCreator') {
-        // Execute code specific to '/specific-page'
+        // Udfør kode specifikt for siden '/mealCreator'
         console.log("Current page:", path);
-        IngredientSearch()
-        showRecipes()
+        IngredientSearch() // Kald funktionen for at søge efter ingredienser
+        showRecipes() // Kald funktionen for at vise opskrifter
     }
     if (path === '/mealTracker') {
-
+// Kode specifik for 'mealTracker' siden
         getLocation()
         handleLocation()
     }
     if (path === '/activityTracker') {
+ // Kode specifik for 'activityTracker' siden
         console.log("Current page:", path);
         AcvtivitySeach()
     }
     if (path == '/dailyNutri') {
+// Kode specifik for 'dailyNutri' siden
         console.log("Current page:", path);
         showDailyNutri()
     }
     if (path === '/dashboard') {
+// Kode specifik for 'dashboard' siden
         console.log("Current page:", path);
-        showMealAndActivity()
+        showMealAndActivity() 
     }
 });
 
 
 
-// In the file where getMealAndActivity is defined
+// I filen hvor getMealAndActivity er defineret
 function getMealAndActivity() {
     return fetch("/api/MealAndActivity")
         .then(response => {
@@ -41,7 +45,7 @@ function getMealAndActivity() {
         })
         .catch(error => {
             console.error('Error during fetch:', error);
-            throw error;  // Allow the caller to handle the error
+            throw error;  // Tillad kaldende funktion at håndtere fejlen
         });
 }
 
