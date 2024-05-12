@@ -116,7 +116,7 @@ function appendNewRow(row, meal) {
     deleteButton.addEventListener('click', function () {
         // Logic to handle recipe deletion
 
-        deleteTrackedMeal(meal.mealID[0]);
+        deleteTrackedMeal(meal.regID);
         row.remove();
     });
 
@@ -226,10 +226,10 @@ document.getElementById('mealTrackerForm').addEventListener('submit', function (
         .catch(error => console.error('Error:', error))
 })
 
-function deleteTrackedMeal(mealID) {
-    console.log("Deleting meal with ID:", mealID);
+function deleteTrackedMeal(regID) {
+    console.log("Deleting meal with ID:", regID);
 
-    const mealToDelete = JSON.stringify({ mealID });
+    const mealToDelete = JSON.stringify({ regID });
 
     fetch('/api/deleteTrackedMeal', {
         method: 'POST',

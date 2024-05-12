@@ -1,13 +1,11 @@
 function displayDailyNutri() {
 
-    const hour = new Date().getHours();
-    console.log(hour);
-
 
     getMealAndActivity()
         .then(data => {
             console.log("Received on front-end:", data);
             displayActivitiesAndMeals(data)
+            displayMonthlyView(data)
       
         })
         .catch(error => {
@@ -21,8 +19,8 @@ function displayDailyNutri() {
 
 }
 
-function displayActivitiesAndMeals(data) {
-    const currentHour = new Date().getHours();
+function displayActivitiesAndMeals(data) { 
+    const currentHour = new Date().getHours(); //Finder den nuværende time, vi er i
     const summaryByHour = Array.from({ length: currentHour + 1 }, () => ({
         mealsCount: 0,
         totalWater: 0,
@@ -84,46 +82,55 @@ function displayActivitiesAndMeals(data) {
 }
 
 
-// function displayActivitiesAndMeals(data) {
-//     const activitiesByHour = {};
-//     const mealsByHour = {};
+function displayMonthlyView(data) {
+    const today = new Date()
+    const daysInMonth = new Date(today.getDate());
+    const summaryByDay = Array.from({ length: daysInMonth }, () => ({
+        mealsCount: 0,
+        totalWater: 0,
+        totalKcalConsumed: 0,
+        totalKcalBurned: 0,
+        kcalLeft: 0
+    }));
 
-//     // Parse activities and organize by hour
-//     data.detailed.activities.today.activities.forEach(activity => {
-//         const hour = new Date(activity.regTime).getUTCHours(); // Use getUTCHours() if regTime is in UTC
-//         if (!activitiesByHour[hour]) {
-//             activitiesByHour[hour] = [];
-//         }
-//         activitiesByHour[hour].push(activity);
-//     });
+     // Process Meals
+     data.detailed.meals.today.meals.forEach(meal => {
+        const mealDate = new Date(meal.date);
+        if (mealDate.getMonth() === today.getMonth() && mealDate.getFullYear() === today.getFullYear()) {
+            const day = mealDate.getDate() - 1;
+            summaryByDay[day].mealsCount++;
+            summaryByDay[day].totalWater += meal.mTWater;
+            summaryByDay[day].totalKcalConsumed += meal.mTEnergyKcal;
+        }
+    });
 
-//     // Parse meals and organize by hour
-//     data.detailed.meals.today.meals.forEach(meal => {
-//         const hour = new Date(meal.regTime).getUTCHours(); // Use getUTCHours() if regTime is in UTC
-//         if (!mealsByHour[hour]) {
-//             mealsByHour[hour] = [];
-//         }
-//         mealsByHour[hour].push(meal);
-//     });
+    // Process Activities
+    data.detailed.activities.today.activities.forEach(activity => {
+        const activityDate = new Date(activity.date);
+        if (activityDate.getMonth() === today.getMonth() && activityDate.getFullYear() === today.getFullYear()) {
+            const day = activityDate.getDate() - 1;
+            summaryByDay[day].totalKcalBurned += activity.caloriesBurned;
+        }
+    });
 
-    // Render activities and meals
-    // const target = document.getElementById('data-display'); // Assuming you have a div with this ID in your HTML
-    // target.innerHTML = '';
+    // Calculate calories left for each day
+    summaryByDay.forEach(day => {
+        day.kcalLeft = day.totalKcalConsumed - day.totalKcalBurned;
+    });
 
-    // Object.keys(activitiesByHour).concat(Object.keys(mealsByHour)).sort().forEach(hour => {
-    //     const activities = activitiesByHour[hour] || [];
-    //     const meals = mealsByHour[hour] || [];
+    // Render the data
+    const tbody = document.getElementById('monthlyNutritionTable').querySelector('tbody');
+    tbody.innerHTML = '';  // Clear existing rows
 
-    //     let content = `<h3>${hour}:00</h3>`;
-    //     content += '<h4>Activities</h4>';
-    //     activities.forEach(activity => {
-    //         content += `<p>Calories Burned: ${activity.caloriesBurned}, Time Spent: ${activity.timeSpent} minutes</p>`;
-    //     });
-
-    //     content += '<h4>Meals</h4>';
-    //     meals.forEach(meal => {
-    //         content += `<p>Meal: ${meal.name}, Calories: ${meal.mTEnergyKcal} kcal</p>`;
-    //     });
-
-    //     target.innerHTML += content;
-    // });
+    summaryByDay.forEach((dayData, index) => {
+        const date = new Date(today.getFullYear(), today.getMonth(), index + 1).toLocaleDateString();
+        tbody.innerHTML += `<tr>
+            <td>${date}</td>
+            <td>${dayData.mealsCount}</td>
+            <td>${dayData.totalWater.toFixed(2)} L</td>
+            <td>${dayData.totalKcalConsumed}</td>
+            <td>${dayData.totalKcalBurned}</td>
+            <td>${dayData.kcalLeft}</td>
+        </tr>`;
+    });
+}

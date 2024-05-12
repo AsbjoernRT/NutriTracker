@@ -77,7 +77,7 @@ export const addWeightToMeal = async (req, res) => {
 export const deleteTrackedMeal = async (req, res) => {
     // console.log("Back-end Modtaget: ",req.body.mealID);
     const userID = req.session.user.userID
-    const mealID = req.body.mealID
-    console.log("Back-end Modtaget: ", userID, "&", mealID);
-    const deleteMeal = await index.connectedDatabase.deleteTrackedMeal(mealID, userID);
+    const regID = req.body.regID
+    console.log("Back-end Modtaget: ", userID, "&", regID);
+    const deleteMeal = await index.connectedDatabase.deleteTrackedMeal(regID, userID);
 }
