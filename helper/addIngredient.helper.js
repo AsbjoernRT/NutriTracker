@@ -55,16 +55,19 @@ let debounceTimerId;
 
 // //Food Search
 // document.addEventListener('DOMContentLoaded', function () {
-function IngredientSearch() {
-    var inputElement = document.getElementById('searchInput');
-    var resultsDiv = document.getElementById('searchResults');
+
+
+    function IngredientSearch() {
+    var inputElement = document.getElementById('searchInput'); // Henter input-elementet for søgning
+    var resultsDiv = document.getElementById('searchResults'); // Henter div-elementet hvor søgeresultater vises
+
     var debounceTimerId;
 
     inputElement.addEventListener('input', function () {
-        clearTimeout(debounceTimerId);
+        clearTimeout(debounceTimerId);  // Stop den tidligere satte timer
         debounceTimerId = setTimeout(() => {
-            var searchTerm = inputElement.value;
-            if (searchTerm.length > 1) {
+            var searchTerm = inputElement.value;  // Gemmer den indtastede søgeværdi
+            if (searchTerm.length > 1) { // Sikrer at der er mindst 2 tegn før søgning
                 fetch("/api/ingredient_search?searchTerm=" + searchTerm)
                     .then(res => res.json())
                     .then((res) => {
@@ -72,10 +75,10 @@ function IngredientSearch() {
                         displayResults(res)
                     });
             } else {
-                resultsDiv.innerHTML = ''; // Clear results if input is too short
+                resultsDiv.innerHTML = ''; // Tømmer søgeresultater hvis søgeterm er for kort
             }
-        }, 200);
-    });
+        }, 200); // Debounce tid på 200 millisekunder
+    }); 
 };
 
 
@@ -85,20 +88,20 @@ function displayResults(items) {
 
     items.forEach(item => {
         const resultItem = document.createElement('div');
-        resultItem.classList.add('result-item');
-        resultItem.textContent = item.foodName;
-        resultItem.onclick = function () { selectItem(item); };
+        resultItem.classList.add('result-item'); // Tilføjer klasse til resultatdiv
+        resultItem.textContent = item.foodName; // Sætter tekstindholdet til fødevarens navn
+        resultItem.onclick = function () { selectItem(item); }; // Tilføjer funktion til at vælge element ved klik
         resultsContainer.appendChild(resultItem);
     });
 }
 
-function selectItem(item) { // Here we can select the items from our API pull, which we are displaying in our html file. 
+function selectItem(item) { // Her kan vi vælge elementer fra vores API-opslag, som vi viser i vores HTML-fil.
     document.getElementById('searchInput').value = item.foodName;
     document.getElementById('selectedItem').textContent = `Selected Item: ${item.foodName}`;
     document.getElementById('searchResults').innerHTML = '';
 
     // console.log("this: ", item);
-
+    // Gemmer og returnerer data om det valgte element
     return selectedItemData = {
         foodName: item.foodName,
         ingredientID: item.ingredientID,
@@ -109,23 +112,26 @@ function selectItem(item) { // Here we can select the items from our API pull, w
         energyKcal: item.energyKcal,
         water: item.water,
         dryMatter: item.dryMatter,
-        weight: null
+        quantity: null
     };
 }
 
 // Registrerer vi "addIngredient" klik
 document.getElementById('addIngredient').addEventListener('click', function () {
-    const weight = parseFloat(document.getElementById('itemWeight').value);
-    if (isNaN(weight)) {
+    const quantity = parseFloat(document.getElementById('itemWeight').value);
+    if (isNaN(quantity)) {
         console.error('Invalid weight entered');
         return;
     }
 
+      // Opdaterer vægten for det valgte element
+    console.log("Click på update");
     // Assuming selectedItemData is defined elsewhere and has the proper structure
-    selectedItemData.weight = weight;
+    selectedItemData.quantity = quantity;
     const properties = ['energyKj', 'protein', 'fat', 'fiber', 'energyKcal', 'water', 'dryMatter'];
     properties.forEach(prop => {
-        selectedItemData['c' + prop.charAt(0).toUpperCase() + prop.slice(1)] = (selectedItemData[prop] / 100) * weight;
+              // Beregner næringsværdier baseret på indtastet vægt
+        selectedItemData['c' + prop.charAt(0).toUpperCase() + prop.slice(1)] = (selectedItemData[prop] / 100) * quantity;
     });
 
     // // Retrieve saved ingredients from localStorage and validate
@@ -141,15 +147,17 @@ document.getElementById('addIngredient').addEventListener('click', function () {
     savedIngredients.forEach(ingredient => {
         if (ingredient.ingredientID === selectedItemData.ingredientID) {
             console.log("Updating existing ingredient:", ingredient.foodName);
-            ingredient.weight += weight;
+
+            ingredient.quantity += quantity; // Opdaterer vægt for eksisterende ingrediens
             ingredientAlreadyExists = true;
+            console.log("Needs to update");
             updateListItem(ingredient);
         }
     });
 
     if (!ingredientAlreadyExists) {
         console.log("Adding new ingredient:", selectedItemData.foodName);
-        savedIngredients.push(selectedItemData);
+        savedIngredients.push(selectedItemData); // Tilføjer ny ingrediens til listen
         addItemToList(selectedItemData);
     }
 
@@ -160,7 +168,7 @@ document.getElementById('addIngredient').addEventListener('click', function () {
 
     // savedIngredients = savedIngredients.map(ingredient => {
     //     if (ingredient.foodID === selectedItemData.foodID) {
-    //         ingredient.weight += weight; // Sum up the weights if already exists
+    //         ingredient.quantity += quantity; // Sum up the weights if already exists
     //         ingredientAlreadyExists = true;
     //         updateListItem(ingredient); // Assuming this function updates the UI
     //     }
@@ -194,24 +202,27 @@ function addItemToList(item) {
 
     // Text content container
     const textContent = document.createElement('span');
-    // Assume the default unit is grams and format the output
-    const weight = item.weight || item.quantity; // Default to quantity if weight is missing
-    const unit = item.weight ? 'g' : 'g';
-    textContent.textContent = `Ingredint: ${item.foodName}, Weight: ${weight}${unit} g`;
+
+
+    // Antag at standardenheden er gram og formater outputtet
+    const quantity = item.quantity || item.quantity; // Benyt mængde som standard hvis vægt mangler
+    // const unit = item.quantity ? 'g' : 'g';
+    textContent.textContent = `Ingredint: ${item.foodName}, Weight: ${quantity} g`;
+
     listItem.appendChild(textContent);
 
     // Button container
     const buttonContainer = document.createElement('div');
 
-    // Create an Inspect button
+    // Lav en Inspect button
     const inspectButton = document.createElement('button');
     inspectButton.textContent = 'Inspect';
     inspectButton.classList.add('inspect-button');
-    // Add future functionality here
+   
     buttonContainer.appendChild(inspectButton);
 
 
-    // Create a Delete button
+    // lav en Delete button
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
     deleteButton.classList.add('delete-button');
@@ -223,10 +234,10 @@ function addItemToList(item) {
 
     buttonContainer.appendChild(deleteButton);
 
-    // Add the button container to the list item
+// Tilføj knapbeholderen til listen over elementer
     listItem.appendChild(buttonContainer);
 
-    // Add the list item to the list
+// Tilføj listen over elementer til listen
     list.appendChild(listItem);
 
     inspectButton.addEventListener('click', function () {
@@ -238,7 +249,7 @@ function addItemToList(item) {
 function updateListItem(ingedient) {
     const listItems = document.getElementsByClassName(`ingredient_${ingedient.ingredientID}`);
 
-    // dårlig kode 
+
     for (const listItem of listItems) {
         listItem.remove();
         addItemToList(ingedient);
@@ -247,28 +258,29 @@ function updateListItem(ingedient) {
 
 
 function removeItemFromLocalStorage(itemId) {
-    // Retrieve the array of ingredients from local storage, or initialize an empty array if none exists
+// Hent listen af ingredienser fra lokal lagring, eller initialiser en tom liste, hvis ingen findes
     let ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
 
-    // Filter the array, keeping only the ingredients whose id does NOT match the provided itemId
+// Filtrer listen, så kun ingredienser, hvis id IKKE matcher det angivne itemId, beholdes
     ingredients = ingredients.filter(ingredient => ingredient.ingredientID !== itemId);
 
-    // Update the local storage with the new array of ingredients
+// Opdater lokal lagring med den nye liste af ingredienser
     localStorage.setItem('ingredients', JSON.stringify(ingredients));
 }
 
 document.getElementById('recipeForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault(); // Forhindre standardformens afsendelsesadfærd
 
-    // Collecting the form data
+
+    // samler form data
     const mealName = document.getElementById('nameInput').value;
     const mealType = document.getElementById('typeSelect').value;
     const source = document.getElementById('sourceInput').value;
 
-    // Retrieve ingredients from local storage
+    // hent ingredients fra local storage
     const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
 
-    // Combine all data into one object
+    // samler alt data i et  object
     const postData = {
         mealName,
         mealType,
@@ -278,7 +290,7 @@ document.getElementById('recipeForm').addEventListener('submit', function (event
 
     console.log("Opskrifts Data:", postData);
 
-    // Send the data using fetch API
+    // Send data ved brug af fetch API
     fetch('/api/ingredients', {
         method: 'POST',
         headers: {
@@ -291,6 +303,7 @@ document.getElementById('recipeForm').addEventListener('submit', function (event
         .then(data => console.log('Success:', data))
         .catch(error => console.error('Error:', error));
 
+    // Nulstiller visning
 
     toggleModalVisibility()
 });

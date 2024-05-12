@@ -2,7 +2,7 @@ import express from 'express';
 import { register } from '../controller/register.js';
 import { login } from '../controller/login.js';
 import index from '../index.js';
-import { updateUser, deleteUser, getMealAndActivity } from '../controller/user.js'
+import { updateUser, deleteUser, getMealAndActivity,getUserInfo } from '../controller/user.js'
 // import { deleteUser } from '../controller/user.js'
 import bodyParser from 'body-parser';
 import { mealcreator, getMeals, deleteMeal } from '../controller/mealCreator.js'
@@ -146,27 +146,9 @@ router.get('/recipes', (req, res) => {
 
 // Route til at hente brugeroplysninger.
 router.get('/userinfo', async (req, res) => {
-    const userID = req.session.user.userID
 
-    if (req.session.user && req.session.loggedin) {
-       // Henter brugeroplysninger fra sessionen.
-        res.json(
-            {
-                name: req.session.user.name,
-                age: req.session.user.age,
-                weight: req.session.user.weight,
-                gender: req.session.user.gender
-            });
-    } else {
-        const result = await index.connectedDatabase.getAllUserMeals(userID)
-        // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
-       
-        // Henter alle måltider, hvis brugeren ikke er logget ind.
-        console.log("succes", result)
-        res.json(result)
-        // res.status(401).json({ error: 'Unauthorized' }); // User not logged in
-    }
-
+    
+    getUserInfo(req,res)
 });
 
 // Route til at hente måltider til brugerens måltidsliste.

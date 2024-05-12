@@ -1,10 +1,10 @@
-// In another file where you want to use getMealAndActivity
+// I en anden fil, hvor du ønsker at bruge getMealAndActivity
 function showMealAndActivity() {
     getMealAndActivity()
         .then(data => {
             console.log("Received on front-end:", data);
             updateTodaysSummary(data.dailySummaries);
-            // // Set the date
+            // // Sæt dato
             // document.getElementById('date').textContent = new Date().toLocaleDateString();
 
             // // Update dashboard values based on the received data
@@ -18,28 +18,25 @@ function showMealAndActivity() {
         })
         .catch(error => {
             console.error("Failed to fetch meal and activity data:", error);
-            // Handle the error, such as showing an error message to the user
+// Håndter fejlen, for eksempel ved at vise en fejlmeddelelse til brugeren
         });
 
 }
 
 function updateTodaysSummary(dailySummaries) {
-    const today = new Date().toISOString().split('T')[0];  // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split('T')[0];  // få dato i YYYY-MM-DD format
 
-    // Check if there's a summary for today
+// Tjek om der er et resumé for i dag
     const summary = dailySummaries[today];
 
-    // Update the UI elements if today's summary exists
+// Opdater brugergrænsefladeelementerne, hvis der findes et resumé for i dag
     if (summary) {
         document.getElementById('mealsToday').textContent = `Number of meals consumed today: ${summary.numberOfMeals}`;
         document.getElementById('energyToday').textContent = `Calories consumed today: ${summary.mTEnergyKcal.toFixed(2)} kcal`;
         document.getElementById('waterToday').textContent = `Liters of water drunk today: ${summary.mTWater.toFixed(2)} L`;
         document.getElementById('proteinsToday').textContent = `Grams of protein consumed today: ${summary.mTProtein} g`;
-        if (summary.totalCalories.toFixed(2) !== 0) {
-            document.getElementById('kcalsToday').textContent = `Kcals Burned Today: ${summary.basicMetabolism.toFixed(2)}`;
-        } else {
-            document.getElementById('kcalsToday').textContent = `Kcals Burned Today: ${summary.totalCalories.toFixed(2)}`;
-        }
+
+        document.getElementById('kcalsToday').textContent = `Kcals Burned Today: ${summary.totalCalories.toFixed(2)}`;
         if (summary.kcalsLeft.toFixed(2) !== 0) {
             document.getElementById('kcalsLeftToday').textContent = `Kcals Left Today: ${summary.kcalsLeft.toFixed(2)}`;
 

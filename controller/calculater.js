@@ -48,14 +48,12 @@ export function calculateBurnedKcal(activites){
 }
 
 
-// Funktion til at beregne de resterende kalorier for dagen
-export function calculateRemainingCalories(req) {
-    console.log(req.session.user.metabolism);
 
-    // Henter brugerens stofskifte fra sessionsoplysningerne
-    const metabolism = req.session.user.metabolism;
-    // Beregner stofskiftet per time
+// Funktion til at beregne de resterende kalorier for dagen
+
+function calculateRemainingCalories(metabolism) {
     const metabolismPerHour = metabolism / 24;
+   // Beregner stofskiftet per time
 
     // Opretter et nyt datoobjekt til det aktuelle tidspunkt
     const now = new Date();
@@ -168,7 +166,12 @@ export function categorizeMealDate(entries) {
 
 // Funktion til at oprette daglige opsummeringer baseret på aktivitets- og måltidsdata
 export function createDailySummaries(activityData, mealData, basicMetabolism) {
+
+    const caclulatedMetabolism = calculateRemainingCalories(basicMetabolism)
+    const basicMetabolismByHour = basicMetabolism/24
+    
     // Saml alle datoer fra både måltids- og aktivitetsdata
+
     const allDates = { ...mealData.otherDates, ...activityData.otherDates };
     const allDatesKeys = Object.keys(allDates);
 
@@ -192,7 +195,8 @@ export function createDailySummaries(activityData, mealData, basicMetabolism) {
             mTProtein: meals.mTProtein,
             totalCalories: activities.totalCalories + basicMetabolism,
             kcalsLeft: basicMetabolism + activities.totalCalories - meals.mTEnergyKcal,
-            basicMetabolism: basicMetabolism
+            caclulatedMetabolism: caclulatedMetabolism,
+            basicMetabolismByHour: basicMetabolismByHour
         };
 
         return acc;
@@ -207,7 +211,8 @@ export function createDailySummaries(activityData, mealData, basicMetabolism) {
         mTProtein: mealData.today.mTProtein,
         totalCalories: activityData.today.totalCalories + basicMetabolism,
         kcalsLeft: basicMetabolism + activityData.today.totalCalories - mealData.today.mTEnergyKcal,
-        basicMetabolism: basicMetabolism
+        caclulatedMetabolism: caclulatedMetabolism,
+        basicMetabolismByHour: basicMetabolismByHour
     };
 
     return dailySummaries;

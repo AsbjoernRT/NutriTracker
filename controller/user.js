@@ -1,5 +1,6 @@
 import index from '../index.js'
-import { calculateMetabolism, calculateRemainingCalories, calculateBurnedKcal, categorizeMealDate, createDailySummaries } from '../controller/calculater.js'
+
+import { calculateMetabolism, calculateBurnedKcal, categorizeActiviityDate, categorizeMealDate, createDailySummaries } from '../controller/calculater.js'
 
 
 //Funktion til at opdatere brugeroplysninger i databasen baseret på brugerens input.
@@ -46,8 +47,10 @@ export const getMealAndActivity = async (req, res) => {
     const user = await index.connectedDatabase.getUserByMail(req.session.user.email)
     req.session.user = user
     const userID = req.session.user.userID;
-    // Beregner brugerens grundlæggende stofskifte
-    const basicMetabolism = calculateRemainingCalories(req)
+
+  
+    const basicMetabolism =  req.session.user.metabolism;
+
 
     console.log("User ID: ", userID);
     // Henter måltider og aktiviteter fra databasen
@@ -82,12 +85,14 @@ export const getMealAndActivity = async (req, res) => {
     };
 
     res.json(response);
+}
 
+export const getUserInfo = async (req, res) => {
 
+    const user = await index.connectedDatabase.getUserByMail(req.session.user.email)
+    
 
-    // res.json(dailySummaries)
-    // console.log(createSummaryObject(categorizedActivity,categorizedMeals));
-    // console.log(sumCalories());
+    res.json(user);
 }
 
 
