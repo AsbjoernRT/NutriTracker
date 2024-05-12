@@ -17,6 +17,7 @@ function showUserInfo() {
                 console.log('Element with ID "userName" not found in the document.');
             }
 
+
             // Opdaterer visningen af alder
             console.log(data)
 
