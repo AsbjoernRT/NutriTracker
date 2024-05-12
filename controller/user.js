@@ -1,5 +1,5 @@
 import index from '../index.js'
-import { calculateMetabolism, calculateBurnedKcal, calculateRemainingCalories, calculateBurnedKcal, categorizeMealDate, createDailySummaries } from '../controller/calculater.js'
+import { calculateMetabolism, calculateRemainingCalories, calculateBurnedKcal, categorizeActiviityDate, categorizeMealDate, createDailySummaries } from '../controller/calculater.js'
 
 export const updateUser = async (req, res) => {
     const { age, weight, gender } = req.body;
