@@ -4,15 +4,22 @@ import { calculateMetabolism, calculateBurnedKcal } from '../controller/calculat
 export const updateUser = async (req, res) => {
     const { age, weight, gender } = req.body;
     const email = req.session.user.email
-    const name = req.session.user.name
+
     const cMetabolism = calculateMetabolism(age, gender, weight)
     console.log("Session Data: ", email, age, weight, gender, cMetabolism);
+
     const updateUser = await index.connectedDatabase.updateUser(email, age, weight, gender, cMetabolism);
+    console.log("Database update result:", updateUser);
 
 
     const user = await index.connectedDatabase.getUserByMail(email)
-    console.log(user);
+    console.log(req.session.user);
+
+    console.log(updateUser);
     req.session.user = user
+    req.session.user.metabolism = cMetabolism
+    console.log("Updated session user:", req.session.user);
+    
 }
 
 export const deleteUser = async (req, res) => {
@@ -28,6 +35,8 @@ export const deleteUser = async (req, res) => {
 
 export const getMealAndActivity = async (req, res) => {
 
+    const user = await index.connectedDatabase.getUserByMail(req.session.user.email)
+    req.session.user = user
     const userID = req.session.user.userID;
     const basicMetabolism = calculateRemainingCalories(req)
 
@@ -70,6 +79,7 @@ export const getMealAndActivity = async (req, res) => {
 }
 
 function calculateRemainingCalories(req) {
+    console.log(req.session.user.metabolism);
 
     const metabolism = req.session.user.metabolism; // from user session
     const metabolismPerHour = metabolism / 24;
