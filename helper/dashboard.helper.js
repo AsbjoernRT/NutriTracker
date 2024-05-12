@@ -35,11 +35,8 @@ function updateTodaysSummary(dailySummaries) {
         document.getElementById('energyToday').textContent = `Calories consumed today: ${summary.mTEnergyKcal.toFixed(2)} kcal`;
         document.getElementById('waterToday').textContent = `Liters of water drunk today: ${summary.mTWater.toFixed(2)} L`;
         document.getElementById('proteinsToday').textContent = `Grams of protein consumed today: ${summary.mTProtein} g`;
-        if (summary.totalCalories.toFixed(2) !== 0) {
-            document.getElementById('kcalsToday').textContent = `Kcals Burned Today: ${summary.basicMetabolism.toFixed(2)}`;
-        } else {
-            document.getElementById('kcalsToday').textContent = `Kcals Burned Today: ${summary.totalCalories.toFixed(2)}`;
-        }
+
+        document.getElementById('kcalsToday').textContent = `Kcals Burned Today: ${summary.totalCalories.toFixed(2)}`;
         if (summary.kcalsLeft.toFixed(2) !== 0) {
             document.getElementById('kcalsLeftToday').textContent = `Kcals Left Today: ${summary.kcalsLeft.toFixed(2)}`;
 
