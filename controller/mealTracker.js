@@ -80,9 +80,8 @@ export const addWeightToMeal = async (req, res) => {
 export const deleteTrackedMeal = async (req, res) => {
      // Henter brugerens ID fra sessionen
     const userID = req.session.user.userID
-    // Henter måltids-ID'et fra anmodningens krop
-    const mealID = req.body.mealID
-    console.log("Back-end Modtaget: ", userID, "&", mealID);
-    // Sletter det registrerede måltid fra databasen
-    const deleteMeal = await index.connectedDatabase.deleteTrackedMeal(mealID, userID);
+    const regID = req.body.regID
+    console.log("Back-end Modtaget: ", userID, "&", regID);
+    const deleteMeal = await index.connectedDatabase.deleteTrackedMeal(regID, userID);
+
 }

@@ -444,20 +444,19 @@ export default class Database {
 
 
 
-  // Delete tracked meal
-  async deleteTrackedMeal(mealID, userID) {
-    try {
-      await this.connect();
-      const request = this.poolconnection.request();
-      const result = await request
-        .input('userID', sql.Int, userID)
-        .input('mealID', sql.Int, mealID)
-        .query('DELETE FROM [NutriDB].[mealTracker] WHERE mealID = @mealID AND userID = @userID;')
-      return result.recordset;
-    } catch (error) {
-      console.error('Fejl ved sletning af brugerens måltid i [NutriDB].[mealTracker]: ', error);
-      throw error;
-    }
+// Delete tracked meal
+async deleteTrackedMeal(regID, userID) {
+  try {
+    await this.connect();
+    const request = this.poolconnection.request();
+    const result = await request
+    .input('userID', sql.Int, userID)
+    .input('regID', sql.Int, regID)
+    .query('DELETE FROM [NutriDB].[mealTracker] WHERE regID = @regID AND userID = @userID;')
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved sletning af brugerens måltid i [NutriDB].[mealTracker]: ', error);
+    throw error;
   }
 
 
