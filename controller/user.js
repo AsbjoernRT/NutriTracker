@@ -1,5 +1,5 @@
 import index from '../index.js'
-import { calculateMetabolism, calculateRemainingCalories, calculateBurnedKcal, categorizeActiviityDate, categorizeMealDate, createDailySummaries } from '../controller/calculater.js'
+import { calculateMetabolism, calculateBurnedKcal, categorizeActiviityDate, categorizeMealDate, createDailySummaries } from '../controller/calculater.js'
 
 export const updateUser = async (req, res) => {
     const { age, weight, gender } = req.body;
@@ -38,7 +38,7 @@ export const getMealAndActivity = async (req, res) => {
     const user = await index.connectedDatabase.getUserByMail(req.session.user.email)
     req.session.user = user
     const userID = req.session.user.userID;
-    const basicMetabolism = calculateRemainingCalories(req)
+    const basicMetabolism =  req.session.user.metabolism;
 
 
     console.log("User ID: ", userID);

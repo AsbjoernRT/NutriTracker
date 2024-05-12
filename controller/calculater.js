@@ -47,10 +47,7 @@ export function calculateBurnedKcal(activites){
 
 // console.log(calculateMetabolism(23,"male", 94));
 
-export function calculateRemainingCalories(req) {
-    console.log(req.session.user.metabolism);
-
-    const metabolism = req.session.user.metabolism; // from user session
+function calculateRemainingCalories(metabolism) {
     const metabolismPerHour = metabolism / 24;
 
     const now = new Date();
@@ -158,6 +155,9 @@ export function categorizeMealDate(entries) {
 }
 
 export function createDailySummaries(activityData, mealData, basicMetabolism) {
+    const caclulatedMetabolism = calculateRemainingCalories(basicMetabolism)
+    const basicMetabolismByHour = basicMetabolism/24
+
     const allDates = { ...mealData.otherDates, ...activityData.otherDates };
     const allDatesKeys = Object.keys(allDates);
 
@@ -180,7 +180,8 @@ export function createDailySummaries(activityData, mealData, basicMetabolism) {
             mTProtein: meals.mTProtein,
             totalCalories: activities.totalCalories + basicMetabolism,
             kcalsLeft: basicMetabolism + activities.totalCalories - meals.mTEnergyKcal,
-            basicMetabolism: basicMetabolism
+            caclulatedMetabolism: caclulatedMetabolism,
+            basicMetabolismByHour: basicMetabolismByHour
         };
 
         return acc;
@@ -195,7 +196,8 @@ export function createDailySummaries(activityData, mealData, basicMetabolism) {
         mTProtein: mealData.today.mTProtein,
         totalCalories: activityData.today.totalCalories + basicMetabolism,
         kcalsLeft: basicMetabolism + activityData.today.totalCalories - mealData.today.mTEnergyKcal,
-        basicMetabolism: basicMetabolism
+        caclulatedMetabolism: caclulatedMetabolism,
+        basicMetabolismByHour: basicMetabolismByHour
     };
 
     return dailySummaries;
