@@ -27,10 +27,12 @@ export const sendLocationToServer = async (req,res) => {
     }
 }
 
+// Funktion til at tilføje en vægt til et måltid
 export const addWeightToMeal = async (req, res) => {
 
     console.log("Back-end received:", req.body.cityName);
 
+     // Henter variabler fra anmodningens krop
     const mealID = req.body.mealID
     const recipeName = req.body.recipeName
     const quantity = req.body.quantity;
@@ -39,7 +41,9 @@ export const addWeightToMeal = async (req, res) => {
 
     console.log("Meal ID: ", mealID, "geolokation", req.body.cityName);
 
+      // Henter de samlede næringsstoffer for måltidet fra databasen
     const getMacro = await index.connectedDatabase.getTotalNutriens(mealID)
+     // Beregner de samlede næringsstoffer baseret på mængden
     const getTotalEnergyKj = (quantity / 100) * getMacro[0].tEnergyKj
     const getTotalProtein = (quantity / 100) * getMacro[0].tProtein
     const getTotalFat = (quantity / 100) * getMacro[0].tFat
@@ -49,35 +53,35 @@ export const addWeightToMeal = async (req, res) => {
     const getTotalDryMatter = (quantity / 100) * getMacro[0].tDryMatter
 
 
-
+// Registrerer tidspunktet for måltidets tilføjelse
 
     const regTime = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
 
 
     try {
 
-
+        // Indsætter måltidet med tilføjede vægt i databasen
      const mealTracked = await index.connectedDatabase.postIntoDbMealTracker(userID, mealID, quantity, regTime, getCityFromLocation, getTotalEnergyKj, getTotalProtein, getTotalFat, getTotalFiber, getTotalEnergyKcal, getTotalWater, getTotalDryMatter);
         console.log("Meal Created with ID:", mealTracked);
 
-        // Ensure meal ID is valid before proceeding
+        // Sikrer, at måltids-ID'et er gyldigt, før der fortsættes
         if (!mealID) {
             throw new Error("Meal creation failed, no ID returned.");
         }
 
-        // Optionally, you might want to send a response back
         res.json({ success: true, message: `Meal created with ID ${mealID}` });
     } catch (error) {
         console.error("Error in addWeightToMeal:", error);
-        // Handle errors more gracefully
         res.status(500).json({ success: false, message: error.message });
     }
 };
 
+// Sletter et meal der er oprettet i mealTracker
 export const deleteTrackedMeal = async (req, res) => {
-    // console.log("Back-end Modtaget: ",req.body.mealID);
+     // Henter brugerens ID fra sessionen
     const userID = req.session.user.userID
     const regID = req.body.regID
     console.log("Back-end Modtaget: ", userID, "&", regID);
     const deleteMeal = await index.connectedDatabase.deleteTrackedMeal(regID, userID);
+
 }

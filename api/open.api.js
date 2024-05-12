@@ -1,6 +1,5 @@
 import express from 'express';
 import { join, dirname } from 'path';
-// import swaggerUi from 'swagger-ui-express';
 import yaml from 'yamljs';
 import { fileURLToPath } from 'url';
 

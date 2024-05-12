@@ -1,32 +1,33 @@
 let debounceTimerId;
 
-// //Måltids Søger
+// Kører fetchMeals, når DOM'en er fuldt indlæst
 document.addEventListener('DOMContentLoaded', function () {
     fetchMeals();  // Call fetchMeals when the DOM is fully loaded
     var inputElement = document.getElementById('searchInput');
     var resultsDiv = document.getElementById('searchResults');
     var debounceTimerId;
 
+// Tilføjer en event listener til input-elementet for at håndtere søgning med debouncing
     inputElement.addEventListener('input', function () {
         clearTimeout(debounceTimerId);
         debounceTimerId = setTimeout(() => {
             var searchTerm = inputElement.value;
             if (searchTerm.length > 1) {
+                // Fetcher måltider baseret på søgetermet
                 fetch("/api/trackedMealSearch?searchTerm=" + searchTerm)
                     .then(res => res.json())
                     .then((res) => {
                         console.log("Response from search: ", res);
-                        displayResults(res)
+                        displayResults(res) // Viser resultaterne
                     });
             } else {
-                resultsDiv.innerHTML = ''; // Clear results if input is too short
+                resultsDiv.innerHTML = ''; // Rydder resultaterne, hvis søgetermen er for kortt
             }
         }, 200);
     });
 });
 
 // Henter alle måltider registret for den givene bruger
-
 function fetchMeals() {
     fetch("/api/mealTracker")
         .then(response => response.json())
@@ -34,28 +35,32 @@ function fetchMeals() {
             const mealListElement = document.getElementById('meal-item');
             console.log(mealData)
 
+                
             mealData.forEach(meal => {
-                // Hvis måltidet ikke findes laver vi en ny række
+               // Opretter en ny række for hvert måltid
                 const row = document.createElement('div');
                 row.className = 'meal-row';
-                appendNewRow(row, meal);
-                mealListElement.appendChild(row);
+                appendNewRow(row, meal); // Tilføjer data til rækken
+                mealListElement.appendChild(row); // Tilføjer rækken til måltidslisten
             });
         })
         .catch(error => console.error('Error fetching meals:', error));
 }
 
-// Indsætter dataen i frontend, i rækker
+// Indsætter data i frontend i rækkerne
 
 function appendNewRow(row, meal) {
+    // Oprettelse af celle til måltidsnavnet
     const nameCell = document.createElement('div');
     nameCell.className = 'meal-column';
     nameCell.textContent = meal.name;
 
+    // Oprettelse af celle til måltidskilden
     const mealSource = document.createElement('div');
     mealSource.className = 'meal-column';
     mealSource.textContent = meal.source;
 
+     // Oprettelse af celle til vægt og energiindhold af måltidet
     const weightEnergyCell = document.createElement('div');
     weightEnergyCell.className = 'meal-column weight-energy';
     const weight = document.createElement('div');
@@ -65,14 +70,17 @@ function appendNewRow(row, meal) {
     weightEnergyCell.appendChild(weight);
     weightEnergyCell.appendChild(energy);
 
+    // Oprettelse af celle til geografisk placering af måltidet
     const geoLocation = document.createElement('div');
     geoLocation.className = 'meal-column';
     geoLocation.textContent = meal.geoLocation;
 
+    // Oprettelse af celle til dato for tilføjelse af måltidet
     const addedOn = document.createElement('div');
     addedOn.className = 'meal-column';
     addedOn.textContent = meal.date.split('T')[0];
 
+    // Oprettelse af celle til daglige forbrugsværdier (energi, protein, fedt, fiber)
     const dailyCons = document.createElement('div');
     dailyCons.className = 'meal-column daily-cons-grid';
     const dailyConsEnergy = document.createElement('div');
@@ -88,7 +96,7 @@ function appendNewRow(row, meal) {
     dailyCons.appendChild(dailyConsFat);
     dailyCons.appendChild(dailyConsFiber);
 
-    // Create an Inspect button
+   // Oprettelse af knapper til inspektion og sletning af måltider
     const inspectCell = document.createElement('div');
     const editButton = document.createElement('button');
     inspectCell.appendChild(editButton)
@@ -103,6 +111,7 @@ function appendNewRow(row, meal) {
 
     deleteButton.textContent = "Delete"
 
+     // Tilføjer celler til rækken
     row.appendChild(nameCell);
     row.appendChild(mealSource);
     row.appendChild(weightEnergyCell);
@@ -113,32 +122,33 @@ function appendNewRow(row, meal) {
     row.appendChild(deleteCell)
 
 
+    // Tilføjer eventlisteners til slet- og inspektionsknapperne
     deleteButton.addEventListener('click', function () {
-        // Logic to handle recipe deletion
+
 
         deleteTrackedMeal(meal.regID);
         row.remove();
     });
 
     editButton.addEventListener('click', () => {
-        // Set modalType to 'edit'
         modalType = 'edit';
 
         console.log(recipe);
+         // Gemmer ingredienser i localStorage for senere brug
         localStorage.setItem('ingredients', JSON.stringify(recipe.ingredients));
-        // populate modal with recipe
+         // Populerer modalen med måltidsdata
         document.getElementById("nameInput").value = recipe.name;
         document.getElementById("typeSelect").value = recipe.mealType;
         document.getElementById("sourceInput").value = recipe.source;
         console.log('edit');
-        //hide add button
+         // Skjuler "Tilføj" knappen og viser "Rediger" knappen
         document.getElementById("addRecipe").classList.add('hide');
         document.getElementById("editRecipe").classList.remove('hide');
 
         recipe.ingredients.forEach((ingredient) => addItemToList(ingredient));
         document.getElementById('editRecipe').addEventListener('click', () => {
             let recipes = JSON.parse(localStorage.getItem('recipes')) || [];
-            // Edit the recipe and set in local storage
+            // Redigering af måltidet
             recipes.forEach(r => {
                 if (r.name === recipe.name) {
                     r.name = document.getElementById("nameInput").value;
@@ -146,10 +156,10 @@ function appendNewRow(row, meal) {
                     r.source = document.getElementById("sourceInput").value;
                 }
             });
-
+            // Redigerer måltidet og gemmer det i localStorage
             localStorage.setItem('recipes', JSON.stringify(recipes));
         });
-
+         // Viser modalen
         document.getElementById('modal-wrapper').classList.toggle('hide');
     });
 }
@@ -158,7 +168,6 @@ function appendNewRow(row, meal) {
 
 
 // Viser resultaterne for søge funktionen, så der er en drop down funktion.
-
 function displayResults(items) {
     const resultsContainer = document.getElementById('searchResults');
     resultsContainer.innerHTML = '';
@@ -170,14 +179,13 @@ function displayResults(items) {
         resultItem.textContent = item.name;
         console.log(item.name);
         resultItem.onclick = function () { selectItem(item); };
-    //    document.getElementById('selectedItem').dataset.mealId = resultItem.mealID; // Store mealID in data attribute
+    //    document.getElementById('selectedItem').dataset.mealId = resultItem.mealID; 
         resultsContainer.appendChild(resultItem);
     });
 }
 
 
 // Denne hjælper med at vælge det givene item, og her laved et objekt der kan anvendes til senere at sende data til backenden.
-
 function selectItem(item) {
     document.getElementById('searchInput').value = item.name;
     document.getElementById('selectedItem').textContent = `Selected Item: ${item.name}`;

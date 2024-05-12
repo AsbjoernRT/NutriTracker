@@ -56,6 +56,7 @@ let debounceTimerId;
 // //Food Search
 // document.addEventListener('DOMContentLoaded', function () {
 
+
     function IngredientSearch() {
     var inputElement = document.getElementById('searchInput'); // Henter input-elementet for søgning
     var resultsDiv = document.getElementById('searchResults'); // Henter div-elementet hvor søgeresultater vises
@@ -201,6 +202,7 @@ function addItemToList(item) {
 
     // Text content container
     const textContent = document.createElement('span');
+
 
     // Antag at standardenheden er gram og formater outputtet
     const quantity = item.quantity || item.quantity; // Benyt mængde som standard hvis vægt mangler
