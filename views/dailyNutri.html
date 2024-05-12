@@ -62,8 +62,102 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Data for monthly view will be dynamically inserted here -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Data Overview</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/user.js"></script>
+    <script src="/sidebar.js"></script>
+    <script src="/dom.helper.js"></script>
+
+</head>
+
+<body>
+    <div id="headerContainer">
+        <!-- Presumably, this is filled by /partials.helper.js or another script -->
+    </div>
+
+    <!-- Wrapper for both tables -->
+    <main>
+        <!-- View Selector Buttons -->
+        <div class="view-selector">
+            <button onclick="showView('dailyView')">View Last 24 Hours</button>
+            <button onclick="showView('monthlyView')">View Last Month</button>
+        </div>
+        <section id="dailyView" class="view-section">
+            <div class="box">
+                <h2>Daily View</h2>
+                <table id="dailyNutritionTable" class="nutrition-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Meals</th>
+                            <th>Water (liters)</th>
+                            <th>Kcals Consumed</th>
+                            <th>Kcals Burned</th>
+                            <th>Kcals Left</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data for daily view will be dynamically inserted here -->
                     </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section for monthly view -->
+        <section id="monthlyView" class="view-section" style="display: none;">
+            <div class="box">
+                <h2>Monthly View</h2>
+                <table id="monthlyNutritionTable" class="nutrition-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Meals</th>
+                            <th>Water (liters)</th>
+                            <th>Kcals Consumed</th>
+                            <th>Kcals Burned</th>
+                            <th>Kcals Left</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <div id="footerContainer">
+        <!-- This could also be filled by /partials.helper.js or another script -->
+    </div>
+
+    <!-- Scripts for functionality and interactivity -->
+
+
+    <script>
+        function showView(viewId) {
+            const views = document.querySelectorAll('.view-section');
+            views.forEach(view => {
+                if (view.id === viewId) {
+                    view.style.display = 'block';
+                } else {
+                    view.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+    <script src="/date.helper.js"></script>
+    <script src="/partials.helper.js"></script>
+    <script src="/dailyNutri.helper.js"></script>
+</body>
+
+</html>                    </tbody>
                 </table>
             </div>
         </section>

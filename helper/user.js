@@ -16,9 +16,6 @@ function showUserInfo() {
                 console.log('Element with ID "userName" not found in the document.');
             }
 
-            // Update age
-            console.log(data)
-
             console.log('Received data:', data);
             const ageDisplay = document.getElementById("age");
             if (ageDisplay) {
