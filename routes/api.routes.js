@@ -7,7 +7,7 @@ import { updateUser, deleteUser, getMealAndActivity,getUserInfo } from '../contr
 import bodyParser from 'body-parser';
 import { mealcreator, getMeals, deleteMeal } from '../controller/mealCreator.js'
 import { trackActivity } from '../controller/acticityTracker.js';
-import {sendLocationToServer,addWeightToMeal, deleteTrackedMeal} from '../controller/mealTracker.js'
+import {sendLocationToServer,addWeightToMeal, deleteTrackedMeal, createSnackInMealTracker} from '../controller/mealTracker.js'
 
 // Opretter en ny router fra Express.
 const router = express.Router();
@@ -106,14 +106,20 @@ router.get('/ingredient_search', async (req, res) => {
     }
 })
 
+router.post('/singleIngredient', async(req,res) => {
+    console.log("Modtaget Req: ", req);
+    createSnackInMealTracker(req, res)
+})
+
 
 // Route til at tilføje ingredienser til en opskrift.
 router.post('/ingredients', async (req, res) => {
 
     // console.log("Modtaget måltid: ", req.body);
     // console.log("Person der logger: ", req.session.user.uersID);
-
     mealcreator(req, req.session.user.userID, res)
+
+
 })
 
 // Route til at slette en opskrift.
