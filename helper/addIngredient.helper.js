@@ -55,7 +55,7 @@ let debounceTimerId;
 
 // //Food Search
 // document.addEventListener('DOMContentLoaded', function () {
-    function IngredientSearch() {
+function IngredientSearch() {
     var inputElement = document.getElementById('searchInput');
     var resultsDiv = document.getElementById('searchResults');
     var debounceTimerId;
@@ -194,9 +194,9 @@ function addItemToList(item) {
 
     // Text content container
     const textContent = document.createElement('span');
-     // Assume the default unit is grams and format the output
-     const weight = item.weight || item.quantity; // Default to quantity if weight is missing
-     const unit = item.weight ? 'g' : 'g'; 
+    // Assume the default unit is grams and format the output
+    const weight = item.weight || item.quantity; // Default to quantity if weight is missing
+    const unit = item.weight ? 'g' : 'g';
     textContent.textContent = `Ingredint: ${item.foodName}, Weight: ${weight}${unit} g`;
     listItem.appendChild(textContent);
 

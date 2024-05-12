@@ -1,5 +1,6 @@
-// All API Functions. 
+// Alle API-funktioner
 
+// API der henter data fra vores søge input
 async function searchFoodItems(searchTerm) { // API pulling data from our search input.  
     const apiUrl = `https://nutrimonapi.azurewebsites.net/api/FoodItems/BySearch/${encodeURIComponent(searchTerm)}`; //for at sikre sig at formaten er rigtig bruger vi "encodeURIComponent". 
     const apiKey = '171390';
@@ -21,6 +22,7 @@ async function searchFoodItems(searchTerm) { // API pulling data from our search
     }
 }
 
+// Henter macros på ingredienser
 async function getMacros(foodId, sortKeys) {
     const promises = sortKeys.map(key => getMacro(foodId, key));
     const results = await Promise.allSettled(promises);
@@ -28,8 +30,6 @@ async function getMacros(foodId, sortKeys) {
     let macros = {};
     results.forEach(result => {
         if (result.status === 'fulfilled' && result.value.value !== undefined) {
-            // Store both 'parameterName' and 'resVal' in the macros object
-            // macros[result.value.key] = `${result.value.parameterName} : ${result.value.value}`;
 
             //Object
             macros[result.value.key] = {
@@ -48,6 +48,7 @@ async function getMacros(foodId, sortKeys) {
     return macros;
 }
 
+//
 async function getMacro(foodId, sortKey) {
     const apiUrl = `https://nutrimonapi.azurewebsites.net/api/FoodCompSpecs/ByItem/${encodeURIComponent(foodId)}/BySortKey/${encodeURIComponent(sortKey)}`;
     const apiKey = '171390';

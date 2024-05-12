@@ -9,24 +9,29 @@ import { mealcreator, getMeals, deleteMeal } from '../controller/mealCreator.js'
 import { trackActivity } from '../controller/acticityTracker.js';
 import {sendLocationToServer,addWeightToMeal, deleteTrackedMeal} from '../controller/mealTracker.js'
 
-
+// Opretter en ny router fra Express.
 const router = express.Router();
 
+// Middleware til at parse indgående anmodninger med JSON payload.
 router.use(express.json());
 
+
+// Route til registrering af nye brugere.
 router.post('/register', (req, res) => {
     register(req.body, res)
     // console.log("Register:",req.body);
 })
 
+// Route til brugerlogin.
 router.post('/login', (req, res) => {
     login(req, res);
     // console.log("Register:",req.body);
 })
 
+// Route til at opdatere brugerindstillinger.
 router.post('/settings/update', (req, res) => {
     updateUser(req);
-
+    // Opdaterer brugeroplysninger i sessionen baseret på brugerinput.
     const { age, weight, gender } = req.body
 
     req.session.user.age = age
@@ -39,18 +44,18 @@ router.post('/settings/update', (req, res) => {
 });
 
 
-
+// Route til at slette en bruger.
 router.post('/delete', async (req, res) => {
     console.log("Modtaget: ", req.session);
     deleteUser(req);
-
+ // Ødelægger brugersessionen og rydder op i cookies.
     if (req.session) {
         req.session.destroy(err => {
             if (err) {
                 res.status(500).send('Failed to log out');
             } else {
-                res.clearCookie('connect.sid'); // Ensure you have the correct session cookie name
-                res.redirect('/login'); // Redirect to home page or login page
+                res.clearCookie('connect.sid');
+                res.redirect('/login'); // Omdirigerer til login-siden
             }
         });
     } else {
@@ -60,15 +65,15 @@ router.post('/delete', async (req, res) => {
 
 });
 
-
+// Route til at logge ud af en brugersession.
 router.post('/logout', (req, res) => {
     if (req.session) {
         req.session.destroy(err => {
             if (err) {
                 res.status(500).send('Failed to log out');
             } else {
-                res.clearCookie('connect.sid'); // Ensure you have the correct session cookie name
-                res.redirect('/login'); // Redirect to home page or login page
+                res.clearCookie('connect.sid');
+                res.redirect('/login'); // Omdirigrer til login-siden
             }
         });
     } else {
@@ -88,6 +93,7 @@ router.post('/logout', (req, res) => {
 
 // });
 
+// Route til søgning af ingredienser.
 router.get('/ingredient_search', async (req, res) => {
     // console.log(req);
     try {
@@ -100,6 +106,8 @@ router.get('/ingredient_search', async (req, res) => {
     }
 })
 
+
+// Route til at tilføje ingredienser til en opskrift.
 router.post('/ingredients', async (req, res) => {
 
     // console.log("Modtaget måltid: ", req.body);
@@ -108,15 +116,17 @@ router.post('/ingredients', async (req, res) => {
     mealcreator(req, req.session.user.userID, res)
 })
 
+// Route til at slette en opskrift.
 router.post('/deleteMeal', async (req, res) => {
     deleteMeal(req, res)
 })
 
-
+// Route til at slette en registreret måltid.
 router.post('/deleteTrackedMeal', async (req, res) => {
     deleteTrackedMeal(req, res)
 })
 
+// Route til at hente opskrifter.
 router.get('/recipes', (req, res) => {
     getMeals(req, res)
     // if (req.session.user && req.session.loggedin  && req.session.meal) {
@@ -134,12 +144,12 @@ router.get('/recipes', (req, res) => {
     // }
 })
 
-
+// Route til at hente brugeroplysninger.
 router.get('/userinfo', async (req, res) => {
     const userID = req.session.user.userID
 
     if (req.session.user && req.session.loggedin) {
-        // getting the user info from session.
+       // Henter brugeroplysninger fra sessionen.
         res.json(
             {
                 name: req.session.user.name,
@@ -150,6 +160,8 @@ router.get('/userinfo', async (req, res) => {
     } else {
         const result = await index.connectedDatabase.getAllUserMeals(userID)
         // const res = await index.connectedDatabase.readAll("NutriDB.ingredient")
+       
+        // Henter alle måltider, hvis brugeren ikke er logget ind.
         console.log("succes", result)
         res.json(result)
         // res.status(401).json({ error: 'Unauthorized' }); // User not logged in
@@ -157,10 +169,10 @@ router.get('/userinfo', async (req, res) => {
 
 });
 
-
+// Route til at hente måltider til brugerens måltidsliste.
 router.get('/mealTracker', async (req, res) => {
 
-    console.log("Received userID:", req.session.userID);  // Check what's received
+    console.log("Received userID:", req.session.userID); 
     // console.log(req);
     //const userID = req.session.user.userID;
     const userID = req.session.user.userID
@@ -173,13 +185,13 @@ router.get('/mealTracker', async (req, res) => {
 
     } else {
 
-        res.status(401).json({ error: 'Unauthorized' }); // User not logged in
+        res.status(401).json({ error: 'Unauthorized' }); // Bruger ikke logget ind
     }
 
 })
 
 
-
+// Route til at søge efter registrerede måltider
 router.get('/trackedMealSearch', async (req, res) => {
 
     // console.log(req)
@@ -194,17 +206,18 @@ router.get('/trackedMealSearch', async (req, res) => {
 
     } else {
 
-        res.status(401).json({ error: 'Unauthorized' }); // User not logged in
+        res.status(401).json({ error: 'Unauthorized' }); // Bruger ikke logget ind
     }
 
 })
 
-
+// Route til at tilføje vægt til en opskrift.
 router.post('/addWeightToRecepie', (req, res) => {
     console.log("Request Modtaget");
     addWeightToMeal(req, res)
 })
 
+// Route til at hente bynavn ud fra en lokation.
 router.post('/getCityNameOfLocation', (req, res) => {
     sendLocationToServer(req, res)
 })
@@ -218,6 +231,7 @@ router.post('/getCityNameOfLocation', (req, res) => {
 //     }
 
 
+// Route til at søge efter aktiviteter.
 router.get('/activity_search', async (req, res) => {
     console.log("Router Modtaget: ", req.query.searchTerm);
     try {
@@ -230,11 +244,13 @@ router.get('/activity_search', async (req, res) => {
     }
 })
 
+// Route til at tracke en aktivitet.
 router.post('/activity', async (req, res) => {
     console.log("Router Modtaget: ", req);
     trackActivity(req, res)
 })
 
+// Route til at hente både måltider og aktiviteter.
 router.get('/MealAndActivity', async (req, res) => {
     // console.log("Router Modtaget: ",req.session);
     getMealAndActivity(req, res)

@@ -1,27 +1,28 @@
 import index from '../index.js'
 
-
+// Funktion til at oprette et måltid i databasen
 export const mealcreator = async (req, id, res) => {
+      // Udpakker relevante oplysninger fra anmodningen
     const { mealName, mealType, source, ingredients } = req.body;
 
     console.log("Back-end received:", req.body);
 
-    // Validate ingredients array
+      // Validerer ingrediensarrayet
     if (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) {
         return res.status(400).send("No ingredients provided or incorrect format.");
     }
 
     try {
-        // Create the meal first and get the meal ID
+     // Opretter først måltidet og får måltids-ID'et
         const mealID = await index.connectedDatabase.postIntoDbMeal(mealName, id, mealType, source);
         console.log("Meal Created with ID:", mealID);
 
-        // Ensure meal ID is valid before proceeding
+        // Sørg for, at måltids-ID'et er gyldigt, før der fortsættes
         if (!mealID) {
             throw new Error("Meal creation failed, no ID returned.");
         }
 
-        // Initialize macro totals
+         // Initialiser makro totaler
         let totalWeight = 0;
         let totalEnergyKj = 0;
         let totalProtein = 0;
@@ -33,7 +34,7 @@ export const mealcreator = async (req, id, res) => {
 
 
 
-        // Iterate over each ingredient and add them to the meal
+          // Itererer over hver ingrediens og tilføjer dem til måltidet
         for (const ingredient of ingredients) {
             const { ingredientID, weight, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDryMatter } = ingredient;
             const addIngredientResult = await index.connectedDatabase.postIntoDbMealIngredient(
@@ -41,7 +42,7 @@ export const mealcreator = async (req, id, res) => {
             );
             console.log(`Ingredient ${ingredientID} added to meal ${mealID}:`, addIngredientResult);
 
-            // Accumulate macro totals
+            // Akkumuler makro totaler
             totalWeight += weight;
             totalEnergyKj += cEnergyKj;
             totalProtein += cProtein;
@@ -52,7 +53,7 @@ export const mealcreator = async (req, id, res) => {
             totalDryMatter += cDryMatter;
         }
 
-        // Calculate macros per 100g
+        // Beregn makroer pr. 100g
         const macrosPer100g = {
             energyKjPer100g: (totalEnergyKj / totalWeight) * 100,
             proteinPer100g: (totalProtein / totalWeight) * 100,
@@ -65,7 +66,7 @@ export const mealcreator = async (req, id, res) => {
 
         console.log(macrosPer100g.dryMatterPer100g);
 
-        // Call the SQL function to update macro totals in the database
+       // Kald til SQL-funktionen til at opdatere makrototaler i databasen
         const macroResult = await index.connectedDatabase.postCmacroMeal(mealID,
             macrosPer100g.energyKjPer100g,
             macrosPer100g.proteinPer100g,
@@ -77,7 +78,7 @@ export const mealcreator = async (req, id, res) => {
 
 
 
-        // Save meal details and macros in the session
+        // Gem måltidsdetaljer og makroer i sessionen
         req.session.meal = {
             mealID: mealID,
             mealName: mealName,
@@ -87,7 +88,7 @@ export const mealcreator = async (req, id, res) => {
             macrosPer100g: macrosPer100g
         };
 
-        await req.session.save(); // Ensure session is saved
+        await req.session.save();
 
         console.log(req.session.meal);
         // Send a successful response
@@ -98,8 +99,9 @@ export const mealcreator = async (req, id, res) => {
     }
 };
 
+// Funktion til at hente måltider fra databasen
 export const getMeals = async (req, res) => {
-    // Check if user is logged in
+        // Tjekker om brugeren er logget ind
     if (!req.session.user || !req.session.loggedin) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -116,12 +118,15 @@ export const getMeals = async (req, res) => {
     //     });
     // Meal data is not in session, fetch it from the database
     try {
+        // Henter brugerens ID fra sessionen
         const userID = req.session.user.userID;
+         // Henter alle måltider tilhørende den pågældende bruger fra databasen
         const meals = await index.connectedDatabase.getAllUserRecipes(userID);
 
 
         console.log("Meals retrieved from the database:", meals);
-
+        
+        // Grupperer måltiderne efter unikke måltids-ID'er og aggregerer ernæringsmæssige oplysninger
         const groupedMeals = meals.reduce((acc, item) => {
             const { mealID, name, userID, mealType, source, mealCategory, ingredientID, foodName, mealIngredientID, quantity, tEnergyKj,
                 tProtein,
@@ -140,19 +145,20 @@ export const getMeals = async (req, res) => {
                 ...otherNutrients
             } = item;
 
-            // Check if mealID is an array and take the first element, or use it as is if it's not
+            // Kontrollerer om mealID er et array og tager det første element, eller bruger det som det er, hvis det ikke er
             const uniqueMealID = Array.isArray(mealID) ? mealID[0] : mealID;
 
+            // Opretter et nyt måltid i akkumulatoren, hvis det ikke allerede findes
             if (!acc[uniqueMealID]) {
                 acc[uniqueMealID] = {
-                    mealID: uniqueMealID, // Assign mealID directly as an integer
+                    mealID: uniqueMealID, // Tildeler måltids-ID direkte som et INT
                     name,
                     userID,
                     mealType,
                     source,
                     mealCategory,
                     ingredients: [],
-                    ingredientCount: 0,  // Initialize the counter
+                    ingredientCount: 0,  // Initialiserer tælleren
                     totalNutrients: {
                         tEnergyKj,
                         tProtein,
@@ -174,6 +180,7 @@ export const getMeals = async (req, res) => {
                     }
                 };
             }
+            // Tilføjer hver ingrediens til det relevante måltid
             acc[uniqueMealID].ingredients.push({
                 ingredientID,
                 foodName,
@@ -190,10 +197,10 @@ export const getMeals = async (req, res) => {
                 }
             });
 
-            // Increment ingredient count
+            // Inkrementerer ingrediensantallet
             acc[uniqueMealID].ingredientCount++;
 
-            // Aggregate nutrient totals
+            // Aggregerer ernæringsmæssige oplysninger
             acc[uniqueMealID].aggregatedNutrients.aEnergyKj += cEnergyKj;
             acc[uniqueMealID].aggregatedNutrients.aProtein += cProtein;
             acc[uniqueMealID].aggregatedNutrients.aFat += cFat;
@@ -205,7 +212,7 @@ export const getMeals = async (req, res) => {
 
             return acc;
         }, {});
-
+        // Konverterer måltiderne til et array og sender dem som JSON-svar
         const formattedMeals = Object.values(groupedMeals);
 
         console.log(formattedMeals);
@@ -228,11 +235,13 @@ export const getMeals = async (req, res) => {
     }
 };
 
-
+// Funktion til at slette et måltid
 export const deleteMeal = async (req, res) => {
-    // console.log("Back-end Modtaget: ",req.body.mealID);
+   // Henter brugerens ID fra sessionen
     const userID = req.session.user.userID
+    // Henter måltids-ID'et fra anmodningens krop
     const mealID = req.body.mealID
     console.log("Back-end Modtaget: ", userID, "&", mealID);
+        // Kalder funktionen til at slette måltidet fra databasen og venter på svar
     const deleteMeal = await index.connectedDatabase.deleteMeal(mealID, userID);
 }
