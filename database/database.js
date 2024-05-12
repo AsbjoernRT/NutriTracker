@@ -458,7 +458,7 @@ async deleteTrackedMeal(regID, userID) {
     console.error('Fejl ved sletning af brugerens måltid i [NutriDB].[mealTracker]: ', error);
     throw error;
   }
-
+}
 
   async updateTrackedMeal(mealID, userID, quantity) {
     try {
