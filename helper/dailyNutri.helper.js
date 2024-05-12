@@ -7,7 +7,7 @@ function displayDailyNutri() {
     getMealAndActivity()
         .then(data => {
             console.log("Received on front-end:", data);
-            displayActivitiesAndMeals(data.detailed)
+            displayActivitiesAndMeals(data)
       
         })
         .catch(error => {
@@ -31,8 +31,16 @@ function displayActivitiesAndMeals(data) {
         kcalLeft: 0
     }));
 
+    const date = new Date().toISOString().split('T')[0];
+
+    const summary = data.dailySummaries[date];
+
+
+
+    
+
     // Process Meals
-    data.meals.today.meals.forEach(meal => {
+    data.detailed.meals.today.meals.forEach(meal => {
         const mealHour = new Date(meal.regTime).getUTCHours();
         if (mealHour <= currentHour) {
             summaryByHour[mealHour].mealsCount++;
@@ -42,7 +50,7 @@ function displayActivitiesAndMeals(data) {
     });
 
     // Process Activities
-    data.activities.today.activities.forEach(activity => {
+    data.detailed.activities.today.activities.forEach(activity => {
         const activityHour = new Date(activity.regTime).getUTCHours();
         if (activityHour <= currentHour) {
             summaryByHour[activityHour].totalKcalBurned += activity.caloriesBurned;
@@ -51,7 +59,7 @@ function displayActivitiesAndMeals(data) {
 
     // Calculate calories left for each hour
     summaryByHour.forEach(hour => {
-        hour.kcalLeft = hour.totalKcalConsumed - hour.totalKcalBurned;
+        hour.kcalLeft = hour.totalKcalConsumed - hour.totalKcalBurned-summary.basicMetabolismByHour;
     });
 
     // Find the table body where data should be inserted
@@ -70,7 +78,7 @@ function displayActivitiesAndMeals(data) {
             <td>${hourData.totalWater.toFixed(2)}</td>
             <td>${hourData.totalKcalConsumed}</td>
             <td>${hourData.totalKcalBurned}</td>
-            <td>${hourData.kcalLeft}</td>
+            <td>${hourData.kcalLeft.toFixed(2)}</td>
         `;
     });
 }

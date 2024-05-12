@@ -554,7 +554,8 @@ select {
 #editRecipe,
 #ingredientButton,
 .edit-button,
-#addIngredient {
+#addIngredient
+ {
     padding: 5px 10px;
     margin-left: 10px;
     border-radius: 4px;
@@ -1111,27 +1112,27 @@ tbody td:nth-last-child(3) {
 
 .daily-cons-grid div:nth-child(1) {
     background-color: #49a6e9; /* Blue background for Energy */
-    border-radius: 50%;
     color: white;
+    border-radius: 4px;
 }
 
 .daily-cons-grid div:nth-child(2) {
     background-color: #ffcb77; /* Orange background for Protein */
-    border-radius: 50%;
     color: white;
+    border-radius: 4px;
 
 }
 
 .daily-cons-grid div:nth-child(3) {
     background-color: #ff968a; /* Light red background for Fat */
-    border-radius: 50%;
     color: white;
+    border-radius: 4px;
 
 }
 
 .daily-cons-grid div:nth-child(4) {
     background-color: #4dccc6; /* Teal background for Fiber */
-    border-radius: 50%;
     color: white;
+    border-radius: 4px;
 
 }

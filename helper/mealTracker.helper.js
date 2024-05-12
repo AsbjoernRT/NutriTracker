@@ -211,7 +211,6 @@ document.getElementById('mealTrackerForm').addEventListener('submit', function (
         mealID,
         recipeName,
         quantity,
-        timesEaten,
         cityName
     };
 

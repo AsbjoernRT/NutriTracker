@@ -1,5 +1,7 @@
 import index from '../index.js'
 
+import moment from 'moment'
+
 export const sendLocationToServer = async (req,res) => {
     try {
 
@@ -48,9 +50,8 @@ export const addWeightToMeal = async (req, res) => {
 
 
 
-    const regTime = new Date()
 
-
+    const regTime = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
 
 
     try {

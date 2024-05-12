@@ -417,7 +417,7 @@ async updateMeal(mealID, userID, name, mealType, source, mealCateogry) {
       .input('userID', sql.Int, userID)
       .input('mealID', sql.Int, mealID)
       .input('quantity', sql.Int, quantity)
-      .input('regTime', sql.Time, regTime)
+      .input('regTime', sql.NVarChar, regTime)
       .input('date', sql.Date, regTime)
       .input('geoLocation', sql.NVarChar, getCityFromLocation)
       .input('mTenergyKj', sql.Int, getTotalEnergyKj)
@@ -428,8 +428,11 @@ async updateMeal(mealID, userID, name, mealType, source, mealCateogry) {
       .input('mTWater', sql.Int, getTotalWater)
       .input('mTDryMatter', sql.Int, getTotalDryMatter)
       .query`
-    INSERT INTO [NutriDB].[mealTracker] (userID, mealID, quantity, regTime, date, geoLocation, mTenergyKj, mTProtein, mTFat,mTFiber, mTEnergyKcal, mTWater, mTDryMatter)
-    VALUES (@userID, @mealID, @quantity, @regTime, @date, @geoLocation, @mTenergyKj, @mTProtein, @mTFat, @mTFiber, @mTEnergyKcal, @mTWater, @mTDryMatter)`;
+        DECLARE @CopenhagenTime AS datetimeoffset;
+        SET @CopenhagenTime = SWITCHOFFSET(CAST(@regTime AS datetimeoffset), '+00:00');
+        
+        INSERT INTO [NutriDB].[mealTracker] (userID, mealID, quantity, regTime, date, geoLocation, mTenergyKj, mTProtein, mTFat,mTFiber, mTEnergyKcal, mTWater, mTDryMatter)
+        VALUES (@userID, @mealID, @quantity, @CopenhagenTime, @date, @geoLocation, @mTenergyKj, @mTProtein, @mTFat, @mTFiber, @mTEnergyKcal, @mTWater, @mTDryMatter)`;
       return result.recordset;
     } catch (error) {
       console.error('Fejl ved indsætning af brugerens måltid tracker i [NutriDB].[mealTracker]:', error);
