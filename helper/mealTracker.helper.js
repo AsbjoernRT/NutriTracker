@@ -239,6 +239,12 @@ function selectIngredient(IngredientItems) {
 document.getElementById('mealTrackerForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent the default form submission behavior
 
+    const quantity = document.getElementById('itemWeight').value;
+
+
+    if (document.getElementById('searchInput').value === "" || quantity < 1) {
+        alert("Udfyld begge felter");
+
     const recipeName = document.getElementById('searchInput').value;
     const quantity = document.getElementById('itemWeight').value;
     const mealID = selectedMeal.mealID;
@@ -263,16 +269,20 @@ document.getElementById('mealTrackerForm').addEventListener('submit', function (
     }).then(response => response.json())
         .then(data => console.log('Success:', data))
         .catch(error => console.error('Error:', error))
-})
+}})
 
 
 
 document.getElementById('mealTrackerSingleIngredient').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent the default form submission behavior
-   
+    const quantity = document.getElementById('ingredientItemWeight').value;
+    
+    if (document.getElementById('searchInputIngredient').value === "" || quantity < 1) {
+        alert("Udfyld begge felter");
+        // } else {
+        document.getElementById('searchInputIngredient').value = ""
 
     // const recipeName = document.getElementById('searchInputIngredient').value;
-    const quantity = document.getElementById('ingredientItemWeight').value;
     const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
     ingredients.quantity = parseInt(quantity);
 
@@ -294,7 +304,7 @@ document.getElementById('mealTrackerSingleIngredient').addEventListener('submit'
     }).then(response => response.json())
         .then(data => console.log('Success:', data))
         .catch(error => console.error('Error:', error))
-})
+}});
 
 
 
