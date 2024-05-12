@@ -204,8 +204,6 @@ document.getElementById('mealTrackerForm').addEventListener('submit', function (
     const quantity = document.getElementById('itemWeight').value;
     const mealID = selectedMeal.mealID;
     const userID = selectedMeal.userID;
-    const timesEaten = selectedMeal.timesEaten;
-
 
 
     const postData = {
