@@ -9,6 +9,7 @@ function showUserInfo() {
             throw new Error('Network response was not ok.');
         })
         .then(data => {
+            console.log("Det virker");
             // Opdaterer visningen af brugerens navn
             const nameDisplay = document.getElementById("userName");
             if (nameDisplay) {
