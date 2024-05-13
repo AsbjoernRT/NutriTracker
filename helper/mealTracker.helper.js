@@ -42,7 +42,7 @@ inputElementIngredient.addEventListener('input', function () {
             fetch("/api/ingredient_search?searchTerm=" + searchTerm)
                 .then(res => res.json())
                 .then((res) => {
-                    console.log(res);
+                    console.log("data vi får ud", res);
                     displayIngredientResults(res)
                 });
         } else {
@@ -318,17 +318,38 @@ document.getElementById('mealTrackerForm').addEventListener('submit', function (
 
 document.getElementById('mealTrackerSingleIngredient').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent the default form submission behavior
-    const quantity = document.getElementById('ingredientItemWeight').value;
+    const quantityInput = document.getElementById('ingredientItemWeight').value;
         // } else {
         document.getElementById('searchInputIngredient').value = ""
 
         // const recipeName = document.getElementById('searchInputIngredient').value;
-        const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
-        ingredients.quantity = parseInt(quantity);
+
+        console.log("quantity single", selectedItemData.foodName);
+        console.log("Protein", selectedItemData.protein);
+
+
+
+        mealIngredientName = selectedItemData.foodName
+        energyKJ = selectedItemData.energyKj
+        protein =  selectedItemData.protein
+        fat = selectedItemData.fat
+        fiber = selectedItemData.fiber
+        energyKcal = selectedItemData.energyKcal
+        water = selectedItemData.water
+        dryMatter = selectedItemData.dryMatter
+
 
         const postData = {
-            ingredients,
-            cityName
+            mealIngredientName,
+            cityName,
+            quantityInput,
+            energyKJ,
+            protein,
+            fat,
+            fiber,
+            energyKcal,
+            water,
+            dryMatter
         };
 
         console.log("forsøger at sende: ", postData);

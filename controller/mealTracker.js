@@ -45,7 +45,7 @@ export const addWeightToMeal = async (req, res) => {
     const getMacro = await index.connectedDatabase.getTotalNutriens(mealID)
 
     console.log(getMacro);
-    
+
     // Beregner de samlede næringsstoffer baseret på mængden
     const getTotalEnergyKj = (quantity / 100) * getMacro[0].tEnergyKj
     const getTotalProtein = (quantity / 100) * getMacro[0].tProtein
@@ -94,14 +94,13 @@ export const updateWeightForMeal = async (req, res) => {
 
     try {
 
-
-            const mTEnergyKj = (quantity / 100) * getMacro[0].tEnergyKj
-            const mTProtein = (quantity / 100) * getMacro[0].tProtein
-            const mTFat = (quantity / 100) * getMacro[0].tFat
-            const mTFiber = (quantity / 100) * getMacro[0].tFiber
-            const mTEnergyKcal = (quantity / 100) * getMacro[0].tEnergyKcal
-            const mTWater = (quantity / 100) * getMacro[0].tWater
-            const mTDryMatter = (quantity / 100) * getMacro[0].tDryMatter
+        const mTEnergyKj = (quantity / 100) * getMacro[0].tEnergyKj
+        const mTProtein = (quantity / 100) * getMacro[0].tProtein
+        const mTFat = (quantity / 100) * getMacro[0].tFat
+        const mTFiber = (quantity / 100) * getMacro[0].tFiber
+        const mTEnergyKcal = (quantity / 100) * getMacro[0].tEnergyKcal
+        const mTWater = (quantity / 100) * getMacro[0].tWater
+        const mTDryMatter = (quantity / 100) * getMacro[0].tDryMatter
 
 
         const updateTrackedMeal = await index.connectedDatabase.updateTrackedMeal(regID, mealID, quantity, mTEnergyKj, mTProtein, mTFat, mTFiber, mTEnergyKcal, mTWater, mTDryMatter);
@@ -114,17 +113,30 @@ export const updateWeightForMeal = async (req, res) => {
 };
 
 
+export const postIntoDbMealTracker = async (req,res) => {
+
+
+}
+
 export const createSnackInMealTracker = async (req, res) => {
 
     const userID = req.session.user.userID
+    console.log(req.body);
     // Udpakker relevante oplysninger fra anmodningen
-    const { ingredients, cityName } = req.body;
+    const { mealIngredientName, cityName, quantityInput, energyKJ,
+        protein,
+        fat,
+        fiber,
+        energyKcal,
+        water,
+        dryMatter } = req.body;
 
-    console.log(ingredients, cityName);
+    console.log(mealIngredientName, cityName);
 
-    const mealName = ingredients.foodName
+    const mealName = req.body.mealIngredientName
     const mealType = "singleIngredient"
     const source = "snack"
+    const quantity = req.body.quantityInput
 
     console.log("Back-end received:", req.body);
 
@@ -140,18 +152,10 @@ export const createSnackInMealTracker = async (req, res) => {
         }
 
 
-
-
-        const { ingredientID, quantity, energyKj, protein, fat, fiber, energyKcal, water, dryMatter } = ingredients;
-        const addIngredientResult = await index.connectedDatabase.postIntoDbMealIngredient(
-            mealID, ingredientID, quantity, energyKj, protein, fat, fiber, energyKcal, water, dryMatter
-        );
-        console.log(`Ingredient ${ingredientID} added to meal ${mealID}:`, addIngredientResult);
-
         const quantityTimesInput = (quantity / 100)
         // Akkumuler makro totaler
         const totalWeight = quantity;
-        const totalEnergyKj = energyKj * quantityTimesInput;
+        const totalEnergyKj = energyKJ * quantityTimesInput;
         const totalProtein = protein * quantityTimesInput;
         const totalFat = fat * quantityTimesInput;
         const totalFiber = fiber * quantityTimesInput;
@@ -173,9 +177,7 @@ export const createSnackInMealTracker = async (req, res) => {
 
         // console.log(macrosPer100g);
 
-        // Kald til SQL-funktionen til at opdatere makrototaler i databasen
-        const macroResult = await index.connectedDatabase.postCmacroMeal(mealID, ingredientID, quantity, energyKj, protein, fat, fiber, energyKcal, water, dryMatter);
-        console.log("Macrolog:", macroResult);
+        // Kald til SQL-funktionen til at opdatere makrototaler i database
 
 
         // Gem måltidsdetaljer og makroer i sessionen
@@ -184,7 +186,6 @@ export const createSnackInMealTracker = async (req, res) => {
             mealName: mealName,
             mealType: mealType,
             source: source,
-            ingredients: ingredients
         };
 
 

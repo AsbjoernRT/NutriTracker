@@ -465,6 +465,7 @@ async updateMealIngredient(ingredientID, quantity, cEnergyKj, cProtein, cFat, cF
   async getTotalNutriens(mealID) {
     try {
       await this.connect();
+      console.log("Connecting to database with mealID:", mealID);
       const request = this.poolconnection.request();
       const result = await request
         .input('mealID', sql.Int, mealID)
@@ -514,8 +515,7 @@ async updateMealIngredient(ingredientID, quantity, cEnergyKj, cProtein, cFat, cF
 
   // Delete tracked meal
   async deleteTrackedMeal(regID, userID) {
-<<<<<<< HEAD
-=======
+
     try {
       await this.connect();
       const request = this.poolconnection.request();
@@ -531,7 +531,6 @@ async updateMealIngredient(ingredientID, quantity, cEnergyKj, cProtein, cFat, cF
   }
 
   async updateTrackedMeal(mealID, userID, quantity) {
->>>>>>> 9136270c5b6036c2fd75a7fc3323880e2a9eb282
     try {
       await this.connect();
       const request = this.poolconnection.request();
@@ -568,6 +567,7 @@ async updateMealIngredient(ingredientID, quantity, cEnergyKj, cProtein, cFat, cF
       throw error;
     }
   }
+
 
 
 
