@@ -415,20 +415,20 @@ export default class Database {
       const request = this.poolconnection.request();
       const result = await request
 
-      .input('userID', sql.Int, userID)
-      .input('mealID', sql.Int, mealID)
-      .input('quantity', sql.Int, quantity)
-      .input('regTime', sql.NVarChar, regTime)
-      .input('date', sql.Date, regTime)
-      .input('geoLocation', sql.NVarChar, getCityFromLocation)
-      .input('mTenergyKj', sql.Int, getTotalEnergyKj)
-      .input('mTProtein', sql.Int, getTotalProtein)
-      .input('mTFat', sql.Int, getTotalFat)
-      .input('mTFiber', sql.Int, getTotalFiber)
-      .input('mTEnergyKcal', sql.Int, getTotalEnergyKcal)
-      .input('mTWater', sql.Int, getTotalWater)
-      .input('mTDryMatter', sql.Int, getTotalDryMatter)
-      .query`
+        .input('userID', sql.Int, userID)
+        .input('mealID', sql.Int, mealID)
+        .input('quantity', sql.Int, quantity)
+        .input('regTime', sql.NVarChar, regTime)
+        .input('date', sql.Date, regTime)
+        .input('geoLocation', sql.NVarChar, getCityFromLocation)
+        .input('mTenergyKj', sql.Int, getTotalEnergyKj)
+        .input('mTProtein', sql.Int, getTotalProtein)
+        .input('mTFat', sql.Int, getTotalFat)
+        .input('mTFiber', sql.Int, getTotalFiber)
+        .input('mTEnergyKcal', sql.Int, getTotalEnergyKcal)
+        .input('mTWater', sql.Int, getTotalWater)
+        .input('mTDryMatter', sql.Int, getTotalDryMatter)
+        .query`
         DECLARE @CopenhagenTime AS datetimeoffset;
         SET @CopenhagenTime = SWITCHOFFSET(CAST(@regTime AS datetimeoffset), '+00:00');
         
@@ -444,31 +444,38 @@ export default class Database {
 
 
 
-// Delete tracked meal
-async deleteTrackedMeal(regID, userID) {
-  try {
-    await this.connect();
-    const request = this.poolconnection.request();
-    const result = await request
-    .input('userID', sql.Int, userID)
-    .input('regID', sql.Int, regID)
-    .query('DELETE FROM [NutriDB].[mealTracker] WHERE regID = @regID AND userID = @userID;')
-    return result.recordset;
-  } catch (error) {
-    console.error('Fejl ved sletning af brugerens måltid i [NutriDB].[mealTracker]: ', error);
-    throw error;
-  }
-}
-
-  async updateTrackedMeal(mealID, userID, quantity) {
+  // Delete tracked meal
+  async deleteTrackedMeal(regID, userID) {
     try {
       await this.connect();
       const request = this.poolconnection.request();
       const result = await request
         .input('userID', sql.Int, userID)
+        .input('regID', sql.Int, regID)
+        .query('DELETE FROM [NutriDB].[mealTracker] WHERE regID = @regID AND userID = @userID;')
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved sletning af brugerens måltid i [NutriDB].[mealTracker]: ', error);
+      throw error;
+    }
+  }
+
+  async updateTrackedMeal(regID, mealID, quantity, mTEnergyKj, mTProtein, mTFat, mTFiber, mTEnergyKcal, mTWater, mTDryMatter) {
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request
+        .input('regID', sql.Int, regID)
         .input('mealID', sql.Int, mealID)
         .input('quantity', sql.Int, quantity)
-        .query('UPDATE [NutriDB].[mealTracker] SET [NutriDB].[mealTracker].quantity = @quantity WHERE mealID = @mealID AND userID = @userID;')
+        .input('mTEnergyKj', sql.Int, mTEnergyKj)
+        .input('mTProtein', sql.Int, mTProtein)
+        .input('mTFat', sql.Int, mTFat)
+        .input('mTFiber', sql.Int, mTFiber)
+        .input('mTEnergyKcal', sql.Int, mTEnergyKcal)
+        .input('mTWater', sql.Int, mTWater)
+        .input('mTDryMatter', sql.Int, mTDryMatter)
+        .query('UPDATE [NutriDB].[mealTracker] SET quantity = @quantity, mTEnergyKj = @mTEnergyKj, mTProtein = @mTProtein, mTFat = @mTFat, mTFiber = @mTFiber, mTEnergyKcal = @mTEnergyKcal, mTWater = @mTWater, mTDryMatter = @mTDryMatter WHERE regID = @regID AND mealID = @mealID;')
       return result.recordset;
     } catch (error) {
       console.error('Fejl ved sletning af brugerens måltid i [NutriDB].[mealTracker]: ', error);

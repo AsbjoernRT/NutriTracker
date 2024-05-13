@@ -30,8 +30,34 @@ function toggleModalVisibilityTracker() {
 
     if (modalWrapper) {
         ingredientList.innerHTML = ''; // Ryd tidligere ingredienser
+        document.getElementById('searchInput').value = ""
+        document.getElementById('itemWeight').value = ""
 
         modalWrapper.classList.toggle('hide');
+
+    } else {
+        console.error('One or more elements are missing in the DOM');
+    }
+}
+
+function toggleModalVisibilityTrackerEdit() {
+    const modalWrapper = document.getElementById('modal-wrapper');
+    const getSingleIngredient = document.getElementById('singleIngredient')
+    const addTrackedMeal = document.getElementById('addTrackedMeal')
+    const updateTrackedMeal = document.getElementById('updateTrackedMeal')
+    const addTrackedMealButton = document.getElementById('addTrackedMealButton')
+    const editTrackedMealButton = document.getElementById('editTrackedMealButton')
+
+
+    if (modalWrapper && getSingleIngredient && addTrackedMeal && updateTrackedMeal) {
+        ingredientList.innerHTML = ''; // Ryd tidligere ingredienser
+
+        modalWrapper.classList.toggle('hide');
+        getSingleIngredient.classList.toggle('hide');
+        addTrackedMeal.classList.toggle('hide');
+        updateTrackedMeal.classList.toggle('hide');
+        addTrackedMealButton.classList.toggle('hide')
+        editTrackedMealButton.classList.toggle('hide')
 
     } else {
         console.error('One or more elements are missing in the DOM');
@@ -66,6 +92,7 @@ function toggleModalCloseVisibilitySingleIngredient() {
 
 
 
+
 function toggleModalVisibilitySettings() {
 
     const modalWrapper = document.getElementById('modal-wrapper');
@@ -91,7 +118,7 @@ function toggleMealTrackerModal(){
     if(modalWrapper){
         modalWrapper.classList.toggle('hide');
         setTimeout(function() {
-            window.location.reload()
+           window.location.reload()
         }, 1000); // 1000 milliseconds = 1 second
     }else {
         console.error('One or more elements are missing in the DOM');
@@ -110,7 +137,6 @@ document.getElementById('editRecipe').addEventListener('click', function () {
 
 document.getElementById('add-meal-btn').addEventListener('click', function () {
     modalType = 'food';
-    console.log("Hey");
     toggleModalVisibility();
 });
 

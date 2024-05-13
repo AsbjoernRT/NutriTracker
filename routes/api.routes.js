@@ -7,7 +7,7 @@ import { updateUser, deleteUser, getMealAndActivity,getUserInfo } from '../contr
 import bodyParser from 'body-parser';
 import { mealcreator, getMeals, deleteMeal } from '../controller/mealCreator.js'
 import { trackActivity } from '../controller/acticityTracker.js';
-import {sendLocationToServer,addWeightToMeal, deleteTrackedMeal, createSnackInMealTracker} from '../controller/mealTracker.js'
+import {sendLocationToServer, addWeightToMeal, deleteTrackedMeal, createSnackInMealTracker, updateWeightForMeal} from '../controller/mealTracker.js'
 
 // Opretter en ny router fra Express.
 const router = express.Router();
@@ -135,19 +135,6 @@ router.post('/deleteTrackedMeal', async (req, res) => {
 // Route til at hente opskrifter.
 router.get('/recipes', (req, res) => {
     getMeals(req, res)
-    // if (req.session.user && req.session.loggedin  && req.session.meal) {
-    //     res.json({
-    //         mealID: req.session.meal.mealId,
-    //         mealName: req.session.meal.mealName,
-    //         mealType: req.session.meal.mealType,
-    //         source: req.session.meal.source,
-    //         ingredients: req.session.meal.ingredients,
-    //         macrosPer100g: req.session.meal.macrosPer100g
-    //     })
-    // } else {
-
-    //     res.status(401).json({ error: 'Unauthorized' }); // User not logged in
-    // }
 })
 
 // Route til at hente brugeroplysninger.
@@ -250,6 +237,12 @@ router.get('/MealAndActivity', async (req, res) => {
     // } catch (error) {
     //     console.log("Route error:", error);
     // }
+})
+
+router.post('/updateTrackedMeal', async (req,res) => {
+    
+    updateWeightForMeal(req,res)
+
 })
 
 

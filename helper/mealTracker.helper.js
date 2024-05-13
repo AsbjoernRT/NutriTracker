@@ -1,3 +1,4 @@
+
 let debounceTimerId;
 
 // Kører fetchMeals, når DOM'en er fuldt indlæst
@@ -122,6 +123,27 @@ function appendNewRow(row, meal) {
     dailyCons.appendChild(dailyConsFat);
     dailyCons.appendChild(dailyConsFiber);
 
+    const editCell = document.createElement('div');
+    const editButton = document.createElement('button');
+    editCell.appendChild(editButton)
+    editButton.classList.add('edit-button-mealTracker');
+
+    editButton.textContent = "Edit"
+
+    editButton.addEventListener('click', () => {
+        // Sæt modalType to 'edit'
+        modalType = 'edit';
+
+
+        document.getElementById('searchInput').value = meal.name;
+        document.getElementById('itemWeight').value = meal.quantity
+        localStorage.setItem('meal', JSON.stringify(meal))
+        toggleModalVisibilityTrackerEdit()
+
+    })
+
+
+
 
     const deleteCell = document.createElement('div');
     const deleteButton = document.createElement('button');
@@ -137,6 +159,7 @@ function appendNewRow(row, meal) {
     row.appendChild(geoLocation);
     row.appendChild(addedOn);
     row.appendChild(dailyCons);
+    row.appendChild(editCell)
     row.appendChild(deleteCell)
 
 
@@ -150,9 +173,6 @@ function appendNewRow(row, meal) {
 
 
 }
-
-
-
 
 // Viser resultaterne for søge funktionen, så der er en drop down funktion.
 function displayResults(items) {
@@ -213,7 +233,7 @@ function selectIngredient(IngredientItems) {
 
     console.log("Ting", IngredientItems);
 
-    const selectedItemData = {
+    return selectedItemData = {
         foodName: IngredientItems.foodName,
         ingredientID: IngredientItems.ingredientID,
         energyKj: IngredientItems.energyKj,
@@ -225,86 +245,107 @@ function selectIngredient(IngredientItems) {
         dryMatter: IngredientItems.dryMatter,
         quantity: null
     };
-
-    localStorage.setItem('ingredients', JSON.stringify(selectedItemData))
-    console.log("Ingredient: ",selectedItemData );
-
-    return selectedItemData
-
-    
 }
 
 // Laver en post request når man trykker på submit knap i mealTrackerformular
 
-document.getElementById('mealTrackerForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent the default form submission behavior
+document.getElementById('updateTrackedMeal').addEventListener('click', function () {
 
-    const quantity = document.getElementById('itemWeight').value;
+    const mealData = localStorage.getItem('meal');
+    const mealObject = JSON.parse(mealData);
 
+    console.log("Meal to update", mealObject);
+    mealID = mealObject.mealID[0]
+    regID = mealObject.regID
+    userID = mealObject.userID[0]
+   
 
-    if (document.getElementById('searchInput').value === "" || quantity < 1) {
-        alert("Udfyld begge felter");
+    const quantity = parseInt(document.getElementById('itemWeight').value)
+    console.log(quantity);
 
-    const recipeName = document.getElementById('searchInput').value;
-    const quantity = document.getElementById('itemWeight').value;
-    const mealID = selectedMeal.mealID;
-    const userID = selectedMeal.userID;
+    const mealToUpdate = JSON.stringify({ userID, regID, mealID, quantity });
 
-
-    const postData = {
-        userID,
-        mealID,
-        recipeName,
-        quantity,
-        cityName
-    };
-
-    // Kalder submitData function og håndterer det med catch funktioner for fejl håndtering.
-    fetch('api/addWeightToRecepie', {
-        method: 'post',
+    fetch('/api/updateTrackedMeal', {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(postData)
-    }).then(response => response.json())
+        body: mealToUpdate
+    })
+        // fetch('/api/ingredients' + postData)
+        .then(response => response.json())
         .then(data => console.log('Success:', data))
-        .catch(error => console.error('Error:', error))
-}})
+        .catch(error => console.error('Error:', error));
+        setTimeout(function() {
+            window.location.reload()
+         }, 1000); // 1000 milliseconds = 1 second
+
+})
+
+document.getElementById('mealTrackerForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+
+
+        const recipeName = document.getElementById('searchInput').value;
+        const quantity = document.getElementById('itemWeight').value;
+        const mealID = selectedMeal.mealID;
+        const userID = selectedMeal.userID;
+
+
+        const postData = {
+            userID,
+            mealID,
+            recipeName,
+            quantity,
+            cityName
+        };
+
+        // Kalder submitData function og håndterer det med catch funktioner for fejl håndtering.
+        fetch('api/addWeightToRecepie', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+        }).then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch(error => console.error('Error:', error))
+    }
+)
 
 
 
 document.getElementById('mealTrackerSingleIngredient').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent the default form submission behavior
     const quantity = document.getElementById('ingredientItemWeight').value;
-    
-    if (document.getElementById('searchInputIngredient').value === "" || quantity < 1) {
-        alert("Udfyld begge felter");
         // } else {
         document.getElementById('searchInputIngredient').value = ""
 
-    // const recipeName = document.getElementById('searchInputIngredient').value;
-    const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
-    ingredients.quantity = parseInt(quantity);
+        // const recipeName = document.getElementById('searchInputIngredient').value;
+        const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+        ingredients.quantity = parseInt(quantity);
 
-    const postData = {
-        ingredients,
-        cityName
-    };
+        const postData = {
+            ingredients,
+            cityName
+        };
 
-    console.log("forsøger at sende: ", postData);
+        console.log("forsøger at sende: ", postData);
 
-    // Kalder submitData function og håndterer det med catch funktioner for fejl håndtering.
-    fetch('api/singleIngredient', {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postData)
+        // Kalder submitData function og håndterer det med catch funktioner for fejl håndtering.
+        fetch('api/singleIngredient', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
 
-    }).then(response => response.json())
-        .then(data => console.log('Success:', data))
-        .catch(error => console.error('Error:', error))
-}});
+        }).then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch(error => console.error('Error:', error))
+    }
+);
 
 
 

@@ -556,7 +556,10 @@ select {
 .edit-button,
 #addIngredient,
 .delete-button-mealTracker,
-#singleIngredient
+#singleIngredient,
+.edit-button-mealTracker,
+#addTrackedMeal,
+#updateTrackedMeal
  {
     padding: 5px 10px;
     margin-left: 10px;
@@ -590,15 +593,24 @@ select {
     background-color: red;
     color: white;
     border: none;
-    padding-right: 40px;
-    padding-left: 40px;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
+.edit-button-mealTracker {
+    background-color: #6c9565;
+    color: white;
+    border: none;
+    padding-left: 20px;
+    padding-right: 20px;
+
+}
 
 #editRecipe,
 #addRecipe,
-#addIngredient {
+#addIngredient,
+#addTrackedMeal,
+#updateTrackedMeal
+ {
     background-color: #91c789;
     color: white;
     border: none;
@@ -636,7 +648,9 @@ select {
 
 #editRecipe:hover,
 #addRecipe:hover,
-#addIngredient:hover {
+#addIngredient:hover,
+#updateTrackedMeal:hover,
+#addTrackedMeal:hover {
     background-color: #6c9565;
 }
 

@@ -30,7 +30,7 @@ export const sendLocationToServer = async (req, res) => {
 // Funktion til at tilføje en vægt til et måltid
 export const addWeightToMeal = async (req, res) => {
 
-    console.log("Back-end received:", req.body.cityName);
+    console.log("Back-end received:", req.body);
 
     // Henter variabler fra anmodningens krop
     const mealID = req.body.mealID
@@ -43,6 +43,9 @@ export const addWeightToMeal = async (req, res) => {
 
     // Henter de samlede næringsstoffer for måltidet fra databasen
     const getMacro = await index.connectedDatabase.getTotalNutriens(mealID)
+
+    console.log(getMacro);
+    
     // Beregner de samlede næringsstoffer baseret på mængden
     const getTotalEnergyKj = (quantity / 100) * getMacro[0].tEnergyKj
     const getTotalProtein = (quantity / 100) * getMacro[0].tProtein
@@ -73,6 +76,40 @@ export const addWeightToMeal = async (req, res) => {
     } catch (error) {
         console.error("Error in addWeightToMeal:", error);
         res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+
+export const updateWeightForMeal = async (req, res) => {
+    console.log("Back-end received:", req.body);
+
+    const userID = req.body.userID
+    const mealID = req.body.mealID
+    const regID = req.body.regID
+    const quantity = req.body.quantity
+
+    const getMacro = await index.connectedDatabase.getTotalNutriens(mealID)
+
+    console.log(getMacro);
+
+    try {
+
+
+            const mTEnergyKj = (quantity / 100) * getMacro[0].tEnergyKj
+            const mTProtein = (quantity / 100) * getMacro[0].tProtein
+            const mTFat = (quantity / 100) * getMacro[0].tFat
+            const mTFiber = (quantity / 100) * getMacro[0].tFiber
+            const mTEnergyKcal = (quantity / 100) * getMacro[0].tEnergyKcal
+            const mTWater = (quantity / 100) * getMacro[0].tWater
+            const mTDryMatter = (quantity / 100) * getMacro[0].tDryMatter
+
+
+        const updateTrackedMeal = await index.connectedDatabase.updateTrackedMeal(regID, mealID, quantity, mTEnergyKj, mTProtein, mTFat, mTFiber, mTEnergyKcal, mTWater, mTDryMatter);
+        console.log(updateTrackedMeal);
+        res.status(200).json({ success: true, message: 'Meal updated successfully' });
+    } catch (error) {
+        console.error('Update failed:', error);
+        res.status(500).json({ success: false, message: 'Failed to update meal' });
     }
 };
 
