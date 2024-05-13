@@ -143,6 +143,7 @@ function addItemToList(item) {
     const inspectButton = document.createElement('button');
     inspectButton.textContent = 'Inspect';
     inspectButton.classList.add('inspect-button');
+    inspectButton.type = 'button';  // Set the button type to 'button'
 
     inspectButton.addEventListener('click', function () {
         const modal = document.getElementsByClassName('inspect-list')[0];
@@ -158,45 +159,34 @@ function addItemToList(item) {
 
 
         ingredients.forEach(ingredient => {
-            if (ingredient.ingredientID === item.ingredientID) {
-                const ingredientRow = document.createElement('tr');
-
-                // Navn på ingrediens
-                const nameCell = document.createElement('td');
-                nameCell.textContent = ingredient.foodName || 'No name provided';  // Standardværdi, hvis navn ikke er angivet
-                ingredientRow.appendChild(nameCell);
-
-                // Mængde af ingrediens
-                const weightCell = document.createElement('td');
-                weightCell.textContent = ingredient.quantity ? `${ingredient.quantity} g` : 'No data';
-                ingredientRow.appendChild(weightCell);
-
-                // Tjek og tilføj næringsværdier hvis tilgængelige
-                if (ingredient && typeof ingredient.nutritionalValues === 'object' && ingredient.nutritionalValues !== null) {
-                    const nutrientsOfInterest = ['cDryMatter', 'cEnergyKcal', 'cEnergyKj', 'cFat', 'cFiber', 'cProtein', 'cWater'];
-                    nutrientsOfInterest.forEach(macroKey => {
-                        const cell = document.createElement('td');
-                        if (typeof ingredient.nutritionalValues[macroKey] === 'number') {
-                            cell.textContent = ingredient.nutritionalValues[macroKey].toFixed(2);
-                        } else {
-                            cell.textContent = 'N/A';  // hjælper med "missing or non-numeric data"
-                        }
-                        ingredientRow.appendChild(cell);
-                    });
+            const ingredientRow = document.createElement('tr');
+        
+            // Meal name
+            const nameCell = document.createElement('td');
+            nameCell.textContent = ingredient.foodName || 'No name provided';  // Provide a default value if not available
+            ingredientRow.appendChild(nameCell);
+        
+            // Weight
+            const weightCell = document.createElement('td');
+            weightCell.textContent = ingredient.quantity ? `${ingredient.quantity} g` : 'No data';
+            ingredientRow.appendChild(weightCell);
+        
+            // List of nutrients to display
+            const nutrientsOfInterest = ['cDryMatter', 'cEnergyKcal', 'cEnergyKj', 'cFat', 'cFiber', 'cProtein', 'cWater'];
+        
+            // Append cells for each nutrient
+            nutrientsOfInterest.forEach(nutrient => {
+                const cell = document.createElement('td');
+                if (ingredient[nutrient] !== undefined && ingredient[nutrient] !== null) {
+                    cell.textContent = Number(ingredient[nutrient]).toFixed(2); // Convert to Number to ensure .toFixed(2) works even if data is a string
                 } else {
-                    // Udfyld celler med 'N/A' hvis næringsdata mangler
-                    const nutrientsOfInterest = ['cDryMatter', 'cEnergyKcal', 'cEnergyKj', 'cFat', 'cFiber', 'cProtein', 'cWater'];
-                    nutrientsOfInterest.forEach(() => {
-                        const cell = document.createElement('td');
-                        cell.textContent = 'N/A';
-                        ingredientRow.appendChild(cell);
-                    });
-
+                    cell.textContent = 'N/A';  // Display 'N/A' if nutrient data is missing
                 }
-
-                // Tilføj den færdige række til tabellen
-                inspectionListTable.appendChild(ingredientRow);
-            }
+                ingredientRow.appendChild(cell);
+            });
+        
+            // Append the completed row to the table body
+            inspectionListTable.appendChild(ingredientRow);
         });
 
     });

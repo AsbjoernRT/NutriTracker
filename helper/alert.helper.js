@@ -10,7 +10,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const errorMessages = [
         { param: 'usernotfound', message: 'No user with that email' },
         { param: 'wrongpassword', message: 'Wrong password' },
-        { param: 'error', message: 'User with that email exists, Go to Login instead' }
+        { param: 'error', value: 'Wrong%20password', message: 'Wrong password' },
+        { param: 'error', value: 'No%20user%20with%20that%20email', message: 'No user with that email' }
+        // { param: 'error', message: 'No user with that email' }
         // Add more parameters and error messages as needed
     ];
     

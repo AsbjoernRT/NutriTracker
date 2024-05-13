@@ -485,5 +485,6 @@ export const deleteMeal = async (req, res) => {
     console.log("Back-end Modtaget: ", userID, "&", mealID);
     // Kalder funktionen til at slette måltidet fra databasen og venter på svar
     const deleteMeal = await index.connectedDatabase.deleteMeal(mealID, userID);
+    console.log(deleteMeal);
 }
 

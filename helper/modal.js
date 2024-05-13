@@ -109,7 +109,6 @@ document.getElementById('add-recipe-btn').addEventListener('click', function () 
 });
 
 document.getElementById('add-liquid-btn').addEventListener('click', function () {
-    console.log("Click");
     localStorage.removeItem('ingredients')
     modalType = 'beverage';
     localStorage.setItem('mealCategory','beverage')

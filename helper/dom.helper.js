@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Tjek den aktuelle URL eller en del af den
     const path = window.location.pathname;
+    
     if (path === '/') {
         // Udfør kode specifikt for siden '/mealCreator'
         console.log("Current page:", path);
