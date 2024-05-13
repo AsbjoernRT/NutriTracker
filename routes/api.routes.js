@@ -5,7 +5,7 @@ import index from '../index.js';
 import { updateUser, deleteUser, getMealAndActivity,getUserInfo } from '../controller/user.js'
 // import { deleteUser } from '../controller/user.js'
 import bodyParser from 'body-parser';
-import { mealcreator, getMeals, deleteMeal } from '../controller/mealCreator.js'
+import { mealCreator, getMeals, deleteMeal,updateMeal } from '../controller/mealCreator.js'
 import { trackActivity } from '../controller/acticityTracker.js';
 import {sendLocationToServer,addWeightToMeal, deleteTrackedMeal, createSnackInMealTracker} from '../controller/mealTracker.js'
 
@@ -115,10 +115,19 @@ router.post('/singleIngredient', async(req,res) => {
 // Route til at tilføje ingredienser til en opskrift.
 router.post('/ingredients', async (req, res) => {
 
-    // console.log("Modtaget måltid: ", req.body);
+    console.log("Modtaget måltid: ", req.body);
     // console.log("Person der logger: ", req.session.user.uersID);
-    mealcreator(req, req.session.user.userID, res)
 
+    mealCreator(req, req.session.user.userID, res)
+})
+
+// Route til at tilføje ingredienser til en opskrift.
+router.post('/updateIngredients', async (req, res) => {
+
+    console.log("Modtaget måltid: ", req.body);
+    // console.log("Person der logger: ", req.session.user.uersID);
+
+    updateMeal(req, req.session.user.userID, res)
 
 })
 
