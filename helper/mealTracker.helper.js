@@ -281,7 +281,7 @@ document.getElementById('updateTrackedMeal').addEventListener('click', function 
         .then(data => console.log('Success:', data))
         .catch(error => console.error('Error:', error));
     setTimeout(function () {
-        // window.location.reload()
+        window.location.reload()
     }, 1000); // 1000 milliseconds = 1 second
 
 })

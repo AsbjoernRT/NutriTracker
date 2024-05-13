@@ -73,6 +73,9 @@ function toggleModalVisibilitySingleIngredient() {
 
         modalWrapper.classList.add('hide'); 
         modealWrapper2.classList.remove('hide'); 
+        setTimeout(function() {
+            window.location.reload()
+            }, 1000); // 1000 milliseconds = 1 second
     } else {
         console.error('One or more elements are missing in the DOM');
     }
@@ -84,7 +87,7 @@ function toggleModalCloseVisibilitySingleIngredient() {
     if (modealWrapper2) {
         modealWrapper2.classList.toggle('hide');
         setTimeout(function() {
-          // window.location.reload()
+        window.location.reload()
         }, 1000); // 1000 milliseconds = 1 second
     } else {
         console.error('One or more elements are missing in the DOM');
@@ -120,7 +123,7 @@ function toggleMealTrackerModal(){
     if(modalWrapper){
         modalWrapper.classList.toggle('hide');
         setTimeout(function() {
-         // window.location.reload()
+         window.location.reload()
         }, 1000); // 1000 milliseconds = 1 second
     }else {
         console.error('One or more elements are missing in the DOM');
