@@ -44,35 +44,6 @@ function AcvtivitySeach() {
 };
 
 
-
-// document.addEventListener('DOMContentLoaded', function () {
-//     // Access the input elements
-//     const hoursInput = document.getElementById('hours');
-//     const minutesInput = document.getElementById('minutes');
-
-//     // Function to handle the input changes
-//     function handleDurationChange() {
-//         const hours = parseInt(hoursInput.value, 10) || 0;  // Use 0 as default if the input is empty
-//         const minutes = parseInt(minutesInput.value, 10) || 0;
-
-//         // Example: Calculate kcals burned - Assume 100 kcals per hour as a placeholder
-//         const totalMinutes = hours * 60 + minutes;
-//         const kcalsBurned = (totalMinutes / 60) * 100; // Assuming a simple kcal calculation
-
-//         // Update the display
-//         document.getElementById('selected-activity').textContent = `${kcalsBurned.toFixed(2)} kcals burned`;
-//     }
-
-//     // Attach event listeners to the input fields
-//     hoursInput.addEventListener('input', handleDurationChange);
-//     minutesInput.addEventListener('input', handleDurationChange);
-// });
-
-
-
-
-
-
 function displayResults(items) {
     console.log(items);
     const resultsContainer = document.getElementById('searchResults'); // Få adgang til resultatkcontaineren
