@@ -469,17 +469,6 @@ export const getMeals = async (req, res) => {
         console.log(formattedMeals);
 
         res.json(groupedMeals);
-
-        // // Assuming meals contain all required data
-        // req.session.meal = meals;
-        // req.session.save(err => {
-        //     if (err) {
-        //         console.error("Error saving session:", err);
-        //         res.status(500).json({ error: 'Failed to save session data' });
-        //     } else {
-        //         res.json(meals);
-        //     }
-        // });
     } catch (error) {
         console.error("Failed to retrieve meals from the database:", error);
         res.status(500).json({ error: 'Failed to retrieve data' });

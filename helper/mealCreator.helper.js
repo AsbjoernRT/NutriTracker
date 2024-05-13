@@ -1,5 +1,3 @@
-// import { stringify } from "yamljs";
-
 function showRecipes() {
     // Udfører et enkelt API-kald til serveren for at hente opskrifter
     fetch('/api/recipes')
@@ -31,7 +29,7 @@ function displayRecipes(recipe) {
     const row = document.createElement('tr');
     row.classList.add('recipe-row');
 
-    // Set the background color based on the recipe type
+    // Sætter baggrundsfarven alt efter mealCategory
     if (recipe.mealCategory === 'beverage') {
         row.style.backgroundColor = '#99d9de'; // Blue for beverages
     } else if (recipe.mealCategory === 'food') {
@@ -43,11 +41,6 @@ function displayRecipes(recipe) {
     addTableCell(row, recipe.totalNutrients.tEnergyKcal?.toFixed(2) || 'N/A');
     // addTableCell(row, recipe.date ? new Date(recipe.date).toLocaleDateString() : 'Unknown Date');
     addTableCell(row, recipe.ingredientCount);
-
-    // Inspect, Edit, and Delete buttons with functionality
-    // addInspectButton(row, recipe);
-    // addEditButton(row, recipe);
-    // addDeleteButton(row, recipe);
 
 
     // Opret en inspect knap
