@@ -37,7 +37,7 @@ function displayActivitiesAndMeals(data) {
 
     
 
-    // Process Meals
+    // Behandler måltider
     data.detailed.meals.today.meals.forEach(meal => {
         const mealHour = new Date(meal.regTime).getUTCHours();
         if (mealHour <= currentHour) {
@@ -47,7 +47,7 @@ function displayActivitiesAndMeals(data) {
         }
     });
 
-    // Process Activities
+    // Behandler aktiviteter
     data.detailed.activities.today.activities.forEach(activity => {
         const activityHour = new Date(activity.regTime).getUTCHours();
         if (activityHour <= currentHour) {
@@ -55,12 +55,12 @@ function displayActivitiesAndMeals(data) {
         }
     });
 
-    // Calculate calories left for each hour
+    // Beregner tilbageværende kalorier for hver time
     summaryByHour.forEach(hour => {
         hour.kcalLeft = hour.totalKcalConsumed - hour.totalKcalBurned-summary.basicMetabolismByHour;
     });
 
-    // Find the table body where data should be inserted
+    // Finder tabelkroppen, hvor data skal indsættes
     const tbody = document.getElementById('dailyNutritionTable').querySelector('tbody');
     tbody.innerHTML = '';  // Clear existing rows if necessary
 
@@ -68,7 +68,7 @@ function displayActivitiesAndMeals(data) {
         let nextHour = index + 1;
         let timeframe = `${index}:00 - ${nextHour}:00`;
 
-        // Create a new row and append data
+        // Opret en ny række og tilføj data
         const row = tbody.insertRow();
         row.innerHTML = `
             <td>${timeframe}</td>
@@ -93,7 +93,7 @@ function displayMonthlyView(data) {
         kcalLeft: 0
     }));
 
-     // Process Meals
+    // Behandler måltider
      data.detailed.meals.today.meals.forEach(meal => {
         const mealDate = new Date(meal.date);
         if (mealDate.getMonth() === today.getMonth() && mealDate.getFullYear() === today.getFullYear()) {
@@ -104,7 +104,7 @@ function displayMonthlyView(data) {
         }
     });
 
-    // Process Activities
+    // Behandler aktiviteter
     data.detailed.activities.today.activities.forEach(activity => {
         const activityDate = new Date(activity.date);
         if (activityDate.getMonth() === today.getMonth() && activityDate.getFullYear() === today.getFullYear()) {
@@ -113,12 +113,12 @@ function displayMonthlyView(data) {
         }
     });
 
-    // Calculate calories left for each day
+    // Beregner tilbageværende kalorier for hver dag
     summaryByDay.forEach(day => {
         day.kcalLeft = day.totalKcalConsumed - day.totalKcalBurned;
     });
 
-    // Render the data
+    // Viser data
     const tbody = document.getElementById('monthlyNutritionTable').querySelector('tbody');
     tbody.innerHTML = '';  // Clear existing rows
 

@@ -28,14 +28,43 @@ function toggleModalVisibility(isEditMode) {
 function toggleModalVisibilityTracker() {
     const modalWrapper = document.getElementById('modal-wrapper');
 
-    if (modalWrapper && addRecipe) {
+
+    if (modalWrapper) {
         ingredientList.innerHTML = ''; // Ryd tidligere ingredienser
 
-        modalWrapper.classList.toggle('hide'); // Skift synligheden af modalen
+        modalWrapper.classList.toggle('hide');
+
     } else {
         console.error('One or more elements are missing in the DOM');
     }
 }
+
+function toggleModalVisibilitySingleIngredient() {
+    const modalWrapper = document.getElementById('modal-wrapper');
+    const modealWrapper2 = document.getElementById('modal-wrapper2')
+
+    if (modalWrapper && modealWrapper2) {
+
+        modalWrapper.classList.add('hide'); 
+        modealWrapper2.classList.remove('hide'); 
+    } else {
+        console.error('One or more elements are missing in the DOM');
+    }
+}
+
+function toggleModalCloseVisibilitySingleIngredient() {
+    const modealWrapper2 = document.getElementById('modal-wrapper2')
+
+    if (modealWrapper2) {
+        modealWrapper2.classList.toggle('hide');
+        setTimeout(function() {
+            window.location.reload()
+        }, 1000); // 1000 milliseconds = 1 second
+    } else {
+        console.error('One or more elements are missing in the DOM');
+    }
+}
+
 
 
 function toggleModalVisibilitySettings() {

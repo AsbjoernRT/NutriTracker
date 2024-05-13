@@ -554,7 +554,9 @@ select {
 #editRecipe,
 #ingredientButton,
 .edit-button,
-#addIngredient
+#addIngredient,
+.delete-button-mealTracker,
+#singleIngredient
  {
     padding: 5px 10px;
     margin-left: 10px;
@@ -584,6 +586,16 @@ select {
     background-color: darkred;
 }
 
+.delete-button-mealTracker {
+    background-color: red;
+    color: white;
+    border: none;
+    padding-right: 40px;
+    padding-left: 40px;
+    margin-right: 20px;
+}
+
+
 #editRecipe,
 #addRecipe,
 #addIngredient {
@@ -591,6 +603,16 @@ select {
     color: white;
     border: none;
 
+}
+
+#singleIngredient {
+    background-color: #f16e9e;
+    color: white;
+    border: none;
+}
+
+#singleIngredient:hover {
+    background-color: #c7225f;
 }
 
 #editRecipe.hide,
@@ -689,7 +711,8 @@ section#dashboard h1 {
 /* Table styling start*/
 #modal-wrapper,
 #ingdredient-modal-wrapper,
-#edit-recipe-modal {
+#edit-recipe-modal,
+#modal-wrapper2 {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -725,6 +748,7 @@ section#dashboard h1 {
 
 #modal-wrapper.hide,
 #ingdredient-modal-wrapper.hide,
+#modal-wrapper2.hide,
 .hide {
     display: none;
 }
@@ -742,7 +766,8 @@ section#dashboard h1 {
     font-size: 1.5rem;
 }
 
-#searchInput {
+#searchInput,
+#searchInputIngredient {
     width: 100%;
     padding: 10px;
     font-size: 16px;
@@ -795,6 +820,11 @@ section#dashboard h1 {
 #itemWeight {
     width: 100px;
     /* Justerer bredde efter behov */
+}
+
+#ingredientItemWeight {
+    width: 10%;
+    margin-left: 10px;
 }
 
 #mainContainer {

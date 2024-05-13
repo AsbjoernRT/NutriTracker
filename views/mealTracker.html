@@ -24,7 +24,10 @@
             <!-- Form for creating a meal -->
             <div class="btn-container">
                 <!-- Submit button -->
+
                 <button id="add-liquid-btn" type="btn" class="btn-plus btn-blue" onclick="toggleModalVisibilityTracker()">+</button>
+
+          
                 <button id="add-meal-btn" type="btn" class="btn-plus btn-green" onclick="toggleModalVisibilityTracker()">+</button>
             </div>
         </section>
@@ -61,13 +64,16 @@
                     <div id="selectionArea">
                         <p id="selectedItem">Selected Meal: None</p>
                         <p>Weight in grams:</p>
-                        <input type="number" id="itemWeight" placeholder="Weight (g)" value="1" required>
+                        <input type="number" id="itemWeight" placeholder="Weight (g)" value="0" required>
                     </div>
                     <div id="selectedIngredientsList">
                         <ul id="ingredientList"></ul>
                     </div>
+
                     <div id="recipeButtonContainer">
+                        <button type="button" id="singleIngredient" onclick="toggleModalVisibilitySingleIngredient()">Register single ingridient</button>
                         <button type="submit" id="addRecipe" onclick="toggleMealTrackerModal()">Save</button>
+
                     </div>
                 </div>
             </form>
@@ -76,30 +82,35 @@
         </div>
     </modal>
 
-    <modal id="modal-wrapper" class="inspect-list hide">
-        <div class="modal-content-wrapper">
-            <div id="inspection-list-close-btn" class="modal-close-wrapper">
-                <button type="button" class="modal-close-btn">X</button>
+    <modal id="modal-wrapper2" class="hide">
+        <div id="modal-content-wrapper">
+            <div id="close-create-btn" class="modal-close-wrapper">
+                <button type="button" class="modal-close-btn" onclick="toggleModalCloseVisibilitySingleIngredient()">X</button>
             </div>
 
-            <modal id="modal-wrapper" class="inspect-list hide">
-                <div class="modal-content-wrapper">
-                    <div id="inspection-list-close-btn" class="modal-close-wrapper">
-                        <button type="button" class="modal-close-btn">X</button>
+            <form id="mealTrackerSingleIngredient">
+                <div id="modal-content">
+                    <h3>Find your snack</h3>
+                    <input type="text" id="searchInputIngredient" placeholder="Search ingredient to add..." autocomplete="off">
+                    <div id="searchResultsIngredient"></div>
+                    <div id="selectionArea">
+                        <p id="selectedIngredientItem">Selected Snack: None</p>
+                        <p>Weight in grams:</p>
+                        <input type="number" id="ingredientItemWeight" placeholder="Weight (g)" value="0" required>
+                    </div>
+                    <div id="selectedIngredientsList">
+                        <ul id="ingredientList"></ul>
                     </div>
 
-                    <div id="modal-content">
-                        <table>
-                            <thead id="mealInspectionListHead">
-                                <tr>
-                                    <th>Meal Name</th>
-                                </tr>
-                            </thead>
-                            <tbody id="mealInspectionListBody"></tbody>
-                        </table>
+                    <div id="recipeButtonContainer">
+                        <button type="submit" id="addRecipe" onclick="toggleModalCloseVisibilitySingleIngredient()">Add your snack</button>
                     </div>
                 </div>
-            </modal>
+            </form>
+
+            <!-- <button id="editRecipe">Edit Recipe</button> -->
+        </div>
+    </modal>
 
 
             <div id="footerContainer"></div> <!-- Container for the footer -->
