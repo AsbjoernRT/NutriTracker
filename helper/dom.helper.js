@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Tjek den aktuelle URL eller en del af den
     const path = window.location.pathname;
-    
+
     if (path === '/') {
         // Udfør kode specifikt for siden '/mealCreator'
         console.log("Current page:", path);
@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Betinget udfør kode baseret på den aktuelle sti
     if (path === '/mealCreator') {
         // Udfør kode specifikt for siden '/mealCreator'
+        localStorage.clear()
         console.log("Current page:", path);
         IngredientSearch() // Kald funktionen for at søge efter ingredienser
         showRecipes() // Kald funktionen for at vise opskrifter
