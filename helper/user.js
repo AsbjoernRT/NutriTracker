@@ -106,5 +106,5 @@ function deleteUser() {
 
 
 // Lyt efter DOMContentLoaded-eventet, og kald showUserInfo-funktionen, når DOM'en er fuldt indlæst
-document.addEventListener('DOMContentLoaded', showUserInfo);
+// document.addEventListener('DOMContentLoaded', showUserInfo);
 

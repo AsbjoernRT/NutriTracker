@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Tjek den aktuelle URL eller en del af den
     const path = window.location.pathname;
-
+    showUserInfo()
     // Betinget udfør kode baseret på den aktuelle sti
     if (path === '/mealCreator') {
         // Udfør kode specifikt for siden '/mealCreator'

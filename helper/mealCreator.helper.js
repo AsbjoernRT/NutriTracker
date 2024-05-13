@@ -1,3 +1,4 @@
+// import { stringify } from "yamljs";
 
 function showRecipes() {
     // Udfører et enkelt API-kald til serveren for at hente opskrifter
@@ -31,11 +32,11 @@ function displayRecipes(recipe) {
     row.classList.add('recipe-row');
 
     // Set the background color based on the recipe type
-    // if (recipe.type === 'beverage') {
-    //     row.style.backgroundColor = '#99d9de'; // Blue for beverages
-    // } else if (recipe.type === 'food') {
-    //     row.style.backgroundColor = '#def6d8'; // Green for food
-    // }
+    if (recipe.mealCategory === 'beverage') {
+        row.style.backgroundColor = '#99d9de'; // Blue for beverages
+    } else if (recipe.mealCategory === 'food') {
+        row.style.backgroundColor = '#def6d8'; // Green for food
+    }
 
     // Tilføj celler og data for opskriftens navn, kalorier m.m.
     addTableCell(row, recipe.name);
@@ -57,69 +58,64 @@ function displayRecipes(recipe) {
         const modal = document.getElementsByClassName('inspect-list')[0];
         const isHidden = modal.classList.toggle('hide');
 
-            // Styr tilgængelighed baseret på om modalen er skjult eller ej
+        // Styr tilgængelighed baseret på om modalen er skjult eller ej
         modal.setAttribute('aria-hidden', isHidden);
         if (!isHidden) {
-                    // Fokuser på det første tilgængelige element i modalen
+            // Fokuser på det første tilgængelige element i modalen
             modal.querySelector('button, input, select, textarea, a[href], area[href], iframe, object, embed, [tabindex="0"], [contenteditable]').focus();
         } else {
-                    // Fokuser tilbage på inspect knap
+            // Fokuser tilbage på inspect knap
             inspectButton.focus();
         }
 
-    // Referencer til elementet, der indeholder opskriftens detaljer
+        // Referencer til elementet, der indeholder opskriftens detaljer
         const inspectionListTable = document.getElementById('mealInspectionListBody');
 
-    // Tilføj alle tabelrækker for ingredienserne
+        // Tilføj alle tabelrækker for ingredienserne
         recipe.ingredients.forEach(ingredient => {
             const ingredientRow = document.createElement('tr');
 
-        // Navn på ingrediens
-        const nameCell = document.createElement('td');
-            nameCell.textContent = ingredient.foodName || 'No name provided';  // Standardværdi, hvis navn ikke er angivet
+            // Meal name
+            const nameCell = document.createElement('td');
+            nameCell.textContent = ingredient.foodName || 'No name provided';  // Provide a default value if not available
             ingredientRow.appendChild(nameCell);
 
-        // Mængde af ingrediens
-        const weightCell = document.createElement('td');
+            // Weight
+            const weightCell = document.createElement('td');
             weightCell.textContent = ingredient.quantity ? `${ingredient.quantity} g` : 'No data';
             ingredientRow.appendChild(weightCell);
 
-        // Tjek og tilføj næringsværdier hvis tilgængelige
-        if (ingredient && typeof ingredient.nutritionalValues === 'object' && ingredient.nutritionalValues !== null) {
-                const nutrientsOfInterest = ['cDryMatter', 'cEnergyKcal', 'cEnergyKj', 'cFat', 'cFiber', 'cProtein', 'cWater'];
-                nutrientsOfInterest.forEach(macroKey => {
-                    const cell = document.createElement('td');
-                    if (typeof ingredient.nutritionalValues[macroKey] === 'number') {
-                        cell.textContent = ingredient.nutritionalValues[macroKey].toFixed(2);
-                    } else {
-                        cell.textContent = 'N/A';  // hjælper med "missing or non-numeric data"
-                    }
-                    ingredientRow.appendChild(cell);
-                });
-            } else {
-            // Udfyld celler med 'N/A' hvis næringsdata mangler
-                const nutrientsOfInterest = ['cDryMatter', 'cEnergyKcal', 'cEnergyKj', 'cFat', 'cFiber', 'cProtein', 'cWater'];
-                nutrientsOfInterest.forEach(() => {
-                    const cell = document.createElement('td');
-                    cell.textContent = 'N/A';
-                    ingredientRow.appendChild(cell);
-                });
+            // List of nutrients to display
+            const nutrientsOfInterest = ['cDryMatter', 'cEnergyKcal', 'cEnergyKj', 'cFat', 'cFiber', 'cProtein', 'cWater'];
 
-            }
+            // Append cells for each nutrient
+            nutrientsOfInterest.forEach(nutrient => {
+                const cell = document.createElement('td');
+                if (ingredient[nutrient] !== undefined && ingredient[nutrient] !== null) {
+                    cell.textContent = Number(ingredient[nutrient]).toFixed(2); // Convert to Number to ensure .toFixed(2) works even if data is a string
+                } else {
+                    cell.textContent = 'N/A';  // Display 'N/A' if nutrient data is missing
+                }
+                ingredientRow.appendChild(cell);
+            });
 
-        // Tilføj den færdige række til tabellen
-        inspectionListTable.appendChild(ingredientRow);
+            // Append the completed row to the table body
+            inspectionListTable.appendChild(ingredientRow);
         });
 
-    // Række for total næringsindhold
-    const sumRow = document.createElement('tr');
+        //     // Tilføj den færdige række til tabellen
+        //     inspectionListTable.appendChild(ingredientRow);
+        // });
+
+        // Række for total næringsindhold
+        const sumRow = document.createElement('tr');
         sumRow.id = 'summaryRow';
         const totalNameCell = document.createElement('td');
         totalNameCell.innerHTML = '<b>Recipe Total</b>';  // Corrected closing tag
         sumRow.appendChild(totalNameCell);
 
-    // Tilføj summen af makronæringsstoffer for opskriften
-    const nutrientsOfInterest = ['aQuanity', 'aDryMatter', 'aEnergyKcal', 'aEnergyKj', 'aFat', 'aFiber', 'aProtein', 'aWater'];
+        // Tilføj summen af makronæringsstoffer for opskriften
+        const nutrientsOfInterest = ['aQuanity', 'aDryMatter', 'aEnergyKcal', 'aEnergyKj', 'aFat', 'aFiber', 'aProtein', 'aWater'];
         nutrientsOfInterest.forEach(macroKey => {
             const cell = document.createElement('td');
             if (recipe.totalNutrients && typeof recipe.aggregatedNutrients[macroKey] === 'number') {
@@ -130,7 +126,7 @@ function displayRecipes(recipe) {
             sumRow.appendChild(cell);
         });
 
-            // Tilføj sumrækken til tabellen
+        // Tilføj sumrækken til tabellen
         inspectionListTable.appendChild(sumRow);
 
 
@@ -142,7 +138,7 @@ function displayRecipes(recipe) {
         lastRow.innerHTML = `${recipe.aggregatedNutrients.aQuanity} g`
 
 
-    // Lukkefunktion for modalvinduet
+        // Lukkefunktion for modalvinduet
         const closeButton = document.querySelector('.modal-close-btn');
         closeButton.addEventListener('click', () => {
             const modal = document.getElementsByClassName('inspect-list')[0];
@@ -152,7 +148,7 @@ function displayRecipes(recipe) {
             // Ryd tabelindholdet i modalen
             clearModalTables();
         });
-            // Funktion til at rydde tabellerne i modalen
+        // Funktion til at rydde tabellerne i modalen
         function clearModalTables() {
             const tables = document.querySelectorAll('.inspect-list table tbody');
             tables.forEach(table => {
@@ -164,7 +160,7 @@ function displayRecipes(recipe) {
 
     inspectButton.textContent = 'Inspect';
     inspectButton.classList.add('inspect-button');
-    
+
     inspectCell.appendChild(inspectButton)
     row.appendChild(inspectCell);
 
@@ -178,6 +174,8 @@ function displayRecipes(recipe) {
 
         console.log(recipe);
         localStorage.setItem('ingredients', JSON.stringify(recipe.ingredients));
+        localStorage.setItem('mealID', JSON.stringify(recipe.mealID));
+
         // populate modal med opskrift
         document.getElementById("nameInput").value = recipe.name;
         document.getElementById("typeSelect").value = recipe.mealType;
@@ -186,6 +184,8 @@ function displayRecipes(recipe) {
         //hide add button
         document.getElementById("addRecipe").classList.add('hide');
         document.getElementById("editRecipe").classList.remove('hide');
+
+        // localStorage.setItem('ingredients',stringify(recipe.ingredients))
 
         recipe.ingredients.forEach((ingredient) => addItemToList(ingredient));
         document.getElementById('editRecipe').addEventListener('click', () => {
@@ -230,8 +230,8 @@ function displayRecipes(recipe) {
     deleteCell.appendChild(deleteButton);
     row.appendChild(deleteCell);
 
-// Tilføj rækken til listen
-list.appendChild(row);
+    // Tilføj rækken til listen
+    list.appendChild(row);
 }
 
 function addTableCell(row, text) {
