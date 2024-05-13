@@ -1,63 +1,13 @@
 let debounceTimerId;
 
-// let savedIngredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+let ingredientsList = JSON.parse(localStorage.getItem('ingredients')) || [];
 
 
-//Activities Search
+function updateUIFromStoredIngredients() {
+    ingredientsList.forEach(addItemToList); // Correct function reference
+}
 
-// document.addEventListener('DOMContentLoaded', function () {
-//     var inputElement = document.getElementById('activity-search');
-//     var resultsDiv = document.getElementById('searchResult');
-//     var debounceTimerId;
-
-//     inputElement.addEventListener('input', function () {
-//         clearTimeout(debounceTimerId);
-//         debounceTimerId = setTimeout(() => {
-//             var searchTerm = inputElement.value;
-//             if (searchTerm.length > 1) {
-//                 var filteredActivities = searchActivities(searchTerm);
-//                 displayResults(filteredActivities);
-//             } else {
-//                 resultsDiv.innerHTML = ''; // Clear results if input is too short
-//             }
-//         }, 400);
-//     });
-// });
-
-// function searchActivities(searchTerm) {
-//     return activities.filter(activity => activity.name.toLowerCase().includes(searchTerm.toLowerCase()));
-// }
-
-// function displayResults(filteredActivities) {
-//     var resultsDiv = document.getElementById('searchResult');
-//     resultsDiv.innerHTML = ''; // Clear previous results
-//     filteredActivities.forEach(activity => {
-//         var div = document.createElement('div');
-//         div.textContent = `${activity.name} - ${activity.calories} calories`;
-//         resultsDiv.appendChild(div);
-//     });
-// }
-
-
-
-
-
-// function selectActivity(name, calories) {
-//     document.getElementById('activity-search').value = ''; // Ryd søgefeltet
-//     document.getElementById('activity-list').innerHTML = ''; // Ryd listen
-
-//     // Vis den valgte aktivitet og gem kalorierne
-//     document.getElementById('activity-display').textContent = `${name} (${calories} kcal/time)`;
-//     document.getElementById('selected-activity-kcal').value = calories; // Antager du har dette hidden input
-// }
-
-
-
-// //Food Search
-// document.addEventListener('DOMContentLoaded', function () {
-
-
-    function IngredientSearch() {
+function IngredientSearch() {
     var inputElement = document.getElementById('searchInput'); // Henter input-elementet for søgning
     var resultsDiv = document.getElementById('searchResults'); // Henter div-elementet hvor søgeresultater vises
 
@@ -78,7 +28,7 @@ let debounceTimerId;
                 resultsDiv.innerHTML = ''; // Tømmer søgeresultater hvis søgeterm er for kort
             }
         }, 200); // Debounce tid på 200 millisekunder
-    }); 
+    });
 };
 
 
@@ -96,6 +46,7 @@ function displayResults(items) {
 }
 
 function selectItem(item) { // Her kan vi vælge elementer fra vores API-opslag, som vi viser i vores HTML-fil.
+    selectedItemData = {};
     document.getElementById('searchInput').value = item.foodName;
     document.getElementById('selectedItem').textContent = `Selected Item: ${item.foodName}`;
     document.getElementById('searchResults').innerHTML = '';
@@ -112,84 +63,58 @@ function selectItem(item) { // Her kan vi vælge elementer fra vores API-opslag,
         energyKcal: item.energyKcal,
         water: item.water,
         dryMatter: item.dryMatter,
-        quantity: null
+        quantity: 0
     };
+    // console.log("Selected Item: ", selectedItemData);
+    // return selectedItemData
 }
 
-// Registrerer vi "addIngredient" klik
 document.getElementById('addIngredient').addEventListener('click', function () {
     const quantity = parseFloat(document.getElementById('itemWeight').value);
-    if (isNaN(quantity)) {
-        console.error('Invalid weight entered');
+    if (isNaN(quantity) || quantity <= 0) {
+        alert('Please enter a valid weight greater than zero.');
         return;
     }
 
-      // Opdaterer vægten for det valgte element
-    console.log("Click på update");
-    // Assuming selectedItemData is defined elsewhere and has the proper structure
-    selectedItemData.quantity = quantity;
-    const properties = ['energyKj', 'protein', 'fat', 'fiber', 'energyKcal', 'water', 'dryMatter'];
-    properties.forEach(prop => {
-              // Beregner næringsværdier baseret på indtastet vægt
-        selectedItemData['c' + prop.charAt(0).toUpperCase() + prop.slice(1)] = (selectedItemData[prop] / 100) * quantity;
-    });
+    // Retrieve the current list of ingredients from localStorage and parse it.
+    let ingredientsList = JSON.parse(localStorage.getItem('ingredients')) || [];
 
-    // // Retrieve saved ingredients from localStorage and validate
-    // let savedIngredients = JSON.parse(localStorage.getItem('ingredients')) || [];
-    // if (!Array.isArray(savedIngredients)) {
-    //     console.error('savedIngredients is not an array:', savedIngredients);
-    //     savedIngredients = [];
-    // }
+    // Find if the ingredient already exists in the list.
+    const existingIngredient = ingredientsList.find(ing => ing.ingredientID === selectedItemData.ingredientID);
 
-    let savedIngredients = JSON.parse(localStorage.getItem('ingredients')) || [];
-    let ingredientAlreadyExists = false;
-
-    savedIngredients.forEach(ingredient => {
-        if (ingredient.ingredientID === selectedItemData.ingredientID) {
-            console.log("Updating existing ingredient:", ingredient.foodName);
-
-            ingredient.quantity += quantity; // Opdaterer vægt for eksisterende ingrediens
-            ingredientAlreadyExists = true;
-            console.log("Needs to update");
-            updateListItem(ingredient);
-        }
-    });
-
-    if (!ingredientAlreadyExists) {
-        console.log("Adding new ingredient:", selectedItemData.foodName);
-        savedIngredients.push(selectedItemData); // Tilføjer ny ingrediens til listen
-        addItemToList(selectedItemData);
+    if (existingIngredient) {
+        // Ingredient exists, update its quantity.
+        existingIngredient.quantity += quantity;
+        console.log('Updated ingredient:', existingIngredient);
+    } else {
+        // New ingredient, set its initial quantity and add to the list.
+        selectedItemData.quantity = quantity;
+        ingredientsList.push(selectedItemData);
+        console.log('Added new ingredient:', selectedItemData);
     }
 
+    // Save the updated list back to localStorage.
+    localStorage.setItem('ingredients', JSON.stringify(ingredientsList));
 
-
-
-
-
-    // savedIngredients = savedIngredients.map(ingredient => {
-    //     if (ingredient.foodID === selectedItemData.foodID) {
-    //         ingredient.quantity += quantity; // Sum up the weights if already exists
-    //         ingredientAlreadyExists = true;
-    //         updateListItem(ingredient); // Assuming this function updates the UI
-    //     }
-    //     return ingredient;
-    // });
-
-    // if (!ingredientAlreadyExists) {
-    //     savedIngredients.push(selectedItemData);
-    //     addItemToList(selectedItemData); // Assuming this function updates the UI
-    // }
-
-    // Save updated ingredient list to localStorage
-    // let IngredientsSaved = savedIngredients
-    localStorage.setItem('ingredients', JSON.stringify(savedIngredients));
-    // console.log(IngredientsSaved);
-    console.log('Updated selectedItemData with macros:', selectedItemData);
+    // Clear the current list in the UI and update it from storage.
+    document.getElementById('ingredientList').innerHTML = '';
+    updateUIFromStoredIngredients();
 });
 
-// Global variable to store ingredients
-// let ingredients = [];
+function updateUIFromStoredIngredients() {
+    // Retrieve and parse the updated list from localStorage.
+    const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
 
+    // Rebuild the UI list with updated items.
+    ingredients.forEach(addItemToList);
+}
+
+function addItemToList(ingredient) {
+    const list = document.getElementById('ingredientList');
+    const listItem = document.createElement('li');
+    listItem.textContent = `Ingredient: ${ingredient.foodName}, Quantity: ${ingredient.quantity}`;
+    list.appendChild(listItem);
+}
 
 function addItemToList(item) {
     const list = document.getElementById('ingredientList');
@@ -205,7 +130,7 @@ function addItemToList(item) {
 
 
     // Antag at standardenheden er gram og formater outputtet
-    const quantity = item.quantity || item.quantity; // Benyt mængde som standard hvis vægt mangler
+    const quantity = item.quantity || item.weight; // Benyt mængde som standard hvis vægt mangler
     // const unit = item.quantity ? 'g' : 'g';
     textContent.textContent = `Ingredint: ${item.foodName}, Weight: ${quantity} g`;
 
@@ -218,10 +143,55 @@ function addItemToList(item) {
     const inspectButton = document.createElement('button');
     inspectButton.textContent = 'Inspect';
     inspectButton.classList.add('inspect-button');
-   
+    inspectButton.type = 'button';  // Set the button type to 'button'
+
+    inspectButton.addEventListener('click', function () {
+        const modal = document.getElementsByClassName('inspect-list')[0];
+        modal.classList.remove('hide');
+
+        // Referencer til elementet, der indeholder opskriftens detaljer
+        const inspectionListTable = document.getElementById('mealInspectionListBody');
+
+        // const ingredients = localStorage.getItem('ingredients');
+        const ingredientsJson = localStorage.getItem('ingredients');
+        const ingredients = JSON.parse(ingredientsJson);
+        console.log(ingredients);
+
+
+        ingredients.forEach(ingredient => {
+            const ingredientRow = document.createElement('tr');
+        
+            // Meal name
+            const nameCell = document.createElement('td');
+            nameCell.textContent = ingredient.foodName || 'No name provided';  // Provide a default value if not available
+            ingredientRow.appendChild(nameCell);
+        
+            // Weight
+            const weightCell = document.createElement('td');
+            weightCell.textContent = ingredient.quantity ? `${ingredient.quantity} g` : 'No data';
+            ingredientRow.appendChild(weightCell);
+        
+            // List of nutrients to display
+            const nutrientsOfInterest = ['cDryMatter', 'cEnergyKcal', 'cEnergyKj', 'cFat', 'cFiber', 'cProtein', 'cWater'];
+        
+            // Append cells for each nutrient
+            nutrientsOfInterest.forEach(nutrient => {
+                const cell = document.createElement('td');
+                if (ingredient[nutrient] !== undefined && ingredient[nutrient] !== null) {
+                    cell.textContent = Number(ingredient[nutrient]).toFixed(2); // Convert to Number to ensure .toFixed(2) works even if data is a string
+                } else {
+                    cell.textContent = 'N/A';  // Display 'N/A' if nutrient data is missing
+                }
+                ingredientRow.appendChild(cell);
+            });
+        
+            // Append the completed row to the table body
+            inspectionListTable.appendChild(ingredientRow);
+        });
+
+    });
+
     buttonContainer.appendChild(inspectButton);
-
-
     // lav en Delete button
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
@@ -229,46 +199,30 @@ function addItemToList(item) {
     deleteButton.onclick = function () {
         console.log("Deleting item with ID:", item.ingredientID);
         list.removeChild(listItem);
-        removeItemFromLocalStorage(item.ingredientID);
+        removeIngredient(item.ingredientID);
     };
 
     buttonContainer.appendChild(deleteButton);
-
-// Tilføj knapbeholderen til listen over elementer
+    // Tilføj knapbeholderen til listen over elementer
     listItem.appendChild(buttonContainer);
 
-// Tilføj listen over elementer til listen
+    // Tilføj listen over elementer til listen
     list.appendChild(listItem);
-
-    inspectButton.addEventListener('click', function () {
-        localStorage.setItem('selectedIngredientId', item.ingredientID);
-        window.location.href = 'foodInspect.html';
-    });
-}
-
-function updateListItem(ingedient) {
-    const listItems = document.getElementsByClassName(`ingredient_${ingedient.ingredientID}`);
-
-
-    for (const listItem of listItems) {
-        listItem.remove();
-        addItemToList(ingedient);
-    }
 }
 
 
-function removeItemFromLocalStorage(itemId) {
-// Hent listen af ingredienser fra lokal lagring, eller initialiser en tom liste, hvis ingen findes
+function removeIngredient(itemId) {
+    // Hent listen af ingredienser fra lokal lagring, eller initialiser en tom liste, hvis ingen findes
     let ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
 
-// Filtrer listen, så kun ingredienser, hvis id IKKE matcher det angivne itemId, beholdes
+    // Filtrer listen, så kun ingredienser, hvis id IKKE matcher det angivne itemId, beholdes
     ingredients = ingredients.filter(ingredient => ingredient.ingredientID !== itemId);
 
-// Opdater lokal lagring med den nye liste af ingredienser
+    // Opdater lokal lagring med den nye liste af ingredienser
     localStorage.setItem('ingredients', JSON.stringify(ingredients));
 }
 
-document.getElementById('recipeForm').addEventListener('submit', function (event) {
+document.getElementById('addRecipe').addEventListener('click', function (event) {
     event.preventDefault(); // Forhindre standardformens afsendelsesadfærd
 
 
@@ -276,6 +230,9 @@ document.getElementById('recipeForm').addEventListener('submit', function (event
     const mealName = document.getElementById('nameInput').value;
     const mealType = document.getElementById('typeSelect').value;
     const source = document.getElementById('sourceInput').value;
+
+    const mealCategory = localStorage.getItem('mealCategory')
+    console.log(mealCategory); 
 
     // hent ingredients fra local storage
     const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
@@ -285,6 +242,7 @@ document.getElementById('recipeForm').addEventListener('submit', function (event
         mealName,
         mealType,
         source,
+        mealCategory,
         ingredients
     };
 
@@ -300,48 +258,59 @@ document.getElementById('recipeForm').addEventListener('submit', function (event
     })
         // fetch('/api/ingredients' + postData)
         .then(response => response.json())
-        .then(data => console.log('Success:', data))
+        .then(data => console.log('Insert Success:', data))
+        .catch(error => console.error('Error:', error));
+
+    // Nulstiller visning
+    setTimeout(function() {
+        toggleModalVisibility()
+        window.location.reload()
+    }, 1000); // 1000 milliseconds = 1 second
+   
+});
+
+document.getElementById('editRecipe').addEventListener('click', function (event) {
+    event.preventDefault(); // Forhindre standardformens afsendelsesadfærd
+
+
+    // samler form data
+    const mealName = document.getElementById('nameInput').value;
+    const mealType = document.getElementById('typeSelect').value;
+    const source = document.getElementById('sourceInput').value;
+
+    // hent ingredients fra local storage
+    const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+    const mealID = JSON.parse(localStorage.getItem('mealID')) || [];
+
+    // samler alt data i et  object
+    const postData = {
+        mealID,
+        mealName,
+        mealType,
+        source,
+        ingredients
+    };
+
+    console.log("Opskrifts Data:", postData);
+
+    // Send data ved brug af fetch API
+    fetch('/api/updateIngredients', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    })
+        // fetch('/api/ingredients' + postData)
+        .then(response => response.json())
+        .then(data => console.log('Update Success:', data))
         .catch(error => console.error('Error:', error));
 
     // Nulstiller visning
 
-    toggleModalVisibility()
+    setTimeout(function() {
+        toggleModalVisibility()
+        window.location.reload()
+    }, 1000); // 1000 milliseconds = 1 second
 });
-
-
-
-
-
-// function selectItem(item) {
-//     console.log('Selected:', item);
-//     
-// }
-
-
-
-
-
-// document.getElementById('searchInput').addEventListener('input', function (event) {
-//     clearTimeout(debounceTimerId);
-//     debounceTimerId = setTimeout(async () => {
-//         const searchTerm = event.target.value.trim();
-//         if (searchTerm.length > 1) {
-//             await index.connectedDatabase.searchFoodItems(searchTerm);
-//         } else {
-//             document.getElementById('searchResults').innerHTML = '';
-//         }
-//     }, 400);
-// });
-
-// async function index.connectedDatabase.searchFoodItems(searchTerm) {
-//     try {
-//         const response = await fetch(`http://your-api-url/search-food?term=${encodeURIComponent(searchTerm)}`);
-//         if (!response.ok) throw new Error('Failed to fetch');
-//         const items = await response.json();
-//         displayResults(items);
-//     } catch (error) {
-//         console.error('Error fetching food items:', error);
-//     }
-// }
-
 

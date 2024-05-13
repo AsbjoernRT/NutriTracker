@@ -216,11 +216,26 @@ export default class Database {
     }
   }
 
+  // Hentning af alle ingredienser for et pågældende måltid
+  // [NutriDB].[mealIngredient]
+  async getAllIngredientsForMeal(mealID) {
+    await this.connect();
+    try {
+      const request = this.poolconnection.request()
+        .input('mealID', sql.Int, mealID)
+      const result = await request.query(`SELECT * FROM NutriDB.mealIngredient WHERE mealID = @mealID`);
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved hentning af brugerens måltidsingredienser i [NutriDB].[mealIngredient]: ', error);
+      throw error;
+    }
+  }
+
 
   /* 1: Indsætter et måltid via Meal Creator (Denne er todelt, da den først skal oprette måltidsnavnet og derefter ingredienser
   for at få mealID med over i mealIngredient)*/
   // [NutriDB].[meal]
-  async postIntoDbMeal(name, userID, mealType, source) {
+  async postIntoDbMeal(name, userID, mealType, source,mealCategory) {
     try {
       await this.connect();
       const request = this.poolconnection.request();
@@ -229,7 +244,8 @@ export default class Database {
       request.input('UserID', sql.Int, userID);
       request.input('mealType', sql.NVarChar, mealType);
       request.input('source', sql.NVarChar, source);
-      const result = await request.query(`INSERT INTO [NutriDB].[meal] (name, userID, mealType, source) OUTPUT INSERTED.mealID VALUES (@name, @UserID, @mealType, @source)`);
+      request.input('mealCategory', sql.NVarChar, mealCategory);
+      const result = await request.query(`INSERT INTO [NutriDB].[meal] (name, userID, mealType, source,mealCategory) OUTPUT INSERTED.mealID VALUES (@name, @UserID, @mealType, @source, @mealCategory)`);
       return result.recordset[0].mealID;
     } catch (error) {
       console.error('Fejl af indsætning af måltidsnavn i [NutriDB].[meal] :', error);
@@ -302,6 +318,58 @@ export default class Database {
       throw error;
     }
   }
+
+// Opdatering af en vægt af en ingrediens for et enkelt måltid
+async updateMealIngredient(ingredientID, quantity, cEnergyKj, cProtein, cFat, cFiber, cEnergyKcal, cWater, cDryMatter, mealID, tEnergyKj, tProtein, tFat, tFiber, tEnergyKcal, tWater, tDryMatter) {
+  await this.connect();
+  try {
+    const request = this.poolconnection.request()
+      .input('ingredientID', sql.Int, ingredientID)
+      .input('quantity', sql.Int, quantity)
+      .input('cEnergyKj', sql.Int, cEnergyKj)
+      .input('cProtein', sql.Int, cProtein)
+      .input('cFat', sql.Int, cFat)
+      .input('cFiber', sql.Int, cFiber)
+      .input('cEnergyKcal', sql.Int, cEnergyKcal)
+      .input('cWater', sql.Int, cWater)
+      .input('cDryMatter', sql.Int, cDryMatter)
+      .input('mealID', sql.Int, mealID)
+      .input('tEnergyKj', sql.Int, tEnergyKj)
+      .input('tProtein', sql.Int, tProtein)
+      .input('tFat', sql.Int, tFat)
+      .input('tFiber', sql.Int, tFiber)
+      .input('tEnergyKcal', sql.Int, tEnergyKcal)
+      .input('tWater', sql.Int, tWater)
+      .input('tDryMatter', sql.Int, tDryMatter)
+    const result = await request.query(`UPDATE NutriDB.mealIngredient 
+    SET quantity = @quantity,
+        cEnergyKj = @cEnergyKj,
+        cProtein = @cProtein,
+        cFat = @cFat,
+        cFiber = @cFiber,
+        cEnergyKcal = @cEnergyKcal,
+        cWater = @cWater, 
+        cDryMatter = @cDryMatter
+    WHERE ingredientID = @ingredientID;
+    
+    UPDATE NutriDB.totalNutrientsForCreateMeal 
+    SET tEnergyKj = @tEnergyKj,
+        tProtein = @tProtein,
+        tFat = @tFat,
+        tFiber = @tFiber,
+        tEnergyKcal = @tEnergyKcal,
+        tWater = @tWater,
+        tDryMatter = @tDryMatter
+    WHERE mealID = @mealID;
+    `);
+    return result.recordset;
+  } catch (error) {
+    console.error('Fejl ved opdatering af brugerens måltid i [NutriDB].[mealingredient]: ', error);
+    throw error;
+  }
+}
+
+
 
 
 
@@ -446,6 +514,24 @@ export default class Database {
 
   // Delete tracked meal
   async deleteTrackedMeal(regID, userID) {
+<<<<<<< HEAD
+=======
+    try {
+      await this.connect();
+      const request = this.poolconnection.request();
+      const result = await request
+        .input('userID', sql.Int, userID)
+        .input('regID', sql.Int, regID)
+        .query('DELETE FROM [NutriDB].[mealTracker] WHERE regID = @regID AND userID = @userID;')
+      return result.recordset;
+    } catch (error) {
+      console.error('Fejl ved sletning af brugerens måltid i [NutriDB].[mealTracker]: ', error);
+      throw error;
+    }
+  }
+
+  async updateTrackedMeal(mealID, userID, quantity) {
+>>>>>>> 9136270c5b6036c2fd75a7fc3323880e2a9eb282
     try {
       await this.connect();
       const request = this.poolconnection.request();

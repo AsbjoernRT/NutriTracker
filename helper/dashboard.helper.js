@@ -4,17 +4,6 @@ function showMealAndActivity() {
         .then(data => {
             console.log("Received on front-end:", data);
             updateTodaysSummary(data.dailySummaries);
-            // // Sæt dato
-            // document.getElementById('date').textContent = new Date().toLocaleDateString();
-
-            // // Update dashboard values based on the received data
-            // document.getElementById('mealsToday').textContent = `Number of meals consumed today: ${data.detailed.meals.today.numberOfMeals}`;
-            // document.getElementById('energyToday').textContent = `Calories consumed today: ${data.detailed.meals.today.mTEnergyKcal} kcal`;
-            // document.getElementById('waterToday').textContent = `Liters of water drunk today: ${data.detailed.meals.today.mTWater} L`;
-            // document.getElementById('proteinsToday').textContent = `Grams of protein consumed today: ${data.detailed.meals.today.mTProtein} g`;
-            // Assuming data for kcalsBurnedToday and kcalsLeftToday is available in 'data'
-            // document.getElementById('kcalsToday').textContent = `Kcals Burned Today: ${data.detailed.activities.today.totalCalories}`;
-            // document.getElementById('kcalsLeftToday').textContent = `Kcals Left Today: ${calculateKcalsLeft(data)}`;
         })
         .catch(error => {
             console.error("Failed to fetch meal and activity data:", error);

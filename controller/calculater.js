@@ -62,7 +62,7 @@ function calculateRemainingCalories(metabolism) {
     console.log(currentHour);
 
     // Beregner det brugte stofskifte baseret på den aktuelle time
-    const usedMetabolism = metabolismPerHour * currentHour;
+    const usedMetabolism = metabolismPerHour * (1+currentHour);
     console.log(usedMetabolism); 
    
     return usedMetabolism;  // Returnerer det brugte stofskifte
@@ -193,8 +193,8 @@ export function createDailySummaries(activityData, mealData, basicMetabolism) {
             mTWater: meals.mTWater,
             mTEnergyKcal: meals.mTEnergyKcal,
             mTProtein: meals.mTProtein,
-            totalCalories: activities.totalCalories + basicMetabolism,
-            kcalsLeft: basicMetabolism + activities.totalCalories - meals.mTEnergyKcal,
+            totalCalories: activities.totalCalories + caclulatedMetabolism,
+            kcalsLeft: caclulatedMetabolism + activities.totalCalories - meals.mTEnergyKcal,
             caclulatedMetabolism: caclulatedMetabolism,
             basicMetabolismByHour: basicMetabolismByHour
         };
@@ -209,8 +209,8 @@ export function createDailySummaries(activityData, mealData, basicMetabolism) {
         mTWater: mealData.today.mTWater,
         mTEnergyKcal: mealData.today.mTEnergyKcal,
         mTProtein: mealData.today.mTProtein,
-        totalCalories: activityData.today.totalCalories + basicMetabolism,
-        kcalsLeft: basicMetabolism + activityData.today.totalCalories - mealData.today.mTEnergyKcal,
+        totalCalories: activityData.today.totalCalories + caclulatedMetabolism,
+        kcalsLeft: caclulatedMetabolism + activityData.today.totalCalories - mealData.today.mTEnergyKcal,
         caclulatedMetabolism: caclulatedMetabolism,
         basicMetabolismByHour: basicMetabolismByHour
     };

@@ -24,8 +24,8 @@
             <!-- Form for creating a meal -->
             <div class="btn-container">
                 <!-- Buttons for adding meals or recipes -->
-                <button id="add-liquid-btn" type="btn" class="btn-plus btn-blue" aria-label="Add new liquid">+</button>
-                <button id="add-recipe-btn" type="btn" class="btn-plus btn-green" aria-label="Add new recipe">+</button>
+                <button id="add-liquid-btn" type="button" class="btn-plus btn-blue">+</button>
+                <button id="add-recipe-btn" type="button" class="btn-plus btn-green">+</button>
             </div>
         </section>
 
@@ -41,7 +41,7 @@
                         <th scope="col">Total Kcal per 100g</th>
                         <!-- <th scope="col">Added on</th> -->
                         <th scope="col"># Ingredients</th>
-                        <th scope="col">Times Eaten</th>
+                        <!-- <th scope="col">Times Eaten</th> -->
                     </tr>
                 </thead>
                 <tbody id="mealList">
@@ -86,8 +86,8 @@
                         <ul id="ingredientList"></ul>
                     </div>
                     <div id="recipeButtonContainer">
-                        <button type="submit" id="addRecipe">Add Recipe</button>
-                        <button type="submit" id="editRecipe" class="hide">Edit Recipe</button>
+                        <button type="button" id="addRecipe">Add Recipe</button>
+                        <button  type="button"id="editRecipe" class="hide">Update Recipe</button>
                     </div>
 
                 </div>
@@ -128,9 +128,6 @@
 
     <div id="footerContainer"></div> <!-- Container for the footer -->
     <!-- JavaScript to load header -->
-
-
-    <script src="/date.helper.js"></script>
     <script src="/partials.helper.js"></script>
     <script src="/modal.js"></script>
     <script src="/addIngredient.helper.js"></script>
