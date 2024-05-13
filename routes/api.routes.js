@@ -254,10 +254,10 @@ router.post('/updateTrackedMeal', async (req,res) => {
 
 })
 
-router.post('/updateSingleIngredient', async (req,res) => {
+// router.post('/updateSingleIngredient', async (req,res) => {
 
-    postIntoDbMealTracker(req,res)
-})
+//     postIntoDbMealTracker(req,res)
+// })
 
 
 export default router;

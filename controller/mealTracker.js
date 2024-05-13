@@ -80,6 +80,8 @@ export const addWeightToMeal = async (req, res) => {
 };
 
 
+// Opdatere vægt for måltid
+
 export const updateWeightForMeal = async (req, res) => {
     console.log("Back-end received:", req.body);
 
@@ -87,43 +89,67 @@ export const updateWeightForMeal = async (req, res) => {
     const mealID = req.body.mealID
     const regID = req.body.regID
     const quantity = req.body.quantity
+    const singleIngredientId = req.body.singleIngredientId
+
 
     const getMacro = await index.connectedDatabase.getTotalNutriens(mealID)
+    const ingredients = await index.connectedDatabase.searchIngredientById(singleIngredientId)
+    console.log('getIngredients', ingredients);
 
-    console.log(getMacro);
-
-    try {
-
-        const mTEnergyKj = (quantity / 100) * getMacro[0].tEnergyKj
-        const mTProtein = (quantity / 100) * getMacro[0].tProtein
-        const mTFat = (quantity / 100) * getMacro[0].tFat
-        const mTFiber = (quantity / 100) * getMacro[0].tFiber
-        const mTEnergyKcal = (quantity / 100) * getMacro[0].tEnergyKcal
-        const mTWater = (quantity / 100) * getMacro[0].tWater
-        const mTDryMatter = (quantity / 100) * getMacro[0].tDryMatter
+    console.log('getMacro', getMacro);
 
 
-        const updateTrackedMeal = await index.connectedDatabase.updateTrackedMeal(regID, mealID, quantity, mTEnergyKj, mTProtein, mTFat, mTFiber, mTEnergyKcal, mTWater, mTDryMatter);
-        console.log(updateTrackedMeal);
-        res.status(200).json({ success: true, message: 'Meal updated successfully' });
-    } catch (error) {
-        console.error('Update failed:', error);
-        res.status(500).json({ success: false, message: 'Failed to update meal' });
+    // Check if getMacro is empty
+    if (Array.isArray(getMacro) && getMacro.length === 0) {
+        console.log('No macro nutrient data found for mealID:', mealID);
+
+        const ingredient = ingredients[0]
+
+            const mTEnergyKj = (quantity / 100) * ingredient.energyKj
+            const mTProtein = (quantity / 100) * ingredient.protein
+            const mTFat = (quantity / 100) * ingredient.fat
+            const mTFiber = (quantity / 100) * ingredient.fiber
+            const mTEnergyKcal = (quantity / 100) * ingredient.energyKcal
+            const mTWater = (quantity / 100) * ingredient.water
+            const mTDryMatter = (quantity / 100) * ingredient.dryMatter
+        
+            const updateTrackedMeal = await index.connectedDatabase.updateTrackedMeal(regID, mealID, quantity, mTEnergyKj, mTProtein, mTFat, mTFiber, mTEnergyKcal, mTWater, mTDryMatter);
+            console.log("Ingredient snack updated", updateTrackedMeal);
+            res.status(200).json({ success: true, message: 'Snack updated successfully' });
+    } else {
+        try {
+            const mTEnergyKj = (quantity / 100) * getMacro[0].tEnergyKj
+            const mTProtein = (quantity / 100) * getMacro[0].tProtein
+            const mTFat = (quantity / 100) * getMacro[0].tFat
+            const mTFiber = (quantity / 100) * getMacro[0].tFiber
+            const mTEnergyKcal = (quantity / 100) * getMacro[0].tEnergyKcal
+            const mTWater = (quantity / 100) * getMacro[0].tWater
+            const mTDryMatter = (quantity / 100) * getMacro[0].tDryMatter
+
+
+            const updateTrackedMeal = await index.connectedDatabase.updateTrackedMeal(regID, mealID, quantity, mTEnergyKj, mTProtein, mTFat, mTFiber, mTEnergyKcal, mTWater, mTDryMatter);
+            console.log(updateTrackedMeal);
+            res.status(200).json({ success: true, message: 'Meal updated successfully' });
+        } catch (error) {
+            console.error('Update failed:', error);
+            res.status(500).json({ success: false, message: 'Failed to update meal' });
+        }
     }
 };
 
 
-export const postIntoDbMealTracker = async (req,res) => {
+// export const postIntoDbMealTracker = async (req,res) => {
 
 
-}
+// }
 
 export const createSnackInMealTracker = async (req, res) => {
 
     const userID = req.session.user.userID
-    console.log(req.body);
+    console.log('createSnackInMealTracker body', req.body);
     // Udpakker relevante oplysninger fra anmodningen
     const { mealIngredientName, cityName, quantityInput, energyKJ,
+        singleIngredientId,
         protein,
         fat,
         fiber,
@@ -132,6 +158,7 @@ export const createSnackInMealTracker = async (req, res) => {
         dryMatter } = req.body;
 
     console.log(mealIngredientName, cityName);
+    console.log('create snack stuff', mealIngredientName, singleIngredientId);
 
     const mealName = req.body.mealIngredientName
     const mealType = "singleIngredient"
@@ -143,7 +170,7 @@ export const createSnackInMealTracker = async (req, res) => {
 
     try {
         // Opretter først måltidet og får måltids-ID'et
-        const mealID = await index.connectedDatabase.postIntoDbMeal(mealName, userID, mealType, source);
+        const mealID = await index.connectedDatabase.postIntoDbMeal(mealName, userID, mealType, source, "", singleIngredientId);
         console.log("Meal Created with ID:", mealID);
 
         // Sørg for, at måltids-ID'et er gyldigt, før der fortsættes
@@ -164,23 +191,7 @@ export const createSnackInMealTracker = async (req, res) => {
         const totalDryMatter = dryMatter * quantityTimesInput;
 
 
-        // // Beregn makroer pr. 100g
-        // const macrosPer100g = {
-        //     energyKjPer100g: (totalEnergyKj / totalWeight) * 100,
-        //     proteinPer100g: (totalProtein / totalWeight) * 100,
-        //     fatPer100g: (totalFat / totalWeight) * 100,
-        //     fiberPer100g: (totalFiber / totalWeight) * 100,
-        //     energyKcalPer100g: (totalEnergyKcal / totalWeight) * 100,
-        //     waterPer100g: (totalWater / totalWeight) * 100,
-        //     dryMatterPer100g: (totalDryMatter / totalWeight) * 100,
-        // };
 
-        // console.log(macrosPer100g);
-
-        // Kald til SQL-funktionen til at opdatere makrototaler i database
-
-
-        // Gem måltidsdetaljer og makroer i sessionen
         req.session.meal = {
             mealID: mealID,
             mealName: mealName,
