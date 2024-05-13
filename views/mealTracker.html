@@ -53,7 +53,8 @@
     <modal id="modal-wrapper" class="hide">
         <div id="modal-content-wrapper">
             <div id="close-create-btn" class="modal-close-wrapper">
-                <button type="button" class="modal-close-btn" onclick=toggleModalVisibilityTracker()>X</button>
+                <button id="addTrackedMealButton" type="button" class="modal-close-btn" onclick=toggleModalVisibilityTracker()>X</button>
+                <button id="editTrackedMealButton" type="button" class="hide" onclick=toggleModalVisibilityTrackerEdit()>X</button>
             </div>
 
             <form id="mealTrackerForm">
@@ -72,7 +73,8 @@
 
                     <div id="recipeButtonContainer">
                         <button type="button" id="singleIngredient" onclick="toggleModalVisibilitySingleIngredient()">Register single ingridient</button>
-                        <button type="submit" id="addRecipe" onclick="toggleMealTrackerModal()">Save</button>
+                        <button type="submit" id="addTrackedMeal" onclick="toggleMealTrackerModal()">Save</button>
+                        <button class="hide" type="submit" id="updateTrackedMeal" onclick="toggleModalVisibilityTrackerEdit()">Save</button>
 
                     </div>
                 </div>
