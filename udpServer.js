@@ -1,6 +1,6 @@
-import dgram from 'dgram';
+const dgram = require('dgram');
 
-const PORT = 6790;
+const PORT = 6789;
 const server = dgram.createSocket('udp4');
 
 server.on('message', (msg, rinfo) => {
