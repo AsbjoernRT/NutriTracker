@@ -5,7 +5,7 @@ import session from 'express-session'
 
 import dotenv from 'dotenv';
 dotenv.config();
-
+import './services/udpServer.js';
 // Import route modules
 import viewsRoutes from './routes/views.routes.js';
 import apiRoutes from './routes/api.routes.js';
